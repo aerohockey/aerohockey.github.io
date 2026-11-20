@@ -88,8 +88,8 @@ export const PROJECTS: ProjectItem[] = [
       ru: 'Frantsuza Bistrot × Иван Фролухин',
     },
     subtitle: {
-      en: 'Portrait and kitchen series in Saint Petersburg',
-      ru: 'Портретная и атмосферная серия для ресторана в Петербурге',
+      en: 'Portrait & kitchen series',
+      ru: 'Портретная и кухонная серия',
     },
     intro: {
       en: 'A quiet documentary portrait series capturing chef Ivan Frolukhin and the evening atmosphere of Frantsuza Bistrot.',

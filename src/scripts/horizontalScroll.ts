@@ -36,23 +36,25 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
 
     if (items.length === 0) return;
 
-    const trackRect = track.getBoundingClientRect();
-    const anchorX = trackRect.left + trackRect.width * 0.35;
     let activeIdx = 0;
-    let bestDist = Infinity;
-
-    items.forEach((item, idx) => {
-      const rect = item.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      const dist = Math.abs(center - anchorX);
-      if (dist < bestDist) {
-        bestDist = dist;
-        activeIdx = idx;
-      }
-    });
-
-    if (maxScroll > 0 && track.scrollLeft >= maxScroll - 8) {
+    if (track.scrollLeft <= 12) {
+      activeIdx = 0;
+    } else if (maxScroll > 0 && track.scrollLeft >= maxScroll - 12) {
       activeIdx = items.length - 1;
+    } else {
+      const trackRect = track.getBoundingClientRect();
+      const anchorX = trackRect.left + trackRect.width * 0.3;
+      let bestDist = Infinity;
+
+      items.forEach((item, idx) => {
+        const rect = item.getBoundingClientRect();
+        const center = rect.left + rect.width / 2;
+        const dist = Math.abs(center - anchorX);
+        if (dist < bestDist) {
+          bestDist = dist;
+          activeIdx = idx;
+        }
+      });
     }
 
     const currentStr = String(activeIdx + 1).padStart(2, '0');

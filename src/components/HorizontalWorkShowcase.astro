@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 const SIZE_CLASSES: Record<CardSize, string> = {
   hero: 'w-[68vw] sm:w-[46vw] md:w-[30vw] lg:w-[25vw] max-w-[400px]',
   tall: 'w-[58vw] sm:w-[40vw] md:w-[24vw] lg:w-[21vw] max-w-[340px]',
-  compact: 'w-[52vw] sm:w-[36vw] md:w-[20vw] lg:w-[17vw] max-w-[280px]',
+  compact: 'w-[56vw] sm:w-[38vw] md:w-[23vw] lg:w-[20vw] max-w-[310px]',
   wide: 'w-[80vw] sm:w-[58vw] md:w-[40vw] lg:w-[35vw] max-w-[560px]',
 };
 
@@ -68,11 +68,11 @@ const ASPECT_CLASSES: Record<'4/5' | '3/2' | '4/4' | '3/4', string> = {
               <div class="min-w-0">
                 <div class="flex items-baseline gap-2.5">
                   <span class="tabular-nums text-[#737373] shrink-0">{num}</span>
-                  <h2 class="text-[#141414] font-normal truncate group-hover:underline underline-offset-4 decoration-1">
+                  <h2 class="text-[#141414] font-normal group-hover:underline underline-offset-4 decoration-1">
                     {project.title[lang]}
                   </h2>
                 </div>
-                <p class="mt-0.5 pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373] truncate">
+                <p class="mt-0.5 pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
                   {project.subtitle[lang]}
                 </p>
               </div>
