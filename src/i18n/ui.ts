@@ -8,6 +8,7 @@ export interface NavLabels {
   role: string;
   scrollHint: string;
   backToWork: string;
+  prevProject: string;
   nextProject: string;
   close: string;
   copyright: string;
@@ -23,6 +24,7 @@ export const UI: Record<Lang, NavLabels> = {
     role: 'Art director with a camera',
     scrollHint: 'Scroll →',
     backToWork: 'Back to Work',
+    prevProject: 'Previous project',
     nextProject: 'Next project',
     close: 'Close',
     copyright: '© 2026 Evgeny Ivanov',
@@ -36,6 +38,7 @@ export const UI: Record<Lang, NavLabels> = {
     role: 'Арт-директор с камерой',
     scrollHint: 'Листайте →',
     backToWork: 'К проектам',
+    prevProject: 'Предыдущий проект',
     nextProject: 'Следующий проект',
     close: 'Закрыть',
     copyright: '© 2026 Евгений Иванов',

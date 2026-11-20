@@ -1,13 +1,15 @@
 ---
 import { Image } from 'astro:assets';
 import { PROJECTS, type CardOffset, type CardSize } from '../data/projects';
-import { getProjectPath, type Lang } from '../i18n/ui';
+import { getProjectPath, UI, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
+const t = UI[lang];
+const total = String(PROJECTS.length).padStart(2, '0');
 
 const SIZE_CLASSES: Record<CardSize, string> = {
   hero: 'w-[calc(100vw-28px)] sm:w-[calc(100vw-48px)] md:w-[30vw] lg:w-[25vw] md:max-w-[400px]',
@@ -38,15 +40,17 @@ const ASPECT_CLASSES: Record<'4/5' | '3/2' | '4/4' | '3/4', string> = {
     {PROJECTS.map((project, index) => {
       const num = String(index + 1).padStart(2, '0');
       const href = getProjectPath(lang, project.slug);
+      const isFirst = index === 0;
+      const isLast = index === PROJECTS.length - 1;
       return (
         <article
           class:list={[
-            'shrink-0 snap-center md:snap-align-none flex flex-col',
+            'shrink-0 snap-center md:snap-align-none flex flex-col [&:has([data-project-link]:hover)_img]:opacity-80 [&:has([data-project-link]:hover)_h2]:underline',
             SIZE_CLASSES[project.cardSize],
             OFFSET_CLASSES[project.cardOffset],
           ]}
         >
-          <a href={href} class="group block focus:outline-none">
+          <a href={href} data-project-link class="block focus:outline-none">
             <div
               class:list={[
                 'w-full overflow-hidden bg-[#f5f5f3] max-h-[68dvh] md:max-h-[58svh]',
@@ -57,29 +61,83 @@ const ASPECT_CLASSES: Record<'4/5' | '3/2' | '4/4' | '3/4', string> = {
                 src={project.cover}
                 alt={project.coverAlt[lang]}
                 width={1400}
-                class="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-80 pointer-events-none select-none"
+                class="w-full h-full object-cover transition-opacity duration-500 ease-out pointer-events-none select-none"
                 loading={index < 3 ? 'eager' : 'lazy'}
                 draggable={false}
               />
             </div>
-
-            <div class="mt-3 flex items-baseline justify-between gap-3 text-[12px] leading-[1.35]">
-              <div class="min-w-0">
-                <div class="flex items-baseline gap-2.5">
-                  <span class="tabular-nums text-[#737373] shrink-0">{num}</span>
-                  <h2 class="text-[#141414] font-normal group-hover:underline underline-offset-4 decoration-1">
-                    {project.title[lang]}
-                  </h2>
-                </div>
-                <p class="mt-0.5 pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
-                  {project.subtitle[lang]}
-                </p>
-              </div>
-              <span class="shrink-0 text-[11px] uppercase tracking-[0.04em] text-[#737373] tabular-nums hidden sm:inline">
-                {project.year}
-              </span>
-            </div>
           </a>
+
+          <div class="mt-3 flex items-baseline justify-between gap-3 text-[12px] leading-[1.35]">
+            <a href={href} data-project-link class="min-w-0 flex-1 block focus:outline-none">
+              <div class="flex items-baseline gap-2.5">
+                <span class="tabular-nums text-[#737373] shrink-0">{num}</span>
+                <h2 class="text-[#141414] font-normal underline-offset-4 decoration-1">
+                  {project.title[lang]}
+                </h2>
+              </div>
+              <p class="mt-0.5 pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
+                {project.subtitle[lang]}
+              </p>
+            </a>
+
+            <a
+              href={href}
+              tabindex="-1"
+              aria-hidden="true"
+              class="hidden md:inline shrink-0 text-[11px] uppercase tracking-[0.04em] text-[#737373] tabular-nums"
+            >
+              {project.year}
+            </a>
+
+            <div class="md:hidden shrink-0">
+              {isFirst ? (
+                <button
+                  type="button"
+                  data-track-step="1"
+                  data-card-index={index}
+                  aria-label={t.nextProject}
+                  class="inline-flex items-baseline gap-1.5 py-1.5 -my-1.5 pl-2 text-[11px] tabular-nums tracking-[0.04em] text-[#737373] active:opacity-50 cursor-pointer"
+                >
+                  <span>{num} / {total}</span>
+                  <span aria-hidden="true" class="text-[#141414]">→</span>
+                </button>
+              ) : isLast ? (
+                <button
+                  type="button"
+                  data-track-step="-1"
+                  data-card-index={index}
+                  aria-label={t.prevProject}
+                  class="inline-flex items-baseline gap-1.5 py-1.5 -my-1.5 pl-2 text-[11px] tabular-nums tracking-[0.04em] text-[#737373] active:opacity-50 cursor-pointer"
+                >
+                  <span aria-hidden="true" class="text-[#141414]">←</span>
+                  <span>{num} / {total}</span>
+                </button>
+              ) : (
+                <div class="inline-flex items-baseline text-[11px] tabular-nums tracking-[0.04em] text-[#737373]">
+                  <button
+                    type="button"
+                    data-track-step="-1"
+                    data-card-index={index}
+                    aria-label={t.prevProject}
+                    class="py-1.5 -my-1.5 px-1.5 text-[#141414] active:opacity-50 cursor-pointer"
+                  >
+                    ←
+                  </button>
+                  <span class="px-0.5">{num} / {total}</span>
+                  <button
+                    type="button"
+                    data-track-step="1"
+                    data-card-index={index}
+                    aria-label={t.nextProject}
+                    class="py-1.5 -my-1.5 pl-1.5 pr-0 text-[#141414] active:opacity-50 cursor-pointer"
+                  >
+                    →
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </article>
       );
     })}
