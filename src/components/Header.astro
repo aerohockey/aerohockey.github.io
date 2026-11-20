@@ -23,58 +23,59 @@ const contactHref = getContactPath(lang);
 <header
   class="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm px-3.5 sm:px-5 md:px-10 py-3.5 md:py-4"
 >
-  <div class="flex items-start md:items-center justify-between gap-1.5 sm:gap-2 md:gap-6 text-[10px] sm:text-[11px] md:text-[12px] leading-[1.15] tracking-[0.02em] md:tracking-[0.05em] uppercase">
-    <!-- Left group: Brand + Navigation close to Brand -->
-    <div class="flex items-center flex-wrap gap-x-2.5 sm:gap-x-6 md:gap-x-14 gap-y-1.5 min-w-0">
+  <div class="flex items-center justify-between gap-1 sm:gap-3 md:gap-0 text-[10px] sm:text-[11px] md:text-[12px] leading-[1.15] tracking-[0.02em] md:tracking-[0.05em] uppercase">
+    <!-- Brand -->
+    <div class="shrink-0 md:w-[24%]">
       <a
         href={homeHref}
-        class="inline-block py-0.5 text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap shrink-0"
+        class="inline-block py-0.5 text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
       >
         {t.brand}
       </a>
-
-      <nav
-        aria-label="Main navigation"
-        class="flex items-center gap-x-1.5 sm:gap-x-4 md:gap-x-7"
-      >
-        <a
-          href={homeHref}
-          class:list={[
-            'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-            activeNav === 'work'
-              ? 'bg-[#141414] text-white'
-              : 'text-[#141414] hover:opacity-55',
-          ]}
-        >
-          {t.work}
-        </a>
-        <a
-          href={aboutHref}
-          class:list={[
-            'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-            activeNav === 'about'
-              ? 'bg-[#141414] text-white'
-              : 'text-[#141414] hover:opacity-55',
-          ]}
-        >
-          {t.about}
-        </a>
-        <a
-          href={contactHref}
-          class:list={[
-            'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-            activeNav === 'contact'
-              ? 'bg-[#141414] text-white'
-              : 'text-[#141414] hover:opacity-55',
-          ]}
-        >
-          {t.contact}
-        </a>
-      </nav>
     </div>
 
-    <!-- Right: Language switcher (same row on mobile & desktop) -->
-    <div class="shrink-0">
+    <!-- Navigation: centered evenly between Brand & LangSwitch on mobile; offset column on desktop -->
+    <nav
+      aria-label="Main navigation"
+      class="flex flex-wrap items-center justify-center md:justify-start gap-x-0.5 sm:gap-x-2 md:gap-x-3 gap-y-1 md:flex-1 min-w-0"
+    >
+      <a
+        href={homeHref}
+        class:list={[
+          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'work'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.work}
+      </a>
+      <a
+        href={aboutHref}
+        class:list={[
+          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'about'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.about}
+      </a>
+      <a
+        href={contactHref}
+        class:list={[
+          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'contact'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.contact}
+      </a>
+    </nav>
+
+    <!-- Language switcher -->
+    <div class="shrink-0 md:w-[24%] md:flex md:justify-end">
       <LangSwitch lang={lang} />
     </div>
   </div>
