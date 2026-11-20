@@ -1,8 +1,8 @@
 ---
+import LangSwitch from './LangSwitch.astro';
 import {
   UI,
   getAboutPath,
-  getAlternateLangPath,
   getContactPath,
   getHomePath,
   type Lang,
@@ -15,9 +15,6 @@ interface Props {
 
 const { lang, activeNav } = Astro.props;
 const t = UI[lang];
-const pathname = Astro.url.pathname;
-const enHref = getAlternateLangPath(pathname, 'en');
-const ruHref = getAlternateLangPath(pathname, 'ru');
 const homeHref = getHomePath(lang);
 const aboutHref = getAboutPath(lang);
 const contactHref = getContactPath(lang);
@@ -26,52 +23,21 @@ const contactHref = getContactPath(lang);
 <header
   class="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm px-5 md:px-10 py-3.5 md:py-4"
 >
-  <div class="flex flex-wrap items-center justify-between gap-y-2 text-[12px] leading-[1.15] tracking-[0.05em] uppercase">
-    <!-- Brand -->
-    <div class="flex items-center md:w-[24%]">
+  <div class="flex items-start md:items-center justify-between gap-4 text-[11px] sm:text-[12px] leading-[1.15] tracking-[0.04em] md:tracking-[0.05em] uppercase">
+    <!-- Brand (top-left) -->
+    <div class="shrink-0 md:w-[24%]">
       <a
         href={homeHref}
-        class="inline-block text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
+        class="inline-block py-0.5 text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
       >
         {t.brand}
       </a>
     </div>
 
-    <!-- Language switcher -->
-    <div class="flex items-center md:order-3 md:justify-end md:w-[24%]">
-      <div class="flex items-center gap-1.5 tabular-nums" aria-label="Language switcher">
-        <a
-          href={enHref}
-          hreflang="en"
-          class:list={[
-            'px-1.5 py-0.5 transition-colors duration-150',
-            lang === 'en'
-              ? 'bg-[#141414] text-white'
-              : 'text-[#737373] hover:text-[#141414]',
-          ]}
-        >
-          EN
-        </a>
-        <span class="text-[#141414]/25">/</span>
-        <a
-          href={ruHref}
-          hreflang="ru"
-          class:list={[
-            'px-1.5 py-0.5 transition-colors duration-150',
-            lang === 'ru'
-              ? 'bg-[#141414] text-white'
-              : 'text-[#737373] hover:text-[#141414]',
-          ]}
-        >
-          RU
-        </a>
-      </div>
-    </div>
-
-    <!-- Navigation -->
+    <!-- Navigation (top-right on mobile, middle on md+) -->
     <nav
       aria-label="Main navigation"
-      class="w-full md:w-auto md:flex-1 md:order-2 flex items-center gap-5 md:gap-7"
+      class="flex flex-wrap items-center justify-end md:justify-start gap-x-3 sm:gap-x-4 md:gap-7 gap-y-1.5 md:flex-1 md:order-2"
     >
       <a
         href={homeHref}
@@ -107,5 +73,10 @@ const contactHref = getContactPath(lang);
         {t.contact}
       </a>
     </nav>
+
+    <!-- Desktop Language switcher -->
+    <div class="hidden md:flex items-center md:order-3 md:justify-end md:w-[24%]">
+      <LangSwitch lang={lang} />
+    </div>
   </div>
 </header>
