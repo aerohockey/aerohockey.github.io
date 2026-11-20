@@ -2,7 +2,6 @@
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { getAlternateLangPath, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -12,8 +11,6 @@ interface Props {
   activeNav?: 'work' | 'about' | 'contact';
   counterText?: string;
   lockViewport?: boolean;
-  showFooterProgress?: boolean;
-  hideFooter?: boolean;
 }
 
 const {
@@ -23,8 +20,6 @@ const {
   activeNav,
   counterText,
   lockViewport = false,
-  showFooterProgress = false,
-  hideFooter = false,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
@@ -53,8 +48,5 @@ const ruPath = getAlternateLangPath(pathname, 'ru');
   >
     <Header lang={lang} activeNav={activeNav} counterText={counterText} />
     <slot />
-    {!hideFooter && (
-      <Footer lang={lang} fixed={lockViewport} showProgress={showFooterProgress} />
-    )}
   </body>
 </html>

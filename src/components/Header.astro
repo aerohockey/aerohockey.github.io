@@ -38,12 +38,12 @@ const contactHref = getContactPath(lang);
       </a>
     </div>
 
-    <!-- Language switcher + optional live counter (mobile top-right, desktop right) -->
-    <div class="flex items-center gap-4 md:order-3 md:justify-end md:w-[24%]">
+    <!-- Language switcher + optional live counter -->
+    <div class="flex items-center gap-3 md:gap-4 md:order-3 md:justify-end md:w-[24%]">
       {counterText && (
         <span
           data-counter
-          class="hidden md:inline-block tabular-nums text-[#737373]"
+          class="tabular-nums text-[#737373]"
         >
           {counterText}
         </span>

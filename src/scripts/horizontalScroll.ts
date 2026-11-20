@@ -2,8 +2,6 @@ export interface HorizontalTrackOptions {
   trackSelector?: string;
   itemSelector?: string;
   counterSelector?: string;
-  mobileCounterSelector?: string;
-  progressSelector?: string;
 }
 
 export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void {
@@ -18,22 +16,11 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
   const counterEl = document.querySelector<HTMLElement>(
     options.counterSelector ?? '[data-counter]'
   );
-  const mobileCounterEl = document.querySelector<HTMLElement>(
-    options.mobileCounterSelector ?? '[data-counter-mobile]'
-  );
-  const progressEl = document.querySelector<HTMLElement>(
-    options.progressSelector ?? '[data-scroll-progress]'
-  );
 
   const totalStr = String(items.length).padStart(2, '0');
 
   const updateIndicators = () => {
     const maxScroll = track.scrollWidth - track.clientWidth;
-    if (progressEl) {
-      const pct = maxScroll > 0 ? Math.min(100, Math.max(0, (track.scrollLeft / maxScroll) * 100)) : 100;
-      progressEl.style.width = `${pct}%`;
-    }
-
     if (items.length === 0) return;
 
     let activeIdx = 0;
@@ -59,7 +46,6 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
 
     const currentStr = String(activeIdx + 1).padStart(2, '0');
     if (counterEl) counterEl.textContent = `${currentStr} / ${totalStr}`;
-    if (mobileCounterEl) mobileCounterEl.textContent = `${currentStr} / ${totalStr}`;
   };
 
   track.addEventListener('scroll', updateIndicators, { passive: true });

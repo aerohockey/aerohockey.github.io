@@ -24,7 +24,6 @@ const counterText = isGallery ? `01 / ${String(frameCount).padStart(2, '0')}` : 
   activeNav="work"
   counterText={counterText}
   lockViewport={isGallery}
-  showFooterProgress={isGallery}
 >
   {isGallery ? (
     <GalleryProjectView project={project} lang={lang} />
