@@ -41,7 +41,7 @@ const ruPath = getAlternateLangPath(pathname, 'ru');
   <body
     class:list={[
       'bg-white text-[#141414] font-sans antialiased',
-      lockViewport ? 'h-[100svh] overflow-hidden flex flex-col' : 'min-h-screen flex flex-col',
+      lockViewport ? 'h-full min-h-0 overflow-hidden flex flex-col' : 'min-h-screen flex flex-col',
     ]}
   >
     <Header lang={lang} activeNav={activeNav} />
