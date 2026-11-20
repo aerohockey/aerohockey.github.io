@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# proprietary / trial local fonts (never commit to public repo)
+src/assets/local fonts/
+src/assets/local-fonts/

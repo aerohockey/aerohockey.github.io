@@ -14,7 +14,7 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
 
 <div
   class:list={[
-    'flex items-center gap-1.5 text-[11px] sm:text-[12px] leading-[1.15] tracking-[0.05em] uppercase tabular-nums',
+    'flex items-center gap-0.5 md:gap-1 text-[10px] sm:text-[11px] md:text-[12px] leading-[1.15] tracking-[0.02em] md:tracking-[0.05em] uppercase tabular-nums',
     className,
   ]}
   aria-label="Language switcher"
@@ -23,7 +23,7 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
     href={enHref}
     hreflang="en"
     class:list={[
-      'px-1.5 py-0.5 transition-colors duration-150',
+      'px-1 md:px-1.5 py-0.5 transition-colors duration-150',
       lang === 'en'
         ? 'bg-[#141414] text-white'
         : 'text-[#737373] hover:text-[#141414]',
@@ -31,12 +31,11 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
   >
     EN
   </a>
-  <span class="text-[#141414]/25">/</span>
   <a
     href={ruHref}
     hreflang="ru"
     class:list={[
-      'px-1.5 py-0.5 transition-colors duration-150',
+      'px-1 md:px-1.5 py-0.5 transition-colors duration-150',
       lang === 'ru'
         ? 'bg-[#141414] text-white'
         : 'text-[#737373] hover:text-[#141414]',
