@@ -11,10 +11,9 @@ import {
 interface Props {
   lang: Lang;
   activeNav?: 'work' | 'about' | 'contact';
-  counterText?: string;
 }
 
-const { lang, activeNav, counterText } = Astro.props;
+const { lang, activeNav } = Astro.props;
 const t = UI[lang];
 const pathname = Astro.url.pathname;
 const enHref = getAlternateLangPath(pathname, 'en');
@@ -38,16 +37,8 @@ const contactHref = getContactPath(lang);
       </a>
     </div>
 
-    <!-- Language switcher + optional live counter -->
-    <div class="flex items-center gap-3 md:gap-4 md:order-3 md:justify-end md:w-[24%]">
-      {counterText && (
-        <span
-          data-counter
-          class="tabular-nums text-[#737373]"
-        >
-          {counterText}
-        </span>
-      )}
+    <!-- Language switcher -->
+    <div class="flex items-center md:order-3 md:justify-end md:w-[24%]">
       <div class="flex items-center gap-1.5 tabular-nums" aria-label="Language switcher">
         <a
           href={enHref}

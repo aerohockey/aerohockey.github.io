@@ -13,8 +13,6 @@ interface Props {
 const { project, lang } = Astro.props;
 const t = UI[lang];
 const isGallery = project.format === 'gallery';
-const frameCount = project.gallery?.length ?? 1;
-const counterText = isGallery ? `01 / ${String(frameCount).padStart(2, '0')}` : undefined;
 ---
 
 <BaseLayout
@@ -22,7 +20,6 @@ const counterText = isGallery ? `01 / ${String(frameCount).padStart(2, '0')}` : 
   description={project.subtitle[lang]}
   lang={lang}
   activeNav="work"
-  counterText={counterText}
   lockViewport={isGallery}
 >
   {isGallery ? (

@@ -9,7 +9,6 @@ interface Props {
   description?: string;
   lang: Lang;
   activeNav?: 'work' | 'about' | 'contact';
-  counterText?: string;
   lockViewport?: boolean;
 }
 
@@ -18,7 +17,6 @@ const {
   description = '',
   lang,
   activeNav,
-  counterText,
   lockViewport = false,
 } = Astro.props;
 
@@ -46,7 +44,7 @@ const ruPath = getAlternateLangPath(pathname, 'ru');
       lockViewport ? 'h-[100svh] overflow-hidden flex flex-col' : 'min-h-screen flex flex-col',
     ]}
   >
-    <Header lang={lang} activeNav={activeNav} counterText={counterText} />
+    <Header lang={lang} activeNav={activeNav} />
     <slot />
   </body>
 </html>

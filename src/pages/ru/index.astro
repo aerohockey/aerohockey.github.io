@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HorizontalWorkShowcase from '../../components/HorizontalWorkShowcase.astro';
-import { PROJECTS } from '../../data/projects';
-
-const total = String(PROJECTS.length).padStart(2, '0');
 ---
 
 <BaseLayout
@@ -11,7 +8,6 @@ const total = String(PROJECTS.length).padStart(2, '0');
   description="Арт-директор с камерой — цифровые продукты, фотография и визуальные стратегии."
   lang="ru"
   activeNav="work"
-  counterText={`01 / ${total}`}
   lockViewport={true}
 >
   <HorizontalWorkShowcase lang="ru" />

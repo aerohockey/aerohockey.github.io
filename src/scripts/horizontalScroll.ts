@@ -1,7 +1,5 @@
 export interface HorizontalTrackOptions {
   trackSelector?: string;
-  itemSelector?: string;
-  counterSelector?: string;
 }
 
 export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void {
@@ -9,48 +7,6 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
     options.trackSelector ?? '[data-horizontal-track]'
   );
   if (!track) return;
-
-  const items = Array.from(
-    track.querySelectorAll<HTMLElement>(options.itemSelector ?? '[data-track-item]')
-  );
-  const counterEl = document.querySelector<HTMLElement>(
-    options.counterSelector ?? '[data-counter]'
-  );
-
-  const totalStr = String(items.length).padStart(2, '0');
-
-  const updateIndicators = () => {
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    if (items.length === 0) return;
-
-    let activeIdx = 0;
-    if (track.scrollLeft <= 12) {
-      activeIdx = 0;
-    } else if (maxScroll > 0 && track.scrollLeft >= maxScroll - 12) {
-      activeIdx = items.length - 1;
-    } else {
-      const trackRect = track.getBoundingClientRect();
-      const anchorX = trackRect.left + trackRect.width * 0.3;
-      let bestDist = Infinity;
-
-      items.forEach((item, idx) => {
-        const rect = item.getBoundingClientRect();
-        const center = rect.left + rect.width / 2;
-        const dist = Math.abs(center - anchorX);
-        if (dist < bestDist) {
-          bestDist = dist;
-          activeIdx = idx;
-        }
-      });
-    }
-
-    const currentStr = String(activeIdx + 1).padStart(2, '0');
-    if (counterEl) counterEl.textContent = `${currentStr} / ${totalStr}`;
-  };
-
-  track.addEventListener('scroll', updateIndicators, { passive: true });
-  window.addEventListener('resize', updateIndicators, { passive: true });
-  updateIndicators();
 
   // Map vertical mouse wheel to horizontal scroll while preserving native trackpad deltaX
   track.addEventListener(
