@@ -1,0 +1,273 @@
+---
+import { Image } from 'astro:assets';
+import { GUEST_ASSETS, getNextProject, type ProjectItem } from '../data/projects';
+import { UI, getContactPath, getHomePath, getProjectPath, type Lang } from '../i18n/ui';
+
+interface Props {
+  project: ProjectItem;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const t = UI[lang];
+const nextProject = getNextProject(project.slug);
+const homeHref = getHomePath(lang);
+const contactHref = getContactPath(lang);
+const nextHref = getProjectPath(lang, nextProject.slug);
+
+const copy = {
+  en: {
+    eyebrow: '01 / Native iOS App · In Development',
+    headline: 'Guest — One photographer every week',
+    lead: 'This concept could have been built in many other ways — as a website, a newsletter, a web app, or a Telegram channel. Yet choosing a native iPhone app for Guest is intentional: here, content is inseparable from form, and the interface itself is part of the statement.',
+    leadSub: 'Negative space, typography, tactile feedback, a pure white canvas, and the absence of visual noise make the project what it was meant to be.',
+    metaRoleLabel: 'Role',
+    metaRoleValue: 'Concept, Art Direction, iOS',
+    metaPlatformLabel: 'Platform',
+    metaPlatformValue: 'iPhone · Native SwiftUI',
+    metaStatusLabel: 'Release',
+    metaStatusValue: 'In development',
+    ctaNotify: 'Follow updates / Contact',
+    s1Title: 'Idea & Philosophy',
+    s1Text: 'We live in endless feeds where photography is reduced to thumbnails competing for two seconds of attention. Guest slows the rhythm down to one name per week — giving each author space to stay with you without algorithms, likes, or infinite scrolling.',
+    s2Title: 'Form & Rhythm',
+    s2Text: 'Once a week, on Sunday at 10:00, Guest sends a quiet notification. A new photographer arrives at midnight from Saturday to Sunday — a deliberate, predictable cadence instead of constant urgency.',
+    s3Title: 'Intentional Silence',
+    s3Text: 'Only the photographer’s name on a pure white screen, minimal settings, and haptic nuance. The app stays calm so the work and curiosity around the author become the entire focus.',
+    s4Title: 'Who is the guest?',
+    s4Text: 'Curated voices across contemporary fashion, documentary, and fine-art photography — each edition highlights one photographer whose visual language deserves unhurried discovery.',
+    s5Title: 'Home Screen Widget',
+    s5Text: 'A quiet square widget keeps the current guest present on your iPhone Home Screen throughout the week — a subtle editorial reminder with zero clutter.',
+    s6Title: 'Privacy by Design',
+    s6Text: 'No accounts, no tracking pixels, no behavioral profiles, and no social noise. Guest does not collect personal analytics — it simply delivers one photographer every week.',
+  },
+  ru: {
+    eyebrow: '01 / Нативное iOS-приложение · В разработке',
+    headline: 'Guest — Один фотограф каждую неделю',
+    lead: 'Эту идею можно было бы реализовать иначе — как сайт, рассылку, веб-приложение или канал в Telegram. Но выбор нативного приложения для iPhone здесь принципиален: в Guest форма неотделима от содержания, а сам интерфейс является частью высказывания.',
+    leadSub: 'Негативное пространство, типографика, тактильный отклик, чистый белый лист и отсутствие визуального шума делают проект именно таким, каким он задумывался.',
+    metaRoleLabel: 'Роль',
+    metaRoleValue: 'Идея, арт-дирекшн, iOS',
+    metaPlatformLabel: 'Платформа',
+    metaPlatformValue: 'iPhone · Нативный SwiftUI',
+    metaStatusLabel: 'Статус',
+    metaStatusValue: 'В разработке',
+    ctaNotify: 'Связаться о запуске',
+    s1Title: 'Идея и философия',
+    s1Text: 'Бесконечные ленты превратили фотографию в поток превью, которые борются за две секунды внимания. Guest замедляет ритм до одного имени в неделю — оставляя место для спокойного знакомства без алгоритмов, лайков и скролла.',
+    s2Title: 'Форма и ритм',
+    s2Text: 'Раз в неделю, в воскресенье в 10:00, приложение присылает одно спокойное уведомление. Новый герой обновляется в полночь с субботы на воскресенье — предсказуемый ритуал вместо информационного шума.',
+    s3Title: 'Тишина интерфейса',
+    s3Text: 'На чистом белом экране — только имя фотографа, минимальные настройки и тактильный отклик. Интерфейс намеренно уходит в сторону, чтобы всё внимание оставалось на авторе.',
+    s4Title: 'Кто гость?',
+    s4Text: 'Кураторский выбор современных авторов из модной, документальной и арт-фотографии — каждую неделю один фотограф, к работам которого хочется вернуться без спешки.',
+    s5Title: 'Виджет на экране',
+    s5Text: 'Минималистичный квадратный виджет держит имя текущего фотографа на домашнем экране iPhone всю неделю — как тихое напоминание без визуальной перегрузки.',
+    s6Title: 'Приватность',
+    s6Text: 'Никакой регистрации, трекеров, профилирования и скрытой аналитики. Приложение не собирает лишние данные и решает одну простую задачу.',
+  },
+}[lang];
+---
+
+<main class="flex-1 pt-24 md:pt-28">
+  <!-- Top breadcrumb bar -->
+  <div class="px-5 md:px-10 max-w-[1440px] mx-auto">
+    <a
+      href={homeHref}
+      class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.05em] text-[#737373] hover:text-[#141414] transition-colors"
+    >
+      <span aria-hidden="true">←</span>
+      <span>{t.backToWork}</span>
+    </a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="px-5 md:px-10 pt-8 pb-16 md:pt-12 md:pb-24 max-w-[1440px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div class="lg:col-span-6 space-y-6 md:space-y-8">
+        <p class="text-[11px] uppercase tracking-[0.08em] text-[#737373]">
+          {copy.eyebrow}
+        </p>
+        <h1 class="text-[32px] sm:text-[42px] md:text-[50px] font-normal leading-[1.06] tracking-[-0.02em] text-[#141414]">
+          {copy.headline}
+        </h1>
+        <div class="space-y-4 text-[15px] md:text-[16px] leading-[1.6] text-[#3a3a3a] max-w-[54ch]">
+          <p>{copy.lead}</p>
+          <p class="text-[#737373]">{copy.leadSub}</p>
+        </div>
+
+        <div class="pt-4 border-t border-black/10 grid grid-cols-3 gap-4 max-w-[54ch] text-[12px]">
+          <div>
+            <p class="uppercase tracking-[0.05em] text-[#737373] text-[10px] mb-1">
+              {copy.metaRoleLabel}
+            </p>
+            <p class="text-[#141414]">{copy.metaRoleValue}</p>
+          </div>
+          <div>
+            <p class="uppercase tracking-[0.05em] text-[#737373] text-[10px] mb-1">
+              {copy.metaPlatformLabel}
+            </p>
+            <p class="text-[#141414]">{copy.metaPlatformValue}</p>
+          </div>
+          <div>
+            <p class="uppercase tracking-[0.05em] text-[#737373] text-[10px] mb-1">
+              {copy.metaStatusLabel}
+            </p>
+            <p class="text-[#141414]">{copy.metaStatusValue}</p>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a
+            href={contactHref}
+            class="inline-flex items-center gap-2.5 bg-[#141414] text-white px-5 py-3 text-[12px] uppercase tracking-[0.06em] hover:opacity-80 transition-opacity"
+          >
+            <span>{copy.ctaNotify}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 flex justify-center lg:justify-end">
+        <div class="w-full max-w-[440px]">
+          <Image
+            src={GUEST_ASSETS.screen}
+            alt={project.coverAlt[lang]}
+            width={1080}
+            class="w-full h-auto block"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Statement -->
+  <section class="px-5 md:px-10 py-14 md:py-24 border-t border-black/8 max-w-[1440px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12">
+      <div class="lg:col-span-4">
+        <h2 class="text-[22px] md:text-[26px] font-normal tracking-[-0.01em] text-[#141414]">
+          {copy.s1Title}
+        </h2>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-6">
+        <p class="text-[16px] md:text-[18px] leading-[1.6] text-[#262626]">
+          {copy.s1Text}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dark Contrast Product Showcase -->
+  <section class="bg-[#050505] text-white py-20 md:py-28 px-5 md:px-10">
+    <div class="max-w-[1440px] mx-auto space-y-20 md:space-y-28">
+      <!-- Lockscreen pair -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-7 order-2 lg:order-1">
+          <Image
+            src={GUEST_ASSETS.lockscreen}
+            alt="Guest weekly lockscreen notification"
+            width={1600}
+            class="w-full h-auto block"
+          />
+        </div>
+        <div class="lg:col-span-4 lg:col-start-9 order-1 lg:order-2 space-y-4">
+          <p class="text-[11px] uppercase tracking-[0.08em] text-white/45">
+            02 / Notification
+          </p>
+          <h2 class="text-[24px] md:text-[30px] font-normal tracking-[-0.01em]">
+            {copy.s2Title}
+          </h2>
+          <p class="text-[15px] leading-[1.6] text-white/75">
+            {copy.s2Text}
+          </p>
+        </div>
+      </div>
+
+      <!-- Settings sheet pair -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div class="lg:col-span-4 lg:col-start-2 space-y-4">
+          <p class="text-[11px] uppercase tracking-[0.08em] text-white/45">
+            03 / Interface
+          </p>
+          <h2 class="text-[24px] md:text-[30px] font-normal tracking-[-0.01em]">
+            {copy.s3Title}
+          </h2>
+          <p class="text-[15px] leading-[1.6] text-white/75">
+            {copy.s3Text}
+          </p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-7 flex justify-center">
+          <div class="w-full max-w-[440px]">
+            <Image
+              src={GUEST_ASSETS.settings}
+              alt="Guest Sunday 10:00 notification settings"
+              width={1080}
+              class="w-full h-auto block"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Widget & Privacy Section -->
+  <section class="px-5 md:px-10 py-20 md:py-28 max-w-[1440px] mx-auto space-y-20 md:space-y-28">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div class="lg:col-span-5 space-y-4">
+        <p class="text-[11px] uppercase tracking-[0.08em] text-[#737373]">
+          04 / Curation
+        </p>
+        <h2 class="text-[24px] md:text-[30px] font-normal tracking-[-0.01em] text-[#141414]">
+          {copy.s4Title}
+        </h2>
+        <p class="text-[15px] md:text-[16px] leading-[1.6] text-[#3a3a3a]">
+          {copy.s4Text}
+        </p>
+      </div>
+      <div class="lg:col-span-7">
+        <Image
+          src={GUEST_ASSETS.widget}
+          alt="Guest iOS Home Screen widget"
+          width={1600}
+          class="w-full h-auto block"
+        />
+      </div>
+    </div>
+
+    <div class="pt-14 border-t border-black/10 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+      <div class="space-y-3">
+        <h3 class="text-[20px] md:text-[22px] font-normal text-[#141414]">
+          {copy.s5Title}
+        </h3>
+        <p class="text-[15px] leading-[1.6] text-[#525252] max-w-[48ch]">
+          {copy.s5Text}
+        </p>
+      </div>
+      <div class="space-y-3">
+        <h3 class="text-[20px] md:text-[22px] font-normal text-[#141414]">
+          {copy.s6Title}
+        </h3>
+        <p class="text-[15px] leading-[1.6] text-[#525252] max-w-[48ch]">
+          {copy.s6Text}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next project navigation -->
+  <section class="px-5 md:px-10 py-12 border-t border-black/10 max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-4">
+    <a
+      href={homeHref}
+      class="text-[12px] uppercase tracking-[0.05em] text-[#737373] hover:text-[#141414] transition-colors"
+    >
+      ← {t.backToWork}
+    </a>
+    <a
+      href={nextHref}
+      class="text-[12px] uppercase tracking-[0.05em] text-[#141414] hover:opacity-60 transition-opacity"
+    >
+      {t.nextProject}: {nextProject.title[lang]} →
+    </a>
+  </section>
+</main>

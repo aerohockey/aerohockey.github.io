@@ -1,22 +1,19 @@
 ---
-import '@fontsource-variable/inter';
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HorizontalWorkShowcase from '../components/HorizontalWorkShowcase.astro';
+import { PROJECTS } from '../data/projects';
+
+const total = String(PROJECTS.length).padStart(2, '0');
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Under construction</title>
-	</head>
-	<body class="min-h-screen bg-white text-neutral-950 font-sans antialiased flex items-center justify-center px-6">
-		<main>
-			<h1 class="text-base sm:text-lg font-medium tracking-tight">
-				Under construction
-			</h1>
-		</main>
-	</body>
-</html>
+<BaseLayout
+  title="Evgeny Ivanov — Art Director with a Camera"
+  description="Art director with a camera — digital products, photography & visual direction."
+  lang="en"
+  activeNav="work"
+  counterText={`01 / ${total}`}
+  lockViewport={true}
+  showFooterProgress={true}
+>
+  <HorizontalWorkShowcase lang="en" />
+</BaseLayout>

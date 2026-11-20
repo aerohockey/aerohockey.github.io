@@ -1,0 +1,120 @@
+---
+import {
+  UI,
+  getAboutPath,
+  getAlternateLangPath,
+  getContactPath,
+  getHomePath,
+  type Lang,
+} from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  activeNav?: 'work' | 'about' | 'contact';
+  counterText?: string;
+}
+
+const { lang, activeNav, counterText } = Astro.props;
+const t = UI[lang];
+const pathname = Astro.url.pathname;
+const enHref = getAlternateLangPath(pathname, 'en');
+const ruHref = getAlternateLangPath(pathname, 'ru');
+const homeHref = getHomePath(lang);
+const aboutHref = getAboutPath(lang);
+const contactHref = getContactPath(lang);
+---
+
+<header
+  class="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm px-5 md:px-10 py-3.5 md:py-4"
+>
+  <div class="flex flex-wrap items-center justify-between gap-y-2 text-[12px] leading-[1.15] tracking-[0.05em] uppercase">
+    <!-- Brand -->
+    <div class="flex items-center md:w-[24%]">
+      <a
+        href={homeHref}
+        class="inline-block text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
+      >
+        {t.brand}
+      </a>
+    </div>
+
+    <!-- Language switcher + optional live counter (mobile top-right, desktop right) -->
+    <div class="flex items-center gap-4 md:order-3 md:justify-end md:w-[24%]">
+      {counterText && (
+        <span
+          data-counter
+          class="hidden md:inline-block tabular-nums text-[#737373]"
+        >
+          {counterText}
+        </span>
+      )}
+      <div class="flex items-center gap-1.5 tabular-nums" aria-label="Language switcher">
+        <a
+          href={enHref}
+          hreflang="en"
+          class:list={[
+            'px-1.5 py-0.5 transition-colors duration-150',
+            lang === 'en'
+              ? 'bg-[#141414] text-white'
+              : 'text-[#737373] hover:text-[#141414]',
+          ]}
+        >
+          EN
+        </a>
+        <span class="text-[#141414]/25">/</span>
+        <a
+          href={ruHref}
+          hreflang="ru"
+          class:list={[
+            'px-1.5 py-0.5 transition-colors duration-150',
+            lang === 'ru'
+              ? 'bg-[#141414] text-white'
+              : 'text-[#737373] hover:text-[#141414]',
+          ]}
+        >
+          RU
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+      aria-label="Main navigation"
+      class="w-full md:w-auto md:flex-1 md:order-2 flex items-center gap-5 md:gap-7"
+    >
+      <a
+        href={homeHref}
+        class:list={[
+          'px-1.5 py-0.5 -mx-1.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'work'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.work}
+      </a>
+      <a
+        href={aboutHref}
+        class:list={[
+          'px-1.5 py-0.5 -mx-1.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'about'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.about}
+      </a>
+      <a
+        href={contactHref}
+        class:list={[
+          'px-1.5 py-0.5 -mx-1.5 transition-colors duration-150 whitespace-nowrap',
+          activeNav === 'contact'
+            ? 'bg-[#141414] text-white'
+            : 'text-[#141414] hover:opacity-55',
+        ]}
+      >
+        {t.contact}
+      </a>
+    </nav>
+  </div>
+</header>

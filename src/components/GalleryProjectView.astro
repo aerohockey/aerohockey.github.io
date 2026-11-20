@@ -1,0 +1,112 @@
+---
+import { Image } from 'astro:assets';
+import { getNextProject, type ProjectItem } from '../data/projects';
+import { UI, getHomePath, getProjectPath, type Lang } from '../i18n/ui';
+
+interface Props {
+  project: ProjectItem;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const t = UI[lang];
+const frames = project.gallery ?? [
+  {
+    image: project.cover,
+    alt: project.coverAlt,
+    orientation: 'portrait' as const,
+  },
+];
+const nextProject = getNextProject(project.slug);
+const homeHref = getHomePath(lang);
+const nextHref = getProjectPath(lang, nextProject.slug);
+---
+
+<main class="flex-1 relative overflow-hidden pt-20 md:pt-14 pb-12">
+  <div
+    data-horizontal-track
+    class="no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden flex items-center gap-8 sm:gap-12 md:gap-16 lg:gap-20 px-5 sm:px-8 md:px-14 lg:px-20 pr-16 md:pr-24 cursor-grab"
+  >
+    <!-- Opening editorial info slide -->
+    <section
+      class="shrink-0 w-[78vw] sm:w-[54vw] md:w-[340px] lg:w-[380px] flex flex-col justify-between space-y-6 pr-2 md:pr-6"
+    >
+      <div class="space-y-4">
+        <a
+          href={homeHref}
+          class="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.06em] text-[#737373] hover:text-[#141414] transition-colors"
+        >
+          <span aria-hidden="true">←</span>
+          <span>{t.backToWork}</span>
+        </a>
+
+        <p class="pt-2 text-[11px] uppercase tracking-[0.06em] text-[#737373] tabular-nums">
+          {project.category[lang]} · {project.year}
+        </p>
+
+        <h1 class="text-[26px] sm:text-[32px] font-normal leading-[1.12] tracking-[-0.015em] text-[#141414]">
+          {project.title[lang]}
+        </h1>
+
+        {project.intro && (
+          <p class="text-[14px] sm:text-[15px] leading-[1.6] text-[#525252]">
+            {project.intro[lang]}
+          </p>
+        )}
+      </div>
+
+      <p class="text-[11px] uppercase tracking-[0.06em] text-[#737373]">
+        {frames.length} {lang === 'ru' ? 'кадра' : 'frames'} · {t.scrollHint}
+      </p>
+    </section>
+
+    <!-- Horizontal gallery photographs -->
+    {frames.map((frame, index) => (
+      <figure
+        data-track-item
+        class="shrink-0 flex flex-col items-start justify-center"
+      >
+        <div
+          class:list={[
+            'overflow-hidden bg-[#f5f5f3]',
+            frame.orientation === 'landscape'
+              ? 'h-[42svh] sm:h-[52svh] md:h-[60svh] lg:h-[64svh] aspect-[3/2] max-w-[85vw]'
+              : 'h-[54svh] sm:h-[62svh] md:h-[68svh] lg:h-[72svh] aspect-[2/3] max-w-[78vw]',
+          ]}
+        >
+          <Image
+            src={frame.image}
+            alt={frame.alt[lang]}
+            width={1400}
+            class="w-full h-full object-cover pointer-events-none select-none"
+            loading={index < 2 ? 'eager' : 'lazy'}
+            draggable={false}
+          />
+        </div>
+        <figcaption class="mt-2.5 text-[11px] tabular-nums text-[#737373]">
+          {String(index + 1).padStart(2, '0')} / {String(frames.length).padStart(2, '0')}
+        </figcaption>
+      </figure>
+    ))}
+
+    <!-- End card to next project -->
+    <section
+      class="shrink-0 w-[64vw] sm:w-[40vw] md:w-[280px] flex flex-col items-start justify-center space-y-3 pl-4 md:pl-8"
+    >
+      <span class="text-[11px] uppercase tracking-[0.06em] text-[#737373]">
+        {t.nextProject}
+      </span>
+      <a
+        href={nextHref}
+        class="text-[22px] sm:text-[26px] font-normal leading-[1.2] text-[#141414] hover:opacity-55 transition-opacity"
+      >
+        {nextProject.title[lang]} →
+      </a>
+    </section>
+  </div>
+</main>
+
+<script>
+  import { initHorizontalTrack } from '../scripts/horizontalScroll';
+  initHorizontalTrack();
+</script>
