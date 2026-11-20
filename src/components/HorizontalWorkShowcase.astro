@@ -70,13 +70,13 @@ const ASPECT_CLASSES: Record<'4/5' | '3/2' | '4/4' | '3/4', string> = {
 
           <div class="mt-3 flex items-baseline justify-between gap-3 text-[12px] leading-[1.35]">
             <a href={href} data-project-link class="min-w-0 flex-1 block focus:outline-none">
-              <div class="flex items-baseline gap-2.5">
-                <span class="tabular-nums text-[#737373] shrink-0">{num}</span>
+              <div class="flex items-baseline md:gap-2.5">
+                <span class="hidden md:inline tabular-nums text-[#737373] shrink-0">{num}</span>
                 <h2 class="text-[#141414] font-normal underline-offset-4 decoration-1">
                   {project.title[lang]}
                 </h2>
               </div>
-              <p class="mt-0.5 pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
+              <p class="mt-0.5 md:pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
                 {project.subtitle[lang]}
               </p>
             </a>
