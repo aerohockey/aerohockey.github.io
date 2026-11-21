@@ -32,8 +32,8 @@ const content = {
 ---
 
 <main class="flex-1 min-h-0 overflow-y-auto flex flex-col pt-14 md:pt-16 pb-[calc(0.875rem+env(safe-area-inset-bottom))] md:pb-10 px-3.5 sm:px-6 md:px-10">
-  <div class="about-rail mt-auto w-full flex flex-col md:flex-row md:items-start gap-6 lg:gap-8">
-    <section class="w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col space-y-6 md:pr-6">
+  <div class="about-rail mt-auto w-full flex flex-col md:flex-row md:items-start gap-5 md:gap-6 lg:gap-8">
+    <section class="w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col space-y-4 md:space-y-6 md:pr-6">
       <div class="space-y-2.5">
         <h1 class="text-[16px] md:text-[18px] font-medium leading-[1.25] tracking-[-0.01em] text-[#141414]">
           {content.headline}
@@ -68,15 +68,25 @@ const content = {
 </main>
 
 <style>
+  .about-rail {
+    --rail-h: min(calc((100vw - 48px) * 4 / 3), var(--rail-vh));
+    min-height: calc(var(--rail-h) + var(--caption-h));
+  }
+
   .about-frame {
     width: 100%;
     max-width: 500px;
   }
 
+  @media (min-width: 640px) {
+    .about-rail {
+      --rail-h: min(calc((100vw - 72px) * 4 / 3), var(--rail-vh));
+    }
+  }
+
   @media (min-width: 768px) {
     .about-rail {
       --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
-      min-height: var(--rail-h);
     }
 
     .about-frame {

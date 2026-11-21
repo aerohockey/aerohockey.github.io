@@ -21,6 +21,13 @@
 :root {
   --rail-vh: 68vh;
   --rail-svh: 66vh;
+  --caption-h: 48.5px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --caption-h: 51px;
+  }
 }
 
 @supports (height: 1dvh) {
