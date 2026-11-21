@@ -23,10 +23,10 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
     href={enHref}
     hreflang="en"
     class:list={[
-      'px-1 md:px-1.5 py-0.5 transition-colors duration-150',
+      'px-1 md:px-1.5 py-0.5 transition duration-150',
       lang === 'en'
         ? 'bg-[#141414] text-white'
-        : 'text-[#737373] hover:text-[#141414]',
+        : 'text-[#141414] hover:opacity-55',
     ]}
   >
     En
@@ -35,10 +35,10 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
     href={ruHref}
     hreflang="ru"
     class:list={[
-      'px-1 md:px-1.5 py-0.5 transition-colors duration-150',
+      'px-1 md:px-1.5 py-0.5 transition duration-150',
       lang === 'ru'
         ? 'bg-[#141414] text-white'
-        : 'text-[#737373] hover:text-[#141414]',
+        : 'text-[#141414] hover:opacity-55',
     ]}
   >
     Ru
