@@ -39,7 +39,7 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
         return (
           <article
             style={`--r: ${COVER_ASPECT_RATIOS[project.coverAspect]};`}
-            class="showcase-card shrink-0 snap-start md:snap-align-none flex flex-col"
+            class="showcase-card shrink-0 snap-start snap-always md:snap-align-none flex flex-col"
           >
             <a href={href} class="group flex flex-col w-full focus:outline-none">
               <div class="mb-3 text-[14px] md:text-[15px] leading-[1.3]">
