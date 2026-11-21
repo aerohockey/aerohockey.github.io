@@ -43,7 +43,7 @@ const frames = project.gallery ?? [
       {frames.map((frame, index) => {
         const ratio = Number((frame.image.width / frame.image.height).toFixed(4));
         return (
-          <figure class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-auto flex flex-col items-start">
+          <figure class="shrink-0 snap-start md:snap-align-none flex flex-col items-start">
             <div
               style={`--r: ${ratio}; aspect-ratio: ${frame.image.width} / ${frame.image.height};`}
               class="gallery-frame overflow-hidden bg-[#f5f5f3]"
@@ -71,12 +71,16 @@ const frames = project.gallery ?? [
   }
 
   .gallery-frame {
-    width: min(100%, calc(var(--rail-h) * var(--r)));
+    width: min(calc(100vw - 48px), calc(var(--rail-h) * var(--r)));
   }
 
   @media (min-width: 640px) {
     .gallery-rail {
       --rail-h: min(calc((100vw - 72px) * 5 / 4), 70dvh);
+    }
+
+    .gallery-frame {
+      width: min(calc(100vw - 72px), calc(var(--rail-h) * var(--r)));
     }
   }
 
