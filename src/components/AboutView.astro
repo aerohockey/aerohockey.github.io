@@ -53,11 +53,11 @@ const content = {
     </section>
 
     <figure class="shrink-0 flex flex-col items-start">
-      <div class="about-frame aspect-[4/5] overflow-hidden bg-[#f5f5f3]">
+      <div class="about-frame aspect-[3/2] overflow-hidden bg-[#f5f5f3]">
         <Image
           src={aboutPortrait}
           alt={lang === 'ru' ? 'Евгений Иванов' : 'Evgeny Ivanov'}
-          width={1100}
+          width={1400}
           class="w-full h-full object-cover pointer-events-none select-none"
           loading="eager"
           draggable={false}
@@ -70,7 +70,7 @@ const content = {
 <style>
   .about-frame {
     width: 100%;
-    max-width: 420px;
+    max-width: 500px;
   }
 
   @media (min-width: 768px) {
@@ -82,7 +82,7 @@ const content = {
     .about-frame {
       max-width: none;
       width: 40vw;
-      width: min(40vw, calc(var(--rail-h) * 0.8));
+      width: min(40vw, calc(var(--rail-h) * 1.5));
     }
   }
 
@@ -93,7 +93,7 @@ const content = {
 
     .about-frame {
       width: min(33vw, 500px);
-      width: min(33vw, 500px, calc(var(--rail-h) * 0.8));
+      width: min(33vw, 500px, calc(var(--rail-h) * 1.5));
     }
   }
 </style>
