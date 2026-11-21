@@ -10,24 +10,21 @@ interface Props {
 const { lang } = Astro.props;
 
 const CARD_ASPECT_WIDTH_CLASSES: Record<CoverAspect, string> = {
-  '2/3':
-    'w-[min(calc(100vw-48px),calc(76dvh*2/3))] sm:w-[min(calc(100vw-72px),calc(76dvh*2/3))] md:w-[min(40vw,calc(66svh*2/3))] lg:w-[min(33vw,500px,calc(66svh*2/3))]',
   '3/4':
-    'w-[min(calc(100vw-48px),calc(76dvh*3/4))] sm:w-[min(calc(100vw-72px),calc(76dvh*3/4))] md:w-[min(40vw,calc(66svh*3/4))] lg:w-[min(33vw,500px,calc(66svh*3/4))]',
+    'w-[min(calc(100vw-48px),calc(74dvh*3/4))] sm:w-[min(calc(100vw-72px),calc(74dvh*3/4))] md:w-[min(40vw,calc(66svh*3/4))] lg:w-[min(33vw,500px,calc(66svh*3/4))]',
   '4/5':
-    'w-[min(calc(100vw-48px),calc(76dvh*4/5))] sm:w-[min(calc(100vw-72px),calc(76dvh*4/5))] md:w-[min(40vw,calc(66svh*4/5))] lg:w-[min(33vw,500px,calc(66svh*4/5))]',
+    'w-[min(calc(100vw-48px),calc(74dvh*4/5))] sm:w-[min(calc(100vw-72px),calc(74dvh*4/5))] md:w-[min(40vw,calc(66svh*4/5))] lg:w-[min(33vw,500px,calc(66svh*4/5))]',
   '1/1':
-    'w-[min(calc(100vw-48px),76dvh)] sm:w-[min(calc(100vw-72px),76dvh)] md:w-[min(40vw,66svh)] lg:w-[min(33vw,500px,66svh)]',
+    'w-[min(calc(100vw-48px),74dvh)] sm:w-[min(calc(100vw-72px),74dvh)] md:w-[min(40vw,66svh)] lg:w-[min(33vw,500px,66svh)]',
   '5/4':
-    'w-[min(calc(100vw-48px),calc(76dvh*5/4))] sm:w-[min(calc(100vw-72px),calc(76dvh*5/4))] md:w-[min(40vw,calc(66svh*5/4))] lg:w-[min(33vw,500px,calc(66svh*5/4))]',
+    'w-[min(calc(100vw-48px),calc(74dvh*5/4))] sm:w-[min(calc(100vw-72px),calc(74dvh*5/4))] md:w-[min(40vw,calc(66svh*5/4))] lg:w-[min(33vw,500px,calc(66svh*5/4))]',
   '4/3':
-    'w-[min(calc(100vw-48px),calc(76dvh*4/3))] sm:w-[min(calc(100vw-72px),calc(76dvh*4/3))] md:w-[min(40vw,calc(66svh*4/3))] lg:w-[min(33vw,500px,calc(66svh*4/3))]',
+    'w-[min(calc(100vw-48px),calc(74dvh*4/3))] sm:w-[min(calc(100vw-72px),calc(74dvh*4/3))] md:w-[min(40vw,calc(66svh*4/3))] lg:w-[min(33vw,500px,calc(66svh*4/3))]',
   '3/2':
-    'w-[min(calc(100vw-48px),calc(76dvh*3/2))] sm:w-[min(calc(100vw-72px),calc(76dvh*3/2))] md:w-[min(40vw,calc(66svh*3/2))] lg:w-[min(33vw,500px,calc(66svh*3/2))]',
+    'w-[min(calc(100vw-48px),calc(74dvh*3/2))] sm:w-[min(calc(100vw-72px),calc(74dvh*3/2))] md:w-[min(40vw,calc(66svh*3/2))] lg:w-[min(33vw,500px,calc(66svh*3/2))]',
 };
 
 const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
-  '2/3': 'aspect-[2/3]',
   '3/4': 'aspect-[3/4]',
   '4/5': 'aspect-[4/5]',
   '1/1': 'aspect-square',
@@ -92,13 +89,13 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
 
 <style>
   .showcase-rail {
-    --rail-h: min(calc((100vw - 48px) * 3 / 2), 76dvh);
+    --rail-h: min(calc((100vw - 48px) * 4 / 3), 74dvh);
     min-height: calc(var(--rail-h) + 45px);
   }
 
   @media (min-width: 640px) {
     .showcase-rail {
-      --rail-h: min(calc((100vw - 72px) * 3 / 2), 76dvh);
+      --rail-h: min(calc((100vw - 72px) * 4 / 3), 74dvh);
     }
   }
 

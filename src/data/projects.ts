@@ -18,7 +18,7 @@ import contaxCover from '../assets/draft/contax-cover.jpg';
 import contax2 from '../assets/draft/contax-2.jpg';
 
 export type ProjectFormat = 'landing' | 'gallery';
-export type CoverAspect = '2/3' | '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2';
+export type CoverAspect = '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2';
 
 export interface GalleryFrame {
   image: ImageMetadata;
