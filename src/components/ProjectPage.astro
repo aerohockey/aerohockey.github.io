@@ -21,6 +21,7 @@ const isGallery = project.format === 'gallery';
   lang={lang}
   activeNav="work"
   lockViewport={isGallery}
+  autoHideHeader={!isGallery}
 >
   {isGallery ? (
     <GalleryProjectView project={project} lang={lang} />
