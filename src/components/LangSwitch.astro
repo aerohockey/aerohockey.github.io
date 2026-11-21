@@ -14,7 +14,7 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
 
 <div
   class:list={[
-    'flex items-center gap-0.5 md:gap-1 text-[12px] md:text-[14px] leading-[1.25] tracking-normal tabular-nums',
+    'flex items-center gap-2 md:gap-3 text-[12px] md:text-[14px] leading-[1.25] tracking-normal tabular-nums',
     className,
   ]}
   aria-label="Language switcher"
@@ -22,11 +22,10 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
   <a
     href={enHref}
     hreflang="en"
+    aria-current={lang === 'en' ? 'true' : undefined}
     class:list={[
-      'px-1 md:px-1.5 py-0.5 transition duration-150',
-      lang === 'en'
-        ? 'bg-[#141414] text-white'
-        : 'text-[#141414] hover:opacity-55',
+      'py-0.5 text-[#141414] transition-opacity duration-150',
+      lang === 'en' ? 'font-semibold' : 'font-normal hover:opacity-55',
     ]}
   >
     En
@@ -34,11 +33,10 @@ const ruHref = getAlternateLangPath(pathname, 'ru');
   <a
     href={ruHref}
     hreflang="ru"
+    aria-current={lang === 'ru' ? 'true' : undefined}
     class:list={[
-      'px-1 md:px-1.5 py-0.5 transition duration-150',
-      lang === 'ru'
-        ? 'bg-[#141414] text-white'
-        : 'text-[#141414] hover:opacity-55',
+      'py-0.5 text-[#141414] transition-opacity duration-150',
+      lang === 'ru' ? 'font-semibold' : 'font-normal hover:opacity-55',
     ]}
   >
     Ru

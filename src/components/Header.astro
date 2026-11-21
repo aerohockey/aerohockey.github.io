@@ -37,37 +37,34 @@ const contactHref = getContactPath(lang);
     <!-- Navigation: centered evenly between Brand & LangSwitch on mobile; offset column on desktop -->
     <nav
       aria-label="Main navigation"
-      class="flex flex-wrap items-center justify-center md:justify-start gap-x-0.5 sm:gap-x-1 md:gap-x-1.5 gap-y-1 md:flex-1 min-w-0"
+      class="flex flex-wrap items-center justify-center md:justify-start gap-x-2.5 sm:gap-x-3.5 md:gap-x-5 gap-y-1 md:flex-1 min-w-0"
     >
       <a
         href={homeHref}
+        aria-current={activeNav === 'work' ? 'page' : undefined}
         class:list={[
-          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-          activeNav === 'work'
-            ? 'bg-[#141414] text-white'
-            : 'text-[#141414] hover:opacity-55',
+          'py-0.5 text-[#141414] transition-opacity duration-150 whitespace-nowrap',
+          activeNav === 'work' ? 'font-semibold' : 'font-normal hover:opacity-55',
         ]}
       >
         {t.work}
       </a>
       <a
         href={aboutHref}
+        aria-current={activeNav === 'about' ? 'page' : undefined}
         class:list={[
-          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-          activeNav === 'about'
-            ? 'bg-[#141414] text-white'
-            : 'text-[#141414] hover:opacity-55',
+          'py-0.5 text-[#141414] transition-opacity duration-150 whitespace-nowrap',
+          activeNav === 'about' ? 'font-semibold' : 'font-normal hover:opacity-55',
         ]}
       >
         {t.about}
       </a>
       <a
         href={contactHref}
+        aria-current={activeNav === 'contact' ? 'page' : undefined}
         class:list={[
-          'px-1 md:px-1.5 py-0.5 transition-colors duration-150 whitespace-nowrap',
-          activeNav === 'contact'
-            ? 'bg-[#141414] text-white'
-            : 'text-[#141414] hover:opacity-55',
+          'py-0.5 text-[#141414] transition-opacity duration-150 whitespace-nowrap',
+          activeNav === 'contact' ? 'font-semibold' : 'font-normal hover:opacity-55',
         ]}
       >
         {t.contact}
