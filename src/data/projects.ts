@@ -20,6 +20,7 @@ import contax2 from '../assets/draft/contax-2.jpg';
 export type ProjectFormat = 'landing' | 'gallery';
 export type CardSize = 'hero' | 'compact' | 'wide' | 'tall';
 export type CardOffset = 'center' | 'up' | 'down';
+export type CoverAspect = '2/3' | '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2';
 
 export interface GalleryFrame {
   image: ImageMetadata;
@@ -38,7 +39,7 @@ export interface ProjectItem {
   coverAlt: Record<Lang, string>;
   cardSize: CardSize;
   cardOffset: CardOffset;
-  coverAspect: '4/5' | '3/2' | '4/4' | '3/4';
+  coverAspect: CoverAspect;
   intro?: Record<Lang, string>;
   gallery?: GalleryFrame[];
 }

@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { PROJECTS, type CardSize } from '../data/projects';
+import { PROJECTS, type CardSize, type CoverAspect } from '../data/projects';
 import { getProjectPath, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -16,66 +16,71 @@ const SIZE_CLASSES: Record<CardSize, string> = {
   wide: 'w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[40vw] lg:w-[35vw] md:max-w-[560px]',
 };
 
-const ASPECT_CLASSES: Record<'4/5' | '3/2' | '4/4' | '3/4', string> = {
-  '4/5': 'aspect-[4/5]',
-  '3/2': 'aspect-[3/2]',
-  '4/4': 'aspect-square',
+const ASPECT_CLASSES: Record<CoverAspect, string> = {
+  '2/3': 'aspect-[2/3]',
   '3/4': 'aspect-[3/4]',
+  '4/5': 'aspect-[4/5]',
+  '1/1': 'aspect-square',
+  '5/4': 'aspect-[5/4]',
+  '4/3': 'aspect-[4/3]',
+  '3/2': 'aspect-[3/2]',
 };
 ---
 
 <main class="flex-1 min-h-0 relative overflow-hidden pt-14 md:pt-16 pb-[calc(2rem+env(safe-area-inset-bottom))] md:pb-10 lg:pb-12">
   <div
     data-horizontal-track
-    class="no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-3.5 sm:scroll-pl-6 md:scroll-pl-0 flex items-end gap-3.5 sm:gap-5 md:gap-24 lg:gap-28 px-3.5 sm:px-6 md:px-14 lg:px-20 md:pr-28 cursor-grab"
+    class="no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-3.5 sm:scroll-pl-6 md:scroll-pl-0 flex items-end cursor-grab"
   >
-    {PROJECTS.map((project, index) => {
-      const num = String(index + 1).padStart(2, '0');
-      const href = getProjectPath(lang, project.slug);
-      return (
-        <article
-          class:list={[
-            'shrink-0 snap-start md:snap-align-none flex flex-col',
-            SIZE_CLASSES[project.cardSize],
-          ]}
-        >
-          <a href={href} class="group flex flex-col-reverse md:flex-col focus:outline-none">
-            <div
-              class:list={[
-                'w-full overflow-hidden bg-[#f5f5f3] max-h-[68dvh] md:max-h-[58svh]',
-                ASPECT_CLASSES[project.coverAspect],
-              ]}
-            >
-              <Image
-                src={project.cover}
-                alt={project.coverAlt[lang]}
-                width={1400}
-                class="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-80 pointer-events-none select-none"
-                loading={index < 3 ? 'eager' : 'lazy'}
-                draggable={false}
-              />
-            </div>
-
-            <div class="mb-3 md:mb-0 md:mt-3 flex items-baseline justify-between gap-3 text-[12px] leading-[1.35] md:min-h-[52px]">
-              <div class="min-w-0">
-                <div class="flex items-baseline md:gap-2.5">
-                  <span class="hidden md:inline tabular-nums text-[#737373] shrink-0">{num}</span>
-                  <h2 class="text-[#141414] font-normal group-hover:underline underline-offset-4 decoration-1">
-                    {project.title[lang]}
-                  </h2>
-                </div>
-                <p class="mt-0.5 md:pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
-                  {project.subtitle[lang]}
-                </p>
+    <div class="shrink-0 flex items-start md:items-end gap-3.5 sm:gap-5 md:gap-24 lg:gap-28 px-3.5 sm:px-6 md:px-14 lg:px-20 md:pr-28">
+      {PROJECTS.map((project, index) => {
+        const num = String(index + 1).padStart(2, '0');
+        const href = getProjectPath(lang, project.slug);
+        return (
+          <article
+            class:list={[
+              'shrink-0 snap-start md:snap-align-none flex flex-col',
+              SIZE_CLASSES[project.cardSize],
+            ]}
+          >
+            <a href={href} class="group flex flex-col-reverse md:flex-col focus:outline-none">
+              <div
+                class:list={[
+                  'w-full overflow-hidden bg-[#f5f5f3] max-h-[68dvh] md:max-h-[58svh]',
+                  ASPECT_CLASSES[project.coverAspect],
+                ]}
+              >
+                <Image
+                  src={project.cover}
+                  alt={project.coverAlt[lang]}
+                  width={1400}
+                  class="w-full h-full object-cover transition-opacity duration-500 ease-out group-hover:opacity-80 pointer-events-none select-none"
+                  loading={index < 3 ? 'eager' : 'lazy'}
+                  draggable={false}
+                />
               </div>
-              <span class="hidden md:inline shrink-0 text-[11px] uppercase tracking-[0.04em] text-[#737373] tabular-nums">
-                {project.year}
-              </span>
-            </div>
-          </a>
-        </article>
-      );
-    })}
+
+              <div class="mb-3 md:mb-0 md:mt-3 flex items-baseline justify-between gap-3 text-[12px] leading-[1.35] md:min-h-[52px]">
+                <div class="min-w-0">
+                  <div class="flex items-baseline md:gap-2.5">
+                    <span class="hidden md:inline tabular-nums text-[#737373] shrink-0">{num}</span>
+                    <h2 class="text-[#141414] font-normal group-hover:underline underline-offset-4 decoration-1">
+                      {project.title[lang]}
+                    </h2>
+                  </div>
+                  <p class="mt-0.5 md:pl-[calc(2ch+0.625rem)] text-[11px] tracking-[0.02em] text-[#737373]">
+                    {project.subtitle[lang]}
+                  </p>
+                </div>
+                <span class="hidden md:inline shrink-0 text-[11px] uppercase tracking-[0.04em] text-[#737373] tabular-nums">
+                  {project.year}
+                </span>
+              </div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
   </div>
 </main>
 
