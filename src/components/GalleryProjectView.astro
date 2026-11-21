@@ -27,10 +27,10 @@ const nextHref = getProjectPath(lang, nextProject.slug);
     data-horizontal-track
     class="no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-3.5 sm:scroll-pl-6 md:scroll-pl-0 flex items-end cursor-grab"
   >
-    <div class="shrink-0 flex items-start gap-2.5 sm:gap-4 md:gap-6 lg:gap-8 px-3.5 sm:px-6 md:px-10">
+    <div class="gallery-rail shrink-0 flex items-start gap-3.5 sm:gap-5 md:gap-6 lg:gap-8 px-3.5 sm:px-6 md:px-10">
       <!-- Opening editorial info slide -->
       <section
-        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-38px)] sm:w-[calc(100vw-60px)] md:w-[320px] lg:w-[360px] flex flex-col pr-4 md:pr-6"
+        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[320px] lg:w-[360px] flex flex-col pr-4 md:pr-6"
       >
         <a
           href={homeHref}
@@ -61,15 +61,15 @@ const nextHref = getProjectPath(lang, nextProject.slug);
       {frames.map((frame, index) => {
         const ratio = Number((frame.image.width / frame.image.height).toFixed(4));
         return (
-          <figure class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-38px)] sm:w-[calc(100vw-60px)] md:w-auto flex flex-col items-start">
+          <figure class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-auto flex flex-col items-start">
             <div
               style={`--r: ${ratio}; aspect-ratio: ${frame.image.width} / ${frame.image.height};`}
-              class="overflow-hidden bg-[#f5f5f3] w-[min(100%,calc(78dvh*var(--r)))] md:w-[min(82vw,calc(74svh*var(--r)))] lg:w-[min(82vw,calc(78svh*var(--r)))]"
+              class="gallery-frame overflow-hidden bg-[#f5f5f3]"
             >
               <Image
                 src={frame.image}
                 alt={frame.alt[lang]}
-                width={1800}
+                width={1400}
                 class="w-full h-full object-cover pointer-events-none select-none"
                 loading={index < 2 ? 'eager' : 'lazy'}
                 draggable={false}
@@ -81,7 +81,7 @@ const nextHref = getProjectPath(lang, nextProject.slug);
 
       <!-- End card to next project -->
       <section
-        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-38px)] sm:w-[calc(100vw-60px)] md:w-[260px] flex flex-col items-start space-y-2.5 pl-1 md:pl-4"
+        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[260px] flex flex-col items-start space-y-2.5 pl-1 md:pl-4"
       >
         <span class="text-[11px] leading-[1.35] text-[#737373]">
           {t.nextProject}
@@ -96,6 +96,43 @@ const nextHref = getProjectPath(lang, nextProject.slug);
     </div>
   </div>
 </main>
+
+<style>
+  .gallery-rail {
+    --rail-h: min(calc((100vw - 48px) * 5 / 4), 70dvh);
+    min-height: var(--rail-h);
+  }
+
+  .gallery-frame {
+    width: min(100%, calc(var(--rail-h) * var(--r)));
+  }
+
+  @media (min-width: 640px) {
+    .gallery-rail {
+      --rail-h: min(calc((100vw - 72px) * 5 / 4), 70dvh);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .gallery-rail {
+      --rail-h: min(calc(40vw * 5 / 4), 66svh);
+    }
+
+    .gallery-frame {
+      width: min(40vw, calc(var(--rail-h) * var(--r)));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-rail {
+      --rail-h: min(calc(33vw * 5 / 4), 625px, 66svh);
+    }
+
+    .gallery-frame {
+      width: min(33vw, 500px, calc(var(--rail-h) * var(--r)));
+    }
+  }
+</style>
 
 <script>
   import { initHorizontalTrack } from '../scripts/horizontalScroll';
