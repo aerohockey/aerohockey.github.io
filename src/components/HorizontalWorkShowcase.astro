@@ -50,11 +50,11 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
             ]}
           >
             <a href={href} class="group flex flex-col w-full focus:outline-none">
-              <div class="mb-3 text-[12px] leading-[1.35]">
+              <div class="mb-3 text-[14px] md:text-[15px] leading-[1.3]">
                 <h2 class="text-[#141414] font-normal">
                   {project.title[lang]}
                 </h2>
-                <p class="mt-0.5 text-[11px] tracking-[0.02em] text-[#737373]">
+                <p class="mt-0.5 text-[12px] md:text-[13px] leading-[1.35] tracking-[0.01em] text-[#737373]">
                   {project.subtitle[lang]}
                 </p>
               </div>
@@ -90,7 +90,7 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
 <style>
   .showcase-rail {
     --rail-h: min(calc((100vw - 48px) * 4 / 3), 74dvh);
-    min-height: calc(var(--rail-h) + 45px);
+    min-height: calc(var(--rail-h) + 48.5px);
   }
 
   @media (min-width: 640px) {
