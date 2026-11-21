@@ -18,8 +18,6 @@ import contaxCover from '../assets/draft/contax-cover.jpg';
 import contax2 from '../assets/draft/contax-2.jpg';
 
 export type ProjectFormat = 'landing' | 'gallery';
-export type CardSize = 'hero' | 'compact' | 'wide' | 'tall';
-export type CardOffset = 'center' | 'up' | 'down';
 export type CoverAspect = '2/3' | '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2';
 
 export interface GalleryFrame {
@@ -37,8 +35,6 @@ export interface ProjectItem {
   subtitle: Record<Lang, string>;
   cover: ImageMetadata;
   coverAlt: Record<Lang, string>;
-  cardSize: CardSize;
-  cardOffset: CardOffset;
   coverAspect: CoverAspect;
   intro?: Record<Lang, string>;
   gallery?: GalleryFrame[];
@@ -73,8 +69,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Guest iOS app — iPhone screen featuring photographer Greg Swales on a dark canvas',
       ru: 'Приложение Guest — экран iPhone с именем фотографа Greg Swales на тёмном фоне',
     },
-    cardSize: 'hero',
-    cardOffset: 'center',
     coverAspect: '4/5',
   },
   {
@@ -102,8 +96,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Frantsuza Bistrot portrait series cover',
       ru: 'Обложка серии Frantsuza Bistrot',
     },
-    cardSize: 'compact',
-    cardOffset: 'up',
     coverAspect: '4/5',
     gallery: [
       {
@@ -157,8 +149,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Reportage wide frame cover',
       ru: 'Горизонтальный кадр из репортажной серии',
     },
-    cardSize: 'wide',
-    cardOffset: 'down',
     coverAspect: '3/2',
     gallery: [
       {
@@ -204,8 +194,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Casper × Roman Kiselyov cover',
       ru: 'Обложка серии Casper × Роман Киселёв',
     },
-    cardSize: 'tall',
-    cardOffset: 'up',
     coverAspect: '4/5',
     gallery: [
       {
@@ -243,8 +231,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Artist Sasha Braulov portrait cover',
       ru: 'Портрет художника Саши Браулова',
     },
-    cardSize: 'compact',
-    cardOffset: 'down',
     coverAspect: '4/5',
     gallery: [
       {
@@ -282,8 +268,6 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Contax G1 film diary cover',
       ru: 'Обложка серии Contax G1',
     },
-    cardSize: 'hero',
-    cardOffset: 'center',
     coverAspect: '4/5',
     gallery: [
       {
