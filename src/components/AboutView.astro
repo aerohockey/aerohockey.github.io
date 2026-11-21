@@ -1,18 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 import aboutPortrait from '../assets/draft/about-portrait.jpg';
-import { getContactPath, type Lang } from '../i18n/ui';
+import type { Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
-const contactHref = getContactPath(lang);
 
 const content = {
   en: {
-    eyebrow: 'About',
     headline: 'Art director with a camera, based in Saint Petersburg.',
     paragraphs: [
       'I build visual strategies, direct and shoot photography and video for brands, helping businesses look cohesive and confident.',
@@ -20,10 +18,8 @@ const content = {
     ],
     clientsLabel: 'Selected clients',
     clients: 'Apple, Adidas, Samokat, KFC, Lensa, FIFA, etc.',
-    contactCta: 'Get in touch →',
   },
   ru: {
-    eyebrow: 'Обо мне',
     headline: 'Арт-директор с камерой, Санкт-Петербург.',
     paragraphs: [
       'Создаю визуальные стратегии и снимаю для брендов. Помогаю бизнесу выглядеть уверенно и цельно.',
@@ -31,55 +27,73 @@ const content = {
     ],
     clientsLabel: 'Среди клиентов',
     clients: 'Apple, Adidas, Самокат, KFC, Lensa, FIFA и др.',
-    contactCta: 'Связаться →',
   },
 }[lang];
 ---
 
-<main class="flex-1 px-5 md:px-10 pt-28 md:pt-32 pb-20 max-w-[1440px] w-full mx-auto">
-  <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 lg:gap-16 items-start">
-    <div class="md:col-span-6 lg:col-span-5 lg:col-start-2 space-y-6 md:space-y-8">
-      <p class="text-[11px] uppercase tracking-[0.08em] text-[#737373]">
-        {content.eyebrow}
-      </p>
-      <h1 class="text-[28px] sm:text-[34px] md:text-[38px] font-normal leading-[1.14] tracking-[-0.015em] text-[#141414]">
-        {content.headline}
-      </h1>
-      <div class="space-y-4 text-[16px] leading-[1.6] text-[#262626] max-w-[48ch]">
-        {content.paragraphs.map((p) => (
-          <p>{p}</p>
-        ))}
+<main class="flex-1 flex flex-col md:justify-end pt-20 sm:pt-24 md:pt-16 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:pb-10 px-3.5 sm:px-6 md:px-10">
+  <div class="about-rail w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-6 lg:gap-8">
+    <section class="w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col space-y-6 md:pr-6">
+      <div class="space-y-2.5">
+        <h1 class="text-[16px] md:text-[18px] font-medium leading-[1.25] tracking-[-0.01em] text-[#141414]">
+          {content.headline}
+        </h1>
+
+        <div class="space-y-3 text-[14px] md:text-[15px] leading-[1.55] text-[#141414]">
+          {content.paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
       </div>
 
-      <div class="pt-4 border-t border-black/10 space-y-1.5 max-w-[48ch]">
-        <p class="text-[11px] uppercase tracking-[0.06em] text-[#737373]">
-          {content.clientsLabel}
-        </p>
-        <p class="text-[15px] leading-[1.5] text-[#141414]">
-          {content.clients}
-        </p>
+      <div class="space-y-1 text-[14px] md:text-[15px] leading-[1.55] text-[#141414]">
+        <h2 class="font-medium">{content.clientsLabel}</h2>
+        <p>{content.clients}</p>
       </div>
+    </section>
 
-      <div class="pt-2">
-        <a
-          href={contactHref}
-          class="inline-block text-[12px] uppercase tracking-[0.06em] text-[#141414] underline underline-offset-4 hover:opacity-60 transition-opacity"
-        >
-          {content.contactCta}
-        </a>
-      </div>
-    </div>
-
-    <div class="md:col-span-5 md:col-start-8 lg:col-span-4 lg:col-start-8">
-      <div class="aspect-[4/5] w-full max-w-[420px] bg-[#f5f5f3] overflow-hidden">
+    <figure class="shrink-0 flex flex-col items-start">
+      <div class="about-frame aspect-[4/5] overflow-hidden bg-[#f5f5f3]">
         <Image
           src={aboutPortrait}
           alt={lang === 'ru' ? 'Евгений Иванов' : 'Evgeny Ivanov'}
           width={1100}
-          class="w-full h-full object-cover"
+          class="w-full h-full object-cover pointer-events-none select-none"
           loading="eager"
+          draggable={false}
         />
       </div>
-    </div>
+    </figure>
   </div>
 </main>
+
+<style>
+  .about-frame {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  @media (min-width: 768px) {
+    .about-rail {
+      --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
+      min-height: var(--rail-h);
+    }
+
+    .about-frame {
+      max-width: none;
+      width: 40vw;
+      width: min(40vw, calc(var(--rail-h) * 0.8));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about-rail {
+      --rail-h: min(calc(33vw * 5 / 4), 625px, var(--rail-svh));
+    }
+
+    .about-frame {
+      width: min(33vw, 500px);
+      width: min(33vw, 500px, calc(var(--rail-h) * 0.8));
+    }
+  }
+</style>
