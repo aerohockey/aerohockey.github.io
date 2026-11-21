@@ -87,28 +87,4 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
     },
     true
   );
-
-  // Mobile card pager step buttons (`01 / 06 →`, `←`, `→`)
-  const stepButtons = track.querySelectorAll<HTMLButtonElement>('[data-track-step]');
-  if (stepButtons.length > 0) {
-    const cards = Array.from(track.querySelectorAll<HTMLElement>('article'));
-    stepButtons.forEach((btn) => {
-      btn.addEventListener('click', (e: MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const currentIndex = Number(btn.dataset.cardIndex ?? '0');
-        const step = Number(btn.dataset.trackStep ?? '0');
-        const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + step));
-        const target = cards[targetIndex];
-        if (!target) return;
-
-        const trackRect = track.getBoundingClientRect();
-        const targetRect = target.getBoundingClientRect();
-        const targetCenterInTrack =
-          targetRect.left - trackRect.left + track.scrollLeft + targetRect.width / 2;
-        const left = Math.max(0, targetCenterInTrack - track.clientWidth / 2);
-        track.scrollTo({ left, behavior: 'smooth' });
-      });
-    });
-  }
 }
