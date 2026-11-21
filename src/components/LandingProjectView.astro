@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import { GUEST_ASSETS, getNextProject, type ProjectItem } from '../data/projects';
-import { UI, getContactPath, getHomePath, getProjectPath, type Lang } from '../i18n/ui';
+import { GUEST_ASSETS, type ProjectItem } from '../data/projects';
+import { getContactPath, type Lang } from '../i18n/ui';
 
 interface Props {
   project: ProjectItem;
@@ -9,15 +9,10 @@ interface Props {
 }
 
 const { project, lang } = Astro.props;
-const t = UI[lang];
-const nextProject = getNextProject(project.slug);
-const homeHref = getHomePath(lang);
 const contactHref = getContactPath(lang);
-const nextHref = getProjectPath(lang, nextProject.slug);
 
 const copy = {
   en: {
-    eyebrow: '01 / Native iOS App · In Development',
     headline: 'Guest — One photographer every week',
     lead: 'This concept could have been built in many other ways — as a website, a newsletter, a web app, or a Telegram channel. Yet choosing a native iPhone app for Guest is intentional: here, content is inseparable from form, and the interface itself is part of the statement.',
     leadSub: 'Negative space, typography, tactile feedback, a pure white canvas, and the absence of visual noise make the project what it was meant to be.',
@@ -42,7 +37,6 @@ const copy = {
     s6Text: 'No accounts, no tracking pixels, no behavioral profiles, and no social noise. Guest does not collect personal analytics — it simply delivers one photographer every week.',
   },
   ru: {
-    eyebrow: '01 / Нативное iOS-приложение · В разработке',
     headline: 'Guest — Один фотограф каждую неделю',
     lead: 'Эту идею можно было бы реализовать иначе — как сайт, рассылку, веб-приложение или канал в Telegram. Но выбор нативного приложения для iPhone здесь принципиален: в Guest форма неотделима от содержания, а сам интерфейс является частью высказывания.',
     leadSub: 'Негативное пространство, типографика, тактильный отклик, чистый белый лист и отсутствие визуального шума делают проект именно таким, каким он задумывался.',
@@ -70,24 +64,10 @@ const copy = {
 ---
 
 <main class="flex-1 pt-24 md:pt-28">
-  <!-- Top breadcrumb bar -->
-  <div class="px-5 md:px-10 max-w-[1440px] mx-auto">
-    <a
-      href={homeHref}
-      class="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.05em] text-[#737373] hover:text-[#141414] transition-colors"
-    >
-      <span aria-hidden="true">←</span>
-      <span>{t.backToWork}</span>
-    </a>
-  </div>
-
   <!-- Hero Section -->
-  <section class="px-5 md:px-10 pt-8 pb-16 md:pt-12 md:pb-24 max-w-[1440px] mx-auto">
+  <section class="px-5 md:px-10 pt-6 pb-16 md:pt-10 md:pb-24 max-w-[1440px] mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 items-center">
       <div class="md:col-span-6 space-y-6 md:space-y-8">
-        <p class="text-[11px] uppercase tracking-[0.08em] text-[#737373]">
-          {copy.eyebrow}
-        </p>
         <h1 class="text-[32px] sm:text-[42px] md:text-[50px] font-normal leading-[1.06] tracking-[-0.02em] text-[#141414]">
           {copy.headline}
         </h1>
@@ -96,7 +76,7 @@ const copy = {
           <p class="text-[#737373]">{copy.leadSub}</p>
         </div>
 
-        <div class="pt-4 border-t border-black/10 grid grid-cols-3 gap-4 max-w-[54ch] text-[12px]">
+        <div class="pt-4 grid grid-cols-3 gap-4 max-w-[54ch] text-[12px]">
           <div>
             <p class="uppercase tracking-[0.05em] text-[#737373] text-[10px] mb-1">
               {copy.metaRoleLabel}
@@ -143,7 +123,7 @@ const copy = {
   </section>
 
   <!-- Editorial Statement -->
-  <section class="px-5 md:px-10 py-14 md:py-24 border-t border-black/8 max-w-[1440px] mx-auto">
+  <section class="px-5 md:px-10 py-14 md:py-24 max-w-[1440px] mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-12">
       <div class="md:col-span-4">
         <h2 class="text-[22px] md:text-[26px] font-normal tracking-[-0.01em] text-[#141414]">
@@ -235,7 +215,7 @@ const copy = {
       </div>
     </div>
 
-    <div class="pt-14 border-t border-black/10 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+    <div class="pt-14 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
       <div class="space-y-3">
         <h3 class="text-[20px] md:text-[22px] font-normal text-[#141414]">
           {copy.s5Title}
@@ -253,21 +233,5 @@ const copy = {
         </p>
       </div>
     </div>
-  </section>
-
-  <!-- Next project navigation -->
-  <section class="px-5 md:px-10 py-12 border-t border-black/10 max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-4">
-    <a
-      href={homeHref}
-      class="text-[12px] uppercase tracking-[0.05em] text-[#737373] hover:text-[#141414] transition-colors"
-    >
-      ← {t.backToWork}
-    </a>
-    <a
-      href={nextHref}
-      class="text-[12px] uppercase tracking-[0.05em] text-[#141414] hover:opacity-60 transition-opacity"
-    >
-      {t.nextProject}: {nextProject.title[lang]} →
-    </a>
   </section>
 </main>
