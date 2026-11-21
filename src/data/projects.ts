@@ -1,6 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/ui';
 
+import guestCover from '../assets/draft/guest-cover.png';
 import guestScreen from '../assets/draft/guest-screen.png';
 import guestLockscreen from '../assets/draft/guest-lockscreen.png';
 import guestSettings from '../assets/draft/guest-settings.png';
@@ -66,10 +67,10 @@ export const PROJECTS: ProjectItem[] = [
       en: 'One photographer every week',
       ru: 'Один фотограф каждую неделю',
     },
-    cover: guestScreen,
+    cover: guestCover,
     coverAlt: {
-      en: 'Guest iOS app — white canvas screen featuring photographer Greg Swales',
-      ru: 'Приложение Guest — чистый белый экран с именем фотографа Greg Swales',
+      en: 'Guest iOS app — iPhone screen featuring photographer Greg Swales on a dark canvas',
+      ru: 'Приложение Guest — экран iPhone с именем фотографа Greg Swales на тёмном фоне',
     },
     cardSize: 'hero',
     cardOffset: 'center',
