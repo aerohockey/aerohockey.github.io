@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ProjectItem } from '../data/projects';
-import { UI, getHomePath, type Lang } from '../i18n/ui';
+import type { Lang } from '../i18n/ui';
 
 interface Props {
   project: ProjectItem;
@@ -9,7 +9,6 @@ interface Props {
 }
 
 const { project, lang } = Astro.props;
-const t = UI[lang];
 const frames = project.gallery ?? [
   {
     image: project.cover,
@@ -17,7 +16,6 @@ const frames = project.gallery ?? [
     orientation: 'portrait' as const,
   },
 ];
-const homeHref = getHomePath(lang);
 ---
 
 <main class="flex-1 min-h-0 relative overflow-hidden pt-14 md:pt-16 pb-[calc(2rem+env(safe-area-inset-bottom))] md:pb-10">
@@ -28,31 +26,17 @@ const homeHref = getHomePath(lang);
     <div class="gallery-rail shrink-0 flex items-start gap-3.5 sm:gap-5 md:gap-6 lg:gap-8 px-3.5 sm:px-6 md:px-10">
       <!-- Opening editorial info slide -->
       <section
-        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[320px] lg:w-[360px] flex flex-col pr-4 md:pr-6"
+        class="shrink-0 snap-start md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[320px] lg:w-[360px] flex flex-col space-y-3 pr-4 md:pr-6"
       >
-        <a
-          href={homeHref}
-          class="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] leading-[1.25] text-[#737373] hover:text-[#141414] transition-colors w-fit"
-        >
-          <span aria-hidden="true">←</span>
-          <span>{t.backToWork}</span>
-        </a>
+        <h1 class="text-[24px] sm:text-[28px] md:text-[30px] font-normal leading-[1.12] tracking-[-0.015em] text-[#141414]">
+          {project.title[lang]}
+        </h1>
 
-        <div class="mt-8 md:mt-10 space-y-3">
-          <p class="text-[11px] leading-[1.35] text-[#737373] tabular-nums">
-            {project.category[lang]} · {project.year}
+        {project.intro && (
+          <p class="text-[13px] sm:text-[14px] leading-[1.6] text-[#525252]">
+            {project.intro[lang]}
           </p>
-
-          <h1 class="text-[24px] sm:text-[28px] md:text-[30px] font-normal leading-[1.14] tracking-[-0.015em] text-[#141414]">
-            {project.title[lang]}
-          </h1>
-
-          {project.intro && (
-            <p class="pt-1 text-[13px] sm:text-[14px] leading-[1.6] text-[#525252]">
-              {project.intro[lang]}
-            </p>
-          )}
-        </div>
+        )}
       </section>
 
       <!-- Horizontal gallery photographs -->
