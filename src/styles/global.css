@@ -18,6 +18,23 @@
   }
 }
 
+:root {
+  --rail-vh: 68vh;
+  --rail-svh: 66vh;
+}
+
+@supports (height: 1dvh) {
+  :root {
+    --rail-vh: 74dvh;
+  }
+}
+
+@supports (height: 1svh) {
+  :root {
+    --rail-svh: 66svh;
+  }
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

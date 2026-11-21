@@ -9,19 +9,13 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const CARD_ASPECT_WIDTH_CLASSES: Record<CoverAspect, string> = {
-  '3/4':
-    'w-[min(calc(100vw-48px),calc(74dvh*3/4))] sm:w-[min(calc(100vw-72px),calc(74dvh*3/4))] md:w-[min(40vw,calc(66svh*3/4))] lg:w-[min(33vw,500px,calc(66svh*3/4))]',
-  '4/5':
-    'w-[min(calc(100vw-48px),calc(74dvh*4/5))] sm:w-[min(calc(100vw-72px),calc(74dvh*4/5))] md:w-[min(40vw,calc(66svh*4/5))] lg:w-[min(33vw,500px,calc(66svh*4/5))]',
-  '1/1':
-    'w-[min(calc(100vw-48px),74dvh)] sm:w-[min(calc(100vw-72px),74dvh)] md:w-[min(40vw,66svh)] lg:w-[min(33vw,500px,66svh)]',
-  '5/4':
-    'w-[min(calc(100vw-48px),calc(74dvh*5/4))] sm:w-[min(calc(100vw-72px),calc(74dvh*5/4))] md:w-[min(40vw,calc(66svh*5/4))] lg:w-[min(33vw,500px,calc(66svh*5/4))]',
-  '4/3':
-    'w-[min(calc(100vw-48px),calc(74dvh*4/3))] sm:w-[min(calc(100vw-72px),calc(74dvh*4/3))] md:w-[min(40vw,calc(66svh*4/3))] lg:w-[min(33vw,500px,calc(66svh*4/3))]',
-  '3/2':
-    'w-[min(calc(100vw-48px),calc(74dvh*3/2))] sm:w-[min(calc(100vw-72px),calc(74dvh*3/2))] md:w-[min(40vw,calc(66svh*3/2))] lg:w-[min(33vw,500px,calc(66svh*3/2))]',
+const COVER_ASPECT_RATIOS: Record<CoverAspect, number> = {
+  '3/4': 0.75,
+  '4/5': 0.8,
+  '1/1': 1,
+  '5/4': 1.25,
+  '4/3': 1.3333,
+  '3/2': 1.5,
 };
 
 const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
@@ -44,10 +38,8 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
         const href = getProjectPath(lang, project.slug);
         return (
           <article
-            class:list={[
-              'shrink-0 snap-start md:snap-align-none flex flex-col',
-              CARD_ASPECT_WIDTH_CLASSES[project.coverAspect],
-            ]}
+            style={`--r: ${COVER_ASPECT_RATIOS[project.coverAspect]};`}
+            class="showcase-card shrink-0 snap-start md:snap-align-none flex flex-col"
           >
             <a href={href} class="group flex flex-col w-full focus:outline-none">
               <div class="mb-3 text-[14px] md:text-[15px] leading-[1.3]">
@@ -89,19 +81,46 @@ const ASPECT_RATIO_CLASSES: Record<CoverAspect, string> = {
 
 <style>
   .showcase-rail {
-    --rail-h: min(calc((100vw - 48px) * 4 / 3), 74dvh);
+    --rail-h: min(calc((100vw - 48px) * 4 / 3), var(--rail-vh));
     min-height: calc(var(--rail-h) + 48.5px);
+  }
+
+  .showcase-card {
+    width: calc(100vw - 48px);
+    width: min(calc(100vw - 48px), calc(var(--rail-h) * var(--r)));
   }
 
   @media (min-width: 640px) {
     .showcase-rail {
-      --rail-h: min(calc((100vw - 72px) * 4 / 3), 74dvh);
+      --rail-h: min(calc((100vw - 72px) * 4 / 3), var(--rail-vh));
+    }
+
+    .showcase-card {
+      width: calc(100vw - 72px);
+      width: min(calc(100vw - 72px), calc(var(--rail-h) * var(--r)));
     }
   }
 
   @media (min-width: 768px) {
     .showcase-rail {
+      --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
       min-height: 0;
+    }
+
+    .showcase-card {
+      width: 40vw;
+      width: min(40vw, calc(var(--rail-h) * var(--r)));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .showcase-rail {
+      --rail-h: min(calc(33vw * 5 / 4), 625px, var(--rail-svh));
+    }
+
+    .showcase-card {
+      width: min(33vw, 500px);
+      width: min(33vw, 500px, calc(var(--rail-h) * var(--r)));
     }
   }
 </style>

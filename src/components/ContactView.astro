@@ -77,25 +77,25 @@ const content = {
 
 <style>
   .contact-rail {
-    --rail-h: min(calc((100vw - 48px) * 4 / 3), 74dvh);
+    --rail-h: min(calc((100vw - 48px) * 4 / 3), var(--rail-vh));
     min-height: var(--rail-h);
   }
 
   @media (min-width: 640px) {
     .contact-rail {
-      --rail-h: min(calc((100vw - 72px) * 4 / 3), 74dvh);
+      --rail-h: min(calc((100vw - 72px) * 4 / 3), var(--rail-vh));
     }
   }
 
   @media (min-width: 768px) {
     .contact-rail {
-      --rail-h: min(calc(40vw * 5 / 4), 66svh);
+      --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
     }
   }
 
   @media (min-width: 1024px) {
     .contact-rail {
-      --rail-h: min(calc(33vw * 5 / 4), 625px, 66svh);
+      --rail-h: min(calc(33vw * 5 / 4), 625px, var(--rail-svh));
     }
   }
 </style>

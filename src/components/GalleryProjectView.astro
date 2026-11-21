@@ -73,40 +73,44 @@ const frames = project.gallery ?? [
 
 <style>
   .gallery-rail {
-    --rail-h: min(calc((100vw - 48px) * 4 / 3), 74dvh);
+    --rail-h: min(calc((100vw - 48px) * 4 / 3), var(--rail-vh));
     min-height: var(--rail-h);
   }
 
   .gallery-frame {
+    width: calc(100vw - 48px);
     width: min(calc(100vw - 48px), calc(var(--rail-h) * var(--r)));
   }
 
   @media (min-width: 640px) {
     .gallery-rail {
-      --rail-h: min(calc((100vw - 72px) * 4 / 3), 74dvh);
+      --rail-h: min(calc((100vw - 72px) * 4 / 3), var(--rail-vh));
     }
 
     .gallery-frame {
+      width: calc(100vw - 72px);
       width: min(calc(100vw - 72px), calc(var(--rail-h) * var(--r)));
     }
   }
 
   @media (min-width: 768px) {
     .gallery-rail {
-      --rail-h: min(calc(40vw * 5 / 4), 66svh);
+      --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
     }
 
     .gallery-frame {
+      width: 40vw;
       width: min(40vw, calc(var(--rail-h) * var(--r)));
     }
   }
 
   @media (min-width: 1024px) {
     .gallery-rail {
-      --rail-h: min(calc(33vw * 5 / 4), 625px, 66svh);
+      --rail-h: min(calc(33vw * 5 / 4), 625px, var(--rail-svh));
     }
 
     .gallery-frame {
+      width: min(33vw, 500px);
       width: min(33vw, 500px, calc(var(--rail-h) * var(--r)));
     }
   }
