@@ -13,16 +13,12 @@ const content = {
     emailLabel: 'Email',
     telegramLabel: 'Telegram',
     phoneLabel: 'Phone',
-    copyLabel: 'Copy',
-    copiedLabel: 'Copied',
   },
   ru: {
     srTitle: 'Контакты',
     emailLabel: 'Почта',
     telegramLabel: 'Telegram',
     phoneLabel: 'Телефон',
-    copyLabel: 'Скопировать',
-    copiedLabel: 'Скопировано',
   },
 }[lang];
 ---
@@ -36,22 +32,13 @@ const content = {
         <dt class="shrink-0 w-[76px] sm:w-[96px] md:w-[24%] text-[12px] sm:text-[13px] text-[#737373]">
           {content.emailLabel}
         </dt>
-        <dd class="min-w-0 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[15px] sm:text-[16px]">
+        <dd class="min-w-0 text-[15px] sm:text-[16px]">
           <a
             href="mailto:hello@evgeny.studio"
             class="text-[#141414] hover:opacity-55 transition-opacity"
           >
             hello@evgeny.studio
           </a>
-          <button
-            type="button"
-            data-copy="hello@evgeny.studio"
-            data-label={content.copyLabel}
-            data-copied={content.copiedLabel}
-            class="text-[11px] sm:text-[12px] text-[#737373] hover:text-[#141414] transition-colors cursor-pointer"
-          >
-            {content.copyLabel}
-          </button>
         </dd>
       </div>
 
@@ -112,22 +99,3 @@ const content = {
     }
   }
 </style>
-
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const value = btn.dataset.copy;
-      if (!value) return;
-      try {
-        await navigator.clipboard.writeText(value);
-        const orig = btn.dataset.label ?? 'Copy';
-        btn.textContent = btn.dataset.copied ?? 'Copied';
-        setTimeout(() => {
-          btn.textContent = orig;
-        }, 1600);
-      } catch {
-        // Ignore clipboard errors in restricted contexts
-      }
-    });
-  });
-</script>
