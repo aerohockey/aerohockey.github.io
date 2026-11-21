@@ -23,7 +23,7 @@ const contactHref = getContactPath(lang);
 <header
   class="fixed top-0 inset-x-0 z-40 bg-white/95 backdrop-blur-sm px-3.5 sm:px-5 md:px-10 py-3.5 md:py-4"
 >
-  <div class="flex items-center justify-between gap-1 sm:gap-3 md:gap-0 text-[12px] md:text-[14px] leading-[1.25] tracking-normal">
+  <div class="grid grid-cols-[auto_1fr] md:flex items-baseline md:items-center gap-x-4 gap-y-1.5 md:gap-0 text-[12px] md:text-[14px] leading-[1.25] tracking-normal">
     <!-- Brand -->
     <div class="shrink-0 md:w-[24%]">
       <a
@@ -34,10 +34,10 @@ const contactHref = getContactPath(lang);
       </a>
     </div>
 
-    <!-- Navigation: centered evenly between Brand & LangSwitch on mobile; offset column on desktop -->
+    <!-- Navigation: flush right on row 1 on mobile; offset column on desktop -->
     <nav
       aria-label="Main navigation"
-      class="flex flex-wrap items-center justify-center md:justify-start gap-x-2.5 sm:gap-x-3.5 md:gap-x-5 gap-y-1 md:flex-1 min-w-0"
+      class="flex flex-wrap items-center justify-end md:justify-start gap-x-3 sm:gap-x-4 md:gap-x-5 gap-y-1 md:flex-1 min-w-0"
     >
       <a
         href={homeHref}
@@ -71,8 +71,8 @@ const contactHref = getContactPath(lang);
       </a>
     </nav>
 
-    <!-- Language switcher -->
-    <div class="shrink-0 md:w-[24%] md:flex md:justify-end">
+    <!-- Language switcher: row 2 right-aligned under nav on mobile; right column on desktop -->
+    <div class="col-start-2 justify-self-end md:col-start-auto md:justify-self-auto shrink-0 md:w-[24%] md:flex md:justify-end">
       <LangSwitch lang={lang} />
     </div>
   </div>
