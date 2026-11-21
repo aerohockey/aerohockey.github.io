@@ -4,6 +4,7 @@ import type { Lang } from '../i18n/ui';
 import guestCover from '../assets/draft/guest-cover.png';
 import guestScreen from '../assets/draft/guest-screen.png';
 import guestLockscreen from '../assets/draft/guest-lockscreen.png';
+import guestLockscreenFull from '../assets/draft/guest-lockscreen-full.png';
 import guestSettings from '../assets/draft/guest-settings.png';
 import guestWidget from '../assets/draft/guest-widget.png';
 
@@ -43,6 +44,7 @@ export interface ProjectItem {
 export const GUEST_ASSETS = {
   screen: guestScreen,
   lockscreen: guestLockscreen,
+  lockscreenFull: guestLockscreenFull,
   settings: guestSettings,
   widget: guestWidget,
 };
