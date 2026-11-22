@@ -70,10 +70,6 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   >
     <div class="guest-light-backdrop-fill absolute inset-0 bg-white"></div>
   </div>
-  <div
-    aria-hidden="true"
-    class="guest-bottom-chrome fixed bottom-0 left-0 right-0 h-[4px] pointer-events-none z-40 md:hidden"
-  ></div>
 
   <!-- Act 1: Dark Surface — Hero + Transparent Hero iPhone + Form + Settings -->
   <section
@@ -270,19 +266,6 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
     opacity: 1;
   }
 
-  .guest-bottom-chrome {
-    background-color: #141414;
-    transition: background-color 650ms cubic-bezier(0.45, 0, 0.55, 1);
-  }
-
-  :global(html[data-guest-surface='light']) .guest-bottom-chrome {
-    background-color: #ffffff;
-  }
-
-  :global(html[data-guest-surface='dark']) .guest-bottom-chrome {
-    background-color: #141414;
-  }
-
   [data-guest-canvas] {
     color: #ffffff;
     transition: color 650ms cubic-bezier(0.45, 0, 0.55, 1);
@@ -361,7 +344,6 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 
   @media (prefers-reduced-motion: reduce) {
     .guest-light-backdrop-fill,
-    .guest-bottom-chrome,
     [data-guest-canvas],
     :global(html[data-guest-surface] header),
     :global(html[data-guest-surface] header a) {
@@ -390,10 +372,12 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   let backdropHideTimer: number | undefined;
 
   const syncChromeMeta = (surface: string) => {
+    const bg = surface === 'light' ? '#ffffff' : '#141414';
     html.style.colorScheme = surface;
-    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#141414';
+    html.style.backgroundColor = bg;
+    document.body.style.backgroundColor = bg;
     if (themeMeta) {
-      themeMeta.content = surface === 'light' ? '#ffffff' : '#141414';
+      themeMeta.content = bg;
     }
     if (colorSchemeMeta) {
       colorSchemeMeta.content = surface;
@@ -421,15 +405,19 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
             void backdrop.offsetWidth;
           }
         }
-      } else if (immediate || prefersReducedMotion) {
-        backdrop.dataset.backdropHidden = 'true';
       } else {
-        backdropHideTimer = window.setTimeout(() => {
-          backdropHideTimer = undefined;
-          if (currentSurface !== 'light') {
-            backdrop.dataset.backdropHidden = 'true';
-          }
-        }, 700);
+        // Restore dark body underneath the still-opaque white overlay before fading out
+        document.body.style.backgroundColor = '#141414';
+        if (immediate || prefersReducedMotion) {
+          backdrop.dataset.backdropHidden = 'true';
+        } else {
+          backdropHideTimer = window.setTimeout(() => {
+            backdropHideTimer = undefined;
+            if (currentSurface !== 'light') {
+              backdrop.dataset.backdropHidden = 'true';
+            }
+          }, 680);
+        }
       }
     }
 
@@ -441,7 +429,7 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
       chromeMetaTimer = window.setTimeout(() => {
         chromeMetaTimer = undefined;
         syncChromeMeta(surface);
-      }, 320);
+      }, surface === 'light' ? 680 : 320);
     }
   };
 
