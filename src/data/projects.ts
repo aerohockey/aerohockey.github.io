@@ -113,7 +113,7 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Guest iOS app — iPhone screen featuring photographer Greg Swales on a dark canvas',
       ru: 'Приложение Guest — экран iPhone с именем фотографа Greg Swales на тёмном фоне',
     },
-    coverAspect: '4/5',
+    coverAspect: '1/1',
   },
   {
     slug: 'frantsuza-bistrot',

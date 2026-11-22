@@ -87,14 +87,15 @@ const fontFaceCss = WEIGHT_TARGETS.map(({ weight, token }) => {
 <!doctype html>
 <html
   lang={lang}
-  class:list={[desktopLockViewport && 'md:h-full md:overflow-hidden', isDark && 'bg-black']}
-  style={isDark ? 'color-scheme: dark; background-color: #000000;' : 'color-scheme: light; background-color: #ffffff;'}
+  data-theme={theme}
+  class:list={[desktopLockViewport && 'md:h-full md:overflow-hidden', isDark && 'bg-[#141414]']}
+  style={isDark ? 'color-scheme: dark; background-color: #141414;' : 'color-scheme: light; background-color: #ffffff;'}
 >
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content={isDark ? 'dark' : 'light'} />
-    <meta name="theme-color" content={isDark ? '#000000' : '#ffffff'} />
+    <meta name="theme-color" content={isDark ? '#141414' : '#ffffff'} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
@@ -121,7 +122,7 @@ const fontFaceCss = WEIGHT_TARGETS.map(({ weight, token }) => {
   <body
     class:list={[
       'font-sans antialiased overflow-x-clip min-h-svh flex flex-col',
-      isDark ? 'bg-black text-white' : 'bg-white text-[#141414]',
+      isDark ? 'bg-[#141414] text-white' : 'bg-white text-[#141414]',
       desktopLockViewport && 'md:h-full md:min-h-0 md:overflow-hidden',
     ]}
   >

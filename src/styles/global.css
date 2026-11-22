@@ -17,7 +17,7 @@
     color: #ffffff;
   }
 
-  .bg-black ::selection {
+  [data-theme='dark'] ::selection {
     background-color: #ffffff;
     color: #141414;
   }

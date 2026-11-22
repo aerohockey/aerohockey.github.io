@@ -67,78 +67,50 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
     class="guest-light-backdrop fixed inset-0 pointer-events-none z-0 bg-white"
   ></div>
 
-  <!-- Act 1: Dark Surface — Hero + Full iPhone Lock Screen (immediately visible on load) -->
+  <!-- Act 1: Dark Surface — Hero + Transparent Hero iPhone + Form + Settings -->
   <section
     data-act-surface="dark"
     class="relative z-10 px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-24 md:pb-40"
   >
-    <div class={COL}>
-      <div>
-        <h1 class="leading-[1.35]">
-          {copy.headline}
-        </h1>
-        <p class="mt-0.5 leading-[1.35]">
-          <span>{project.role[lang]}</span>
-          {project.status && (
-            <span class="block">{project.status[lang]}</span>
-          )}
-        </p>
-
-        {project.appStoreUrl && (
-          <div class="mt-4">
-            <a
-              href={project.appStoreUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-            >
-              {t.downloadAppStore}
-            </a>
-          </div>
-        )}
-
-        <div class="mt-5 md:mt-6 space-y-4">
-          <p>{copy.lead}</p>
-          <p>{copy.leadSub}</p>
-        </div>
-      </div>
-
-      <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
-        <Image
-          src={GUEST_ASSETS.hero}
-          alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
-          width={1228}
-          class="w-full h-auto block pointer-events-none select-none"
-          loading="eager"
-          draggable={false}
-        />
-      </div>
-    </div>
-  </section>
-
-  <!-- Act 2: Light Surface — Idea & Philosophy, Home Screen Widget -->
-  <section
-    data-act-surface="light"
-    class="relative z-10 px-4 py-24 md:py-40"
-  >
     <div class={`${COL} space-y-24 md:space-y-32`}>
       <div>
-        <div data-reveal="text">
-          <h2 class="leading-[1.35]">
-            {copy.s1Title}
-          </h2>
-          <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s1Text}</p>
-            <p>{copy.s2Text}</p>
+        <div>
+          <h1 class="leading-[1.35]">
+            {copy.headline}
+          </h1>
+          <p class="mt-0.5 leading-[1.35]">
+            <span>{project.role[lang]}</span>
+            {project.status && (
+              <span class="block">{project.status[lang]}</span>
+            )}
+          </p>
+
+          {project.appStoreUrl && (
+            <div class="mt-4">
+              <a
+                href={project.appStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+              >
+                {t.downloadAppStore}
+              </a>
+            </div>
+          )}
+
+          <div class="mt-5 md:mt-6 space-y-4">
+            <p>{copy.lead}</p>
+            <p>{copy.leadSub}</p>
           </div>
         </div>
 
-        <div data-reveal="media" class="w-full mt-10 md:mt-12">
+        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
           <Image
-            src={GUEST_ASSETS.lockscreen}
-            alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
-            width={1600}
+            src={GUEST_ASSETS.hero}
+            alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
+            width={1080}
             class="w-full h-auto block pointer-events-none select-none"
+            loading="eager"
             draggable={false}
           />
         </div>
@@ -147,18 +119,18 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
       <div>
         <div data-reveal="text">
           <h2 class="leading-[1.35]">
-            {copy.s6Title}
+            {copy.s3Title}
           </h2>
           <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s6Text}</p>
+            <p>{copy.s3Text}</p>
           </div>
         </div>
 
-        <div data-reveal="media" class="w-full mt-10 md:mt-12">
+        <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
           <Image
-            src={GUEST_ASSETS.widget}
-            alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
-            width={1600}
+            src={GUEST_ASSETS.settings}
+            alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+            width={1080}
             class="w-full h-auto block pointer-events-none select-none"
             draggable={false}
           />
@@ -167,9 +139,9 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
     </div>
   </section>
 
-  <!-- Act 3: Dark Finale — Form, Who is the guest?, Privacy, Lock Screen, Next Project -->
+  <!-- Act 2: Light Finale — Idea & Philosophy, Home Screen Widget, Who is the guest?, Privacy, Next Project -->
   <section
-    data-act-surface="dark"
+    data-act-surface="light"
     class="relative z-10 px-4 pt-24 pb-16 md:pt-40 md:pb-24"
   >
     <div class={COL}>
@@ -177,18 +149,40 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
         <div>
           <div data-reveal="text">
             <h2 class="leading-[1.35]">
-              {copy.s3Title}
+              {copy.s1Title}
             </h2>
             <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s3Text}</p>
+              <p>{copy.s1Text}</p>
+              <p>{copy.s2Text}</p>
             </div>
           </div>
 
-          <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
+          <div data-reveal="media" class="w-full mt-10 md:mt-12">
             <Image
-              src={GUEST_ASSETS.settings}
-              alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
-              width={1400}
+              src={GUEST_ASSETS.lockscreen}
+              alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
+              width={1600}
+              class="w-full h-auto block pointer-events-none select-none"
+              draggable={false}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div data-reveal="text">
+            <h2 class="leading-[1.35]">
+              {copy.s6Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s6Text}</p>
+            </div>
+          </div>
+
+          <div data-reveal="media" class="w-full mt-10 md:mt-12">
+            <Image
+              src={GUEST_ASSETS.widget}
+              alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
+              width={1600}
               class="w-full h-auto block pointer-events-none select-none"
               draggable={false}
             />
@@ -228,7 +222,7 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
             <Image
               src={GUEST_ASSETS.lockscreenFull}
               alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
-              width={1400}
+              width={1080}
               class="w-full h-auto block pointer-events-none select-none"
               draggable={false}
             />
@@ -304,7 +298,7 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   }
 
   :global(html[data-guest-surface='dark'] header) {
-    background-color: #000000;
+    background-color: #141414;
   }
 
   :global(html[data-guest-surface='dark'] header a) {
@@ -369,9 +363,9 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 
   const syncChromeMeta = (surface: string) => {
     html.style.colorScheme = surface;
-    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#000000';
+    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#141414';
     if (themeMeta) {
-      themeMeta.content = surface === 'light' ? '#ffffff' : '#000000';
+      themeMeta.content = surface === 'light' ? '#ffffff' : '#141414';
     }
     if (colorSchemeMeta) {
       colorSchemeMeta.content = surface;
