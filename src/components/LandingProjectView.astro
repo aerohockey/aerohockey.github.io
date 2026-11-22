@@ -64,7 +64,15 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 >
   <div
     aria-hidden="true"
-    class="guest-light-backdrop fixed inset-0 pointer-events-none z-0 bg-white"
+    data-guest-backdrop
+    data-backdrop-hidden="true"
+    class="guest-light-backdrop fixed inset-0 pointer-events-none z-0 bg-transparent"
+  >
+    <div class="guest-light-backdrop-fill absolute inset-0 bg-white"></div>
+  </div>
+  <div
+    aria-hidden="true"
+    class="guest-bottom-chrome fixed bottom-0 left-0 right-0 h-[4px] pointer-events-none z-40 md:hidden"
   ></div>
 
   <!-- Act 1: Dark Surface — Hero + Transparent Hero iPhone + Form + Settings -->
@@ -247,15 +255,32 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 </main>
 
 <style>
-  .guest-light-backdrop {
+  .guest-light-backdrop[data-backdrop-hidden='true'] {
+    display: none;
+  }
+
+  .guest-light-backdrop-fill {
     opacity: 0;
     transform: translateZ(0);
     will-change: opacity;
     transition: opacity 650ms cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  :global(html[data-guest-surface='light']) .guest-light-backdrop {
+  :global(html[data-guest-surface='light']) .guest-light-backdrop-fill {
     opacity: 1;
+  }
+
+  .guest-bottom-chrome {
+    background-color: #141414;
+    transition: background-color 650ms cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  :global(html[data-guest-surface='light']) .guest-bottom-chrome {
+    background-color: #ffffff;
+  }
+
+  :global(html[data-guest-surface='dark']) .guest-bottom-chrome {
+    background-color: #141414;
   }
 
   [data-guest-canvas] {
@@ -335,7 +360,8 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .guest-light-backdrop,
+    .guest-light-backdrop-fill,
+    .guest-bottom-chrome,
     [data-guest-canvas],
     :global(html[data-guest-surface] header),
     :global(html[data-guest-surface] header a) {
@@ -355,11 +381,13 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
   const canvas = document.querySelector<HTMLElement>('[data-guest-canvas]');
+  const backdrop = document.querySelector<HTMLElement>('[data-guest-backdrop]');
   const acts = Array.from(document.querySelectorAll<HTMLElement>('[data-act-surface]'));
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let currentSurface = html.dataset.guestSurface ?? '';
   let chromeMetaTimer: number | undefined;
+  let backdropHideTimer: number | undefined;
 
   const syncChromeMeta = (surface: string) => {
     html.style.colorScheme = surface;
@@ -375,12 +403,37 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   const applySurface = (surface: string, immediate = false) => {
     if (surface === currentSurface) return;
     currentSurface = surface;
-    html.dataset.guestSurface = surface;
 
     if (chromeMetaTimer !== undefined) {
       window.clearTimeout(chromeMetaTimer);
       chromeMetaTimer = undefined;
     }
+    if (backdropHideTimer !== undefined) {
+      window.clearTimeout(backdropHideTimer);
+      backdropHideTimer = undefined;
+    }
+
+    if (backdrop) {
+      if (surface === 'light') {
+        if (backdrop.dataset.backdropHidden === 'true') {
+          delete backdrop.dataset.backdropHidden;
+          if (!immediate && !prefersReducedMotion) {
+            void backdrop.offsetWidth;
+          }
+        }
+      } else if (immediate || prefersReducedMotion) {
+        backdrop.dataset.backdropHidden = 'true';
+      } else {
+        backdropHideTimer = window.setTimeout(() => {
+          backdropHideTimer = undefined;
+          if (currentSurface !== 'light') {
+            backdrop.dataset.backdropHidden = 'true';
+          }
+        }, 700);
+      }
+    }
+
+    html.dataset.guestSurface = surface;
 
     if (immediate || prefersReducedMotion) {
       syncChromeMeta(surface);
