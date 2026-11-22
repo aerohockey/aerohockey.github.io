@@ -58,178 +58,383 @@ const COL = 'w-full max-w-[640px] 2xl:max-w-[700px] mx-auto';
 const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 ---
 
-<main class="flex-1 bg-black text-white text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal">
-  <!-- Act 1: Pure Black — Hero + Full iPhone Lock Screen -->
-  <div class="bg-black text-white">
-    <section class="px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-20 md:pb-32">
-      <div class={COL}>
-        <div>
-          <h1 class="leading-[1.35]">
-            {copy.headline}
-          </h1>
-          <p class="mt-0.5 leading-[1.35]">
-            <span>{project.role[lang]}</span>
-            {project.status && (
-              <span class="block">{project.status[lang]}</span>
-            )}
-          </p>
+<main
+  data-guest-canvas
+  class="flex-1 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal"
+>
+  <!-- Act 1: Dark Surface — Hero + Full iPhone Lock Screen (immediately visible on load) -->
+  <section
+    data-act-surface="dark"
+    class="px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-24 md:pb-40"
+  >
+    <div class={COL}>
+      <div>
+        <h1 class="leading-[1.35]">
+          {copy.headline}
+        </h1>
+        <p class="mt-0.5 leading-[1.35]">
+          <span>{project.role[lang]}</span>
+          {project.status && (
+            <span class="block">{project.status[lang]}</span>
+          )}
+        </p>
 
-          {project.appStoreUrl && (
-            <div class="mt-4">
+        {project.appStoreUrl && (
+          <div class="mt-4">
+            <a
+              href={project.appStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+            >
+              {t.downloadAppStore}
+            </a>
+          </div>
+        )}
+
+        <div class="mt-5 md:mt-6 space-y-4">
+          <p>{copy.lead}</p>
+          <p>{copy.leadSub}</p>
+        </div>
+      </div>
+
+      <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
+        <Image
+          src={GUEST_ASSETS.lockscreenFull}
+          alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
+          width={1400}
+          class="w-full h-auto block pointer-events-none select-none"
+          loading="eager"
+          draggable={false}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 2: Light Surface — Idea & Philosophy, Form (Pure White Canvas), Home Screen Widget -->
+  <section
+    data-act-surface="light"
+    class="px-4 py-24 md:py-40"
+  >
+    <div class={`${COL} space-y-24 md:space-y-32`}>
+      <div>
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s1Title}
+          </h2>
+          <div class="mt-4 md:mt-5 space-y-4">
+            <p>{copy.s1Text}</p>
+            <p>{copy.s2Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class="w-full mt-10 md:mt-12">
+          <Image
+            src={GUEST_ASSETS.lockscreen}
+            alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
+            width={1600}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div>
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s3Title}
+          </h2>
+          <div class="mt-4 md:mt-5 space-y-4">
+            <p>{copy.s3Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
+          <Image
+            src={GUEST_ASSETS.screen}
+            alt={lang === 'ru' ? 'Экран приложения Guest с именем фотографа Greg Swales на чистом белом фоне' : 'Guest iPhone app showing photographer Greg Swales on a pure white canvas'}
+            width={1400}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div>
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s6Title}
+          </h2>
+          <div class="mt-4 md:mt-5 space-y-4">
+            <p>{copy.s6Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class="w-full mt-10 md:mt-12">
+          <Image
+            src={GUEST_ASSETS.widget}
+            alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
+            width={1600}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Act 3: Dark Finale — Who is the guest?, Privacy, Settings, Next Project -->
+  <section
+    data-act-surface="dark"
+    class="px-4 pt-24 pb-16 md:pt-40 md:pb-24"
+  >
+    <div class={COL}>
+      <div data-reveal="text" class="space-y-10 md:space-y-12">
+        <div>
+          <h2 class="leading-[1.35]">
+            {copy.s4Title}
+          </h2>
+          <div class="mt-4 md:mt-5 space-y-4">
+            <p>{copy.s4Text}</p>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="leading-[1.35]">
+            {copy.s5Title}
+          </h2>
+          <div class="mt-4 md:mt-5 space-y-4">
+            <p>{copy.s5Text}</p>
+            <p>
               <a
-                href={project.appStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={privacyHref}
                 class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
               >
-                {t.downloadAppStore}
+                {t.privacyPolicy}
               </a>
-            </div>
-          )}
-
-          <div class="mt-5 md:mt-6 space-y-4">
-            <p>{copy.lead}</p>
-            <p>{copy.leadSub}</p>
-          </div>
-        </div>
-
-        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
-          <Image
-            src={GUEST_ASSETS.lockscreenFull}
-            alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
-            width={1400}
-            class="w-full h-auto block pointer-events-none select-none"
-            loading="eager"
-            draggable={false}
-          />
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Act 2: Pure White — Idea & Philosophy (Crop), Form (Pure White Canvas), Home Screen (Crop) -->
-  <div class="bg-white text-[#141414]">
-    <section class="px-4 py-20 md:py-32">
-      <div class={`${COL} space-y-20 md:space-y-28`}>
-        <div>
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s1Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s1Text}</p>
-              <p>{copy.s2Text}</p>
-            </div>
-          </div>
-
-          <div class="w-full mt-10 md:mt-12">
-            <Image
-              src={GUEST_ASSETS.lockscreen}
-              alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
-              width={1600}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s3Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s3Text}</p>
-            </div>
-          </div>
-
-          <div class={`${FULL_PHONE} mt-10 md:mt-12`}>
-            <Image
-              src={GUEST_ASSETS.screen}
-              alt={lang === 'ru' ? 'Экран приложения Guest с именем фотографа Greg Swales на чистом белом фоне' : 'Guest iPhone app showing photographer Greg Swales on a pure white canvas'}
-              width={1400}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s6Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s6Text}</p>
-            </div>
-          </div>
-
-          <div class="w-full mt-10 md:mt-12">
-            <Image
-              src={GUEST_ASSETS.widget}
-              alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
-              width={1600}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
+            </p>
           </div>
         </div>
       </div>
-    </section>
-  </div>
 
-  <!-- Act 3: Pure Black Finale — Who is the guest?, Privacy, Settings, Next Project -->
-  <div class="bg-black text-white">
-    <section class="px-4 pt-20 pb-16 md:pt-32 md:pb-24">
-      <div class={COL}>
-        <div class="space-y-10 md:space-y-12">
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s4Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s4Text}</p>
-            </div>
-          </div>
-
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s5Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s5Text}</p>
-              <p>
-                <a
-                  href={privacyHref}
-                  class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-                >
-                  {t.privacyPolicy}
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
-          <Image
-            src={GUEST_ASSETS.settings}
-            alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
-            width={1400}
-            class="w-full h-auto block pointer-events-none select-none"
-            draggable={false}
-          />
-        </div>
-
-        <footer class="mt-12 md:mt-20 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end">
-          <a
-            href={nextHref}
-            class="inline-flex flex-col items-end text-right min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
-          >
-            <span class="leading-[1.35]">{t.nextProject}</span>
-            <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
-          </a>
-        </footer>
+      <div data-reveal="media" class={`${FULL_PHONE} mt-12 md:mt-16`}>
+        <Image
+          src={GUEST_ASSETS.settings}
+          alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+          width={1400}
+          class="w-full h-auto block pointer-events-none select-none"
+          draggable={false}
+        />
       </div>
-    </section>
-  </div>
+
+      <footer
+        data-reveal="text"
+        class="mt-12 md:mt-20 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end"
+      >
+        <a
+          href={nextHref}
+          class="inline-flex flex-col items-end text-right min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
+        >
+          <span class="leading-[1.35]">{t.nextProject}</span>
+          <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
+        </a>
+      </footer>
+    </div>
+  </section>
 </main>
+
+<style>
+  :global(html[data-guest-surface]),
+  :global(html[data-guest-surface] body) {
+    transition:
+      background-color 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :global(html[data-guest-surface] header) {
+    transition:
+      transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :global(html[data-guest-surface] header a) {
+    transition:
+      opacity 180ms ease,
+      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  :global(html[data-guest-surface='light'] body) {
+    background-color: #ffffff;
+    color: #141414;
+  }
+
+  :global(html[data-guest-surface='light'] header) {
+    background-color: #ffffff;
+  }
+
+  :global(html[data-guest-surface='light'] header a) {
+    color: #141414;
+  }
+
+  :global(html[data-guest-surface='light']) ::selection {
+    background-color: #141414;
+    color: #ffffff;
+  }
+
+  :global(html[data-guest-surface='dark'] body) {
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  :global(html[data-guest-surface='dark'] header) {
+    background-color: #000000;
+  }
+
+  :global(html[data-guest-surface='dark'] header a) {
+    color: #ffffff;
+  }
+
+  :global(html[data-guest-surface='dark']) ::selection {
+    background-color: #ffffff;
+    color: #141414;
+  }
+
+  [data-guest-canvas][data-reveal-ready='true'] [data-reveal='text'] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  [data-guest-canvas][data-reveal-ready='true'] [data-reveal='media'] {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    transition:
+      opacity 880ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+      transform 880ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+    will-change: opacity, transform;
+  }
+
+  [data-guest-canvas][data-reveal-ready='true'] [data-reveal][data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html[data-guest-surface]),
+    :global(html[data-guest-surface] body),
+    :global(html[data-guest-surface] header),
+    :global(html[data-guest-surface] header a) {
+      transition: none !important;
+    }
+
+    [data-guest-canvas][data-reveal-ready='true'] [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  const html = document.documentElement;
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+  const canvas = document.querySelector<HTMLElement>('[data-guest-canvas]');
+  const acts = Array.from(document.querySelectorAll<HTMLElement>('[data-act-surface]'));
+
+  let currentSurface = html.dataset.guestSurface ?? 'dark';
+
+  const applySurface = (surface: string) => {
+    if (surface === currentSurface && html.dataset.guestSurface === surface) return;
+    currentSurface = surface;
+    html.dataset.guestSurface = surface;
+    html.style.colorScheme = surface;
+    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#000000';
+    if (themeMeta) {
+      themeMeta.content = surface === 'light' ? '#ffffff' : '#000000';
+    }
+    if (colorSchemeMeta) {
+      colorSchemeMeta.content = surface;
+    }
+  };
+
+  const syncSurface = () => {
+    if (acts.length === 0) return;
+    const atBottom =
+      window.scrollY > 0 &&
+      window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 40;
+
+    if (atBottom) {
+      applySurface(acts[acts.length - 1].dataset.actSurface ?? 'dark');
+      return;
+    }
+
+    const triggerY = window.innerHeight * 0.45;
+    let nextSurface = acts[0].dataset.actSurface ?? 'dark';
+    for (const act of acts) {
+      if (act.getBoundingClientRect().top <= triggerY) {
+        nextSurface = act.dataset.actSurface ?? nextSurface;
+      }
+    }
+    applySurface(nextSurface);
+  };
+
+  if (acts.length > 0) {
+    let ticking = false;
+    const scheduleSync = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        ticking = false;
+        syncSurface();
+      });
+    };
+
+    syncSurface();
+    window.addEventListener('scroll', scheduleSync, { passive: true });
+    window.addEventListener('resize', scheduleSync, { passive: true });
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (canvas && !prefersReducedMotion) {
+    const revealTargets = Array.from(canvas.querySelectorAll<HTMLElement>('[data-reveal]'));
+    const initialTriggerY = window.innerHeight * 0.94;
+
+    for (const el of revealTargets) {
+      if (el.getBoundingClientRect().top <= initialTriggerY) {
+        el.dataset.revealed = 'true';
+      }
+    }
+
+    canvas.dataset.revealReady = 'true';
+
+    const pending = revealTargets.filter((el) => el.dataset.revealed !== 'true');
+    if (pending.length > 0 && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight * 0.92) {
+              const target = entry.target as HTMLElement;
+              target.dataset.revealed = 'true';
+              observer.unobserve(target);
+            }
+          }
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
+      );
+
+      for (const el of pending) {
+        observer.observe(el);
+      }
+    } else {
+      for (const el of pending) {
+        el.dataset.revealed = 'true';
+      }
+    }
+  }
+</script>
