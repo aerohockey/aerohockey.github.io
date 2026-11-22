@@ -416,26 +416,24 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
     }
 
     if (backdrop) {
-      if (surface === 'light') {
+      if (immediate || prefersReducedMotion) {
+        backdrop.dataset.backdropHidden = 'true';
+      } else {
         if (backdrop.dataset.backdropHidden === 'true') {
           delete backdrop.dataset.backdropHidden;
-          if (!immediate && !prefersReducedMotion) {
-            void backdrop.offsetWidth;
+          void backdrop.offsetWidth;
+        }
+        if (surface !== 'light') {
+          // Restore dark body underneath the still-opaque white overlay before fading out
+          document.body.style.backgroundColor = '#141414';
+        }
+        backdropHideTimer = window.setTimeout(() => {
+          backdropHideTimer = undefined;
+          if (currentSurface === 'light') {
+            syncChromeMeta('light');
           }
-        }
-      } else {
-        // Restore dark body underneath the still-opaque white overlay before fading out
-        document.body.style.backgroundColor = '#141414';
-        if (immediate || prefersReducedMotion) {
           backdrop.dataset.backdropHidden = 'true';
-        } else {
-          backdropHideTimer = window.setTimeout(() => {
-            backdropHideTimer = undefined;
-            if (currentSurface !== 'light') {
-              backdrop.dataset.backdropHidden = 'true';
-            }
-          }, 680);
-        }
+        }, 680);
       }
     }
 
@@ -443,11 +441,11 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 
     if (immediate || prefersReducedMotion) {
       syncChromeMeta(surface);
-    } else {
+    } else if (surface !== 'light') {
       chromeMetaTimer = window.setTimeout(() => {
         chromeMetaTimer = undefined;
         syncChromeMeta(surface);
-      }, surface === 'light' ? 680 : 320);
+      }, 320);
     }
   };
 
