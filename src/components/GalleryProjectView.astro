@@ -1,5 +1,4 @@
 ---
-import { getImage } from 'astro:assets';
 import MediaFrame from './MediaFrame.astro';
 import {
   countGalleryFrames,
@@ -41,35 +40,6 @@ function getMediaRatio(asset: MediaAsset): number {
   return Number((asset.image.width / asset.image.height).toFixed(4));
 }
 
-// Build high-resolution lightbox data and map each image to its lightbox index
-interface LightboxEntry {
-  src: string;
-  alt: string;
-}
-
-const lightboxEntries: LightboxEntry[] = [];
-const lightboxIndexMap = new WeakMap<MediaAsset, number>();
-
-async function registerAssetForLightbox(asset: MediaAsset): Promise<void> {
-  if (asset.type !== 'image') return;
-  const idx = lightboxEntries.length;
-  const optimized = await getImage({ src: asset.image, width: 2200 });
-  lightboxEntries.push({
-    src: optimized.src,
-    alt: asset.alt[lang],
-  });
-  lightboxIndexMap.set(asset, idx);
-}
-
-for (const item of galleryItems) {
-  if (item.kind === 'single') {
-    await registerAssetForLightbox(item);
-  } else {
-    await registerAssetForLightbox(item.items[0]);
-    await registerAssetForLightbox(item.items[1]);
-  }
-}
-
 const metaParts = [project.role[lang]];
 if (project.client && !project.title[lang].includes(project.client[lang])) {
   metaParts.push(project.client[lang]);
@@ -109,7 +79,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
       {galleryItems.map((item, itemIndex) => {
         if (item.kind === 'single') {
           const ratio = getMediaRatio(item);
-          const lbIndex = lightboxIndexMap.get(item);
           return (
             <figure class="shrink-0 w-full md:w-auto flex flex-col items-start">
               <div
@@ -121,7 +90,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
                   lang={lang}
                   width={1600}
                   loading={itemIndex < 2 ? 'eager' : 'lazy'}
-                  lightboxIndex={lbIndex}
                 />
               </div>
             </figure>
@@ -131,8 +99,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
         const r1 = getMediaRatio(item.items[0]);
         const r2 = getMediaRatio(item.items[1]);
         const bothLandscape = r1 > 1.15 && r2 > 1.15;
-        const lb1 = lightboxIndexMap.get(item.items[0]);
-        const lb2 = lightboxIndexMap.get(item.items[1]);
 
         return (
           <div
@@ -151,7 +117,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
                   lang={lang}
                   width={1400}
                   loading={itemIndex < 2 ? 'eager' : 'lazy'}
-                  lightboxIndex={lb1}
                 />
               </div>
             </figure>
@@ -165,7 +130,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
                   lang={lang}
                   width={1400}
                   loading={itemIndex < 2 ? 'eager' : 'lazy'}
-                  lightboxIndex={lb2}
                 />
               </div>
             </figure>
@@ -187,67 +151,7 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
   </div>
 </main>
 
-<!-- White-cube Lightbox -->
-<div
-  data-lightbox
-  hidden
-  class="fixed inset-0 z-50 bg-white/98 backdrop-blur-[2px] flex flex-col justify-between p-4 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]"
-  role="dialog"
-  aria-modal="true"
-  aria-label={project.title[lang]}
->
-  <div class="flex items-center justify-between shrink-0">
-    <span data-lightbox-counter class="tabular-nums">
-      01 / 01
-    </span>
-    <button
-      type="button"
-      data-lightbox-close
-      class="inline-flex items-center justify-center min-h-[40px] px-3 -mr-3 hover:opacity-55 transition-opacity cursor-pointer"
-    >
-      {t.close}
-    </button>
-  </div>
-
-  <div data-lightbox-stage class="flex-1 min-h-0 flex items-center justify-center py-4 select-none">
-    <img
-      data-lightbox-img
-      src=""
-      alt=""
-      class="max-h-full max-w-full object-contain"
-    />
-  </div>
-
-  <div class="flex items-center justify-between gap-4 shrink-0 min-h-[40px]">
-    <p data-lightbox-caption class="truncate"></p>
-    {lightboxEntries.length > 1 && (
-      <div class="flex items-center gap-3 shrink-0">
-        <button
-          type="button"
-          data-lightbox-prev
-          class="inline-flex items-center min-h-[40px] px-2 hover:opacity-55 transition-opacity cursor-pointer"
-        >
-          {t.prevFrame}
-        </button>
-        <button
-          type="button"
-          data-lightbox-next
-          class="inline-flex items-center min-h-[40px] px-2 -mr-2 hover:opacity-55 transition-opacity cursor-pointer"
-        >
-          {t.nextFrame}
-        </button>
-      </div>
-    )}
-  </div>
-</div>
-
-<script type="application/json" data-lightbox-data set:html={JSON.stringify(lightboxEntries)} />
-
 <style>
-  [data-lightbox][hidden] {
-    display: none !important;
-  }
-
   @media (min-width: 768px) {
     .gallery-rail {
       --rail-h: clamp(280px, min(58vh, 46vw), 560px);
@@ -271,96 +175,4 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
 <script>
   import { initHorizontalTrack } from '../scripts/horizontalScroll';
   initHorizontalTrack();
-
-  // Lightbox controller
-  const dataEl = document.querySelector<HTMLScriptElement>('script[data-lightbox-data]');
-  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
-  const imgEl = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
-  const counterEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-counter]');
-  const captionEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-caption]');
-  const closeBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-close]');
-  const prevBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
-  const nextBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-next]');
-  const stageEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-stage]');
-
-  if (dataEl && lightbox && imgEl && counterEl && captionEl) {
-    const entries: Array<{ src: string; alt: string }> = JSON.parse(dataEl.textContent || '[]');
-    let currentIndex = 0;
-    let lastFocused: HTMLElement | null = null;
-
-    const renderFrame = (index: number) => {
-      if (entries.length === 0) return;
-      currentIndex = (index + entries.length) % entries.length;
-      const entry = entries[currentIndex];
-      imgEl.src = entry.src;
-      imgEl.alt = entry.alt;
-      counterEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
-      captionEl.textContent = entry.alt;
-    };
-
-    const openLightbox = (index: number) => {
-      lastFocused = document.activeElement as HTMLElement | null;
-      renderFrame(index);
-      lightbox.hidden = false;
-      document.body.dataset.lightboxOpen = 'true';
-      closeBtn?.focus();
-    };
-
-    const closeLightbox = () => {
-      lightbox.hidden = true;
-      delete document.body.dataset.lightboxOpen;
-      lastFocused?.focus();
-    };
-
-    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.dataset.lightboxTrigger ?? '0');
-        openLightbox(idx);
-      });
-    });
-
-    closeBtn?.addEventListener('click', closeLightbox);
-    prevBtn?.addEventListener('click', () => renderFrame(currentIndex - 1));
-    nextBtn?.addEventListener('click', () => renderFrame(currentIndex + 1));
-
-    stageEl?.addEventListener('click', (e) => {
-      if (e.target === stageEl) closeLightbox();
-    });
-
-    // Touch swipe in lightbox
-    let touchStartX = 0;
-    stageEl?.addEventListener(
-      'touchstart',
-      (e) => {
-        touchStartX = e.touches[0]?.clientX ?? 0;
-      },
-      { passive: true }
-    );
-    stageEl?.addEventListener(
-      'touchend',
-      (e) => {
-        if (entries.length <= 1) return;
-        const endX = e.changedTouches[0]?.clientX ?? 0;
-        const diff = endX - touchStartX;
-        if (Math.abs(diff) > 48) {
-          renderFrame(diff < 0 ? currentIndex + 1 : currentIndex - 1);
-        }
-      },
-      { passive: true }
-    );
-
-    window.addEventListener('keydown', (e) => {
-      if (lightbox.hidden) return;
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeLightbox();
-      } else if (e.key === 'ArrowRight' && entries.length > 1) {
-        e.preventDefault();
-        renderFrame(currentIndex + 1);
-      } else if (e.key === 'ArrowLeft' && entries.length > 1) {
-        e.preventDefault();
-        renderFrame(currentIndex - 1);
-      }
-    });
-  }
 </script>

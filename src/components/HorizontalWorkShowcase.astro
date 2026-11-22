@@ -33,7 +33,11 @@ const t = UI[lang];
             style={`--r: ${ratio};`}
             class="showcase-card shrink-0 snap-start snap-always md:snap-align-none flex flex-col"
           >
-            <a href={href} class="group flex flex-col w-full focus:outline-none">
+            <a
+              href={href}
+              draggable={false}
+              class="group flex flex-col w-full focus:outline-none select-none"
+            >
               <div class="mb-2.5 md:mb-3 md:min-h-[38px] 2xl:min-h-[42px] flex flex-col justify-end">
                 <h2 class="md:truncate">
                   {project.title[lang]}

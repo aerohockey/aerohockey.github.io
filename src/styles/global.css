@@ -38,3 +38,8 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+[data-horizontal-track][data-dragging='true'],
+[data-horizontal-track][data-dragging='true'] * {
+  cursor: grabbing !important;
+}
