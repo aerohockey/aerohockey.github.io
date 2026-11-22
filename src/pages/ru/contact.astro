@@ -1,14 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ContactView from '../../components/ContactView.astro';
+import RedirectPage from '../../components/RedirectPage.astro';
 ---
 
-<BaseLayout
-  title="Контакты — Евгений Иванов"
-  description="Связаться по почте, через Telegram или по телефону."
-  lang="ru"
-  activeNav="contact"
-  lockViewport={true}
->
-  <ContactView lang="ru" />
-</BaseLayout>
+<RedirectPage to="/ru/info/" title="Инфо — Евгений Иванов" />

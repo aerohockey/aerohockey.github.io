@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GuestPrivacyView from '../../../components/GuestPrivacyView.astro';
+import { getProjectBySlug } from '../../../data/projects';
+
+const guest = getProjectBySlug('guest');
+---
+
+<BaseLayout
+  title="Privacy Policy — Guest — Evgeny Ivanov"
+  description="Privacy Policy for the Guest iOS app — no accounts, no analytics, no personal data collection."
+  lang="en"
+  activeNav="work"
+  desktopLockViewport={false}
+  autoHideHeader={true}
+  ogImage={guest?.cover}
+>
+  <GuestPrivacyView lang="en" />
+</BaseLayout>

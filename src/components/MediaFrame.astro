@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import type { MediaAsset } from '../data/projects';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  media: MediaAsset;
+  lang: Lang;
+  width?: number;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+  lightboxIndex?: number;
+}
+
+const {
+  media,
+  lang,
+  width = 1600,
+  loading = 'lazy',
+  class: className = '',
+  lightboxIndex,
+} = Astro.props;
+---
+
+{
+  media.type === 'video' ? (
+    <video
+      src={media.src}
+      poster={media.poster?.src}
+      aria-label={media.alt[lang]}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      class:list={['w-full h-full object-cover block select-none', className]}
+    />
+  ) : lightboxIndex !== undefined ? (
+    <button
+      type="button"
+      data-lightbox-trigger={lightboxIndex}
+      aria-label={media.alt[lang]}
+      class="w-full h-full block cursor-zoom-in focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141414]"
+    >
+      <Image
+        src={media.image}
+        alt={media.alt[lang]}
+        width={width}
+        class:list={['w-full h-full object-cover pointer-events-none select-none', className]}
+        loading={loading}
+        draggable={false}
+      />
+    </button>
+  ) : (
+    <Image
+      src={media.image}
+      alt={media.alt[lang]}
+      width={width}
+      class:list={['w-full h-full object-cover pointer-events-none select-none', className]}
+      loading={loading}
+      draggable={false}
+    />
+  )
+}

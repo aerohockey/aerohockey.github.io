@@ -1,16 +1,20 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import { getAlternateLangPath, type Lang } from '../i18n/ui';
+import aboutPortrait from '../assets/draft/about-portrait.jpg';
+import { UI, getAlternateLangPath, type Lang } from '../i18n/ui';
 
 interface Props {
   title: string;
   description?: string;
   lang: Lang;
-  activeNav?: 'work' | 'about' | 'contact';
-  lockViewport?: boolean;
+  activeNav?: 'work' | 'info';
+  desktopLockViewport?: boolean;
   autoHideHeader?: boolean;
+  ogImage?: ImageMetadata;
 }
 
 const {
@@ -18,32 +22,97 @@ const {
   description = '',
   lang,
   activeNav,
-  lockViewport = false,
+  desktopLockViewport = false,
   autoHideHeader = false,
+  ogImage = aboutPortrait,
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
+const siteBase = Astro.site ?? new URL('https://aerohockey.github.io');
+const canonicalUrl = new URL(pathname, siteBase).toString();
 const enPath = getAlternateLangPath(pathname, 'en');
 const ruPath = getAlternateLangPath(pathname, 'ru');
+const enUrl = new URL(enPath, siteBase).toString();
+const ruUrl = new URL(ruPath, siteBase).toString();
+
+const optimizedOg = await getImage({
+  src: ogImage,
+  width: 1200,
+  format: 'jpeg',
+});
+const ogImageUrl = new URL(optimizedOg.src, siteBase).toString();
+
+// Dynamically wire local ABC Areal fonts when present (gitignored in public repos)
+const arealFontFiles = import.meta.glob<string>(
+  '../assets/local fonts/Areal/ABC Areal/*.{woff2,otf}',
+  { eager: true, import: 'default', query: '?url' }
+);
+
+const WEIGHT_TARGETS: Array<{ weight: number; token: string }> = [
+  { weight: 400, token: '-Regular.' },
+  { weight: 500, token: '-Medium.' },
+  { weight: 700, token: '-Bold.' },
+];
+
+const fontFaceCss = WEIGHT_TARGETS.map(({ weight, token }) => {
+  const candidates = Object.entries(arealFontFiles).filter(
+    ([path]) => path.includes(token) && !path.includes('Italic')
+  );
+  if (candidates.length === 0) return '';
+
+  const woff2 = candidates.find(([path]) => path.endsWith('.woff2'));
+  const [matchedPath, fontUrl] = woff2 ?? candidates[0];
+  const format = matchedPath.endsWith('.woff2') ? 'woff2' : 'opentype';
+  const isTrial = matchedPath.includes('Trial');
+  const unicodeRangeRule = isTrial
+    ? 'unicode-range: U+0000-024F, U+2000-206F, U+2190-2193;'
+    : '';
+
+  return `@font-face {
+    font-family: "ABC Areal";
+    src: url("${fontUrl}") format("${format}");
+    font-weight: ${weight};
+    font-style: normal;
+    font-display: swap;
+    ${unicodeRangeRule}
+  }`;
+})
+  .filter(Boolean)
+  .join('\n');
 ---
 
 <!doctype html>
-<html lang={lang} class={lockViewport ? 'h-full overflow-hidden' : ''}>
+<html lang={lang} class={desktopLockViewport ? 'md:h-full md:overflow-hidden' : ''}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    {description && <meta name="description" content={description} />}
-    <link rel="alternate" hreflang="en" href={enPath} />
-    <link rel="alternate" hreflang="ru" href={ruPath} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="ru" href={ruUrl} />
     <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+
+    <!-- OpenGraph & Social Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={UI[lang].brand} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={lang === 'ru' ? 'ru_RU' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {fontFaceCss && <style set:html={fontFaceCss} />}
   </head>
   <body
     class:list={[
-      'bg-white text-[#141414] font-sans antialiased',
-      lockViewport ? 'h-full min-h-0 overflow-hidden flex flex-col' : 'min-h-screen flex flex-col',
+      'bg-white text-[#141414] font-sans antialiased overflow-x-clip min-h-screen flex flex-col',
+      desktopLockViewport && 'md:h-full md:min-h-0 md:overflow-hidden',
     ]}
   >
     <Header lang={lang} activeNav={activeNav} autoHide={autoHideHeader} />

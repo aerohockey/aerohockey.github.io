@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "ABC Areal", "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -19,26 +19,12 @@
 }
 
 :root {
-  --rail-vh: 68vh;
-  --rail-svh: 66vh;
-  --caption-h: 48.5px;
-}
-
-@media (min-width: 1536px) {
-  :root {
-    --caption-h: 51px;
-  }
-}
-
-@supports (height: 1dvh) {
-  :root {
-    --rail-vh: 74dvh;
-  }
+  --rail-h-desktop: clamp(320px, 58vh, 560px);
 }
 
 @supports (height: 1svh) {
   :root {
-    --rail-svh: 66svh;
+    --rail-h-desktop: clamp(320px, 58svh, 560px);
   }
 }
 

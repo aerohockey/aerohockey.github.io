@@ -17,11 +17,12 @@ const isGallery = project.format === 'gallery';
 
 <BaseLayout
   title={`${project.title[lang]} — ${t.brand}`}
-  description={project.subtitle[lang]}
+  description={project.intro?.[lang] ?? project.subtitle[lang]}
   lang={lang}
   activeNav="work"
-  lockViewport={isGallery}
-  autoHideHeader={!isGallery}
+  desktopLockViewport={isGallery}
+  autoHideHeader={true}
+  ogImage={project.cover}
 >
   {isGallery ? (
     <GalleryProjectView project={project} lang={lang} />

@@ -1,14 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import AboutView from '../../components/AboutView.astro';
+import RedirectPage from '../../components/RedirectPage.astro';
 ---
 
-<BaseLayout
-  title="Обо мне — Евгений Иванов"
-  description="Арт-директор с камерой, Санкт-Петербург."
-  lang="ru"
-  activeNav="about"
-  lockViewport={true}
->
-  <AboutView lang="ru" />
-</BaseLayout>
+<RedirectPage to="/ru/info/" title="Инфо — Евгений Иванов" />

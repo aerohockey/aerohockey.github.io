@@ -19,26 +19,48 @@ import contaxCover from '../assets/draft/contax-cover.jpg';
 import contax2 from '../assets/draft/contax-2.jpg';
 
 export type ProjectFormat = 'landing' | 'gallery';
-export type CoverAspect = '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2';
+export type CoverAspect = '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2' | '16/9';
 
-export interface GalleryFrame {
+export interface ImageMedia {
+  type: 'image';
   image: ImageMetadata;
   alt: Record<Lang, string>;
-  orientation: 'portrait' | 'landscape';
 }
+
+export interface VideoMedia {
+  type: 'video';
+  src: string;
+  poster?: ImageMetadata;
+  aspectRatio: number;
+  alt: Record<Lang, string>;
+}
+
+export type MediaAsset = ImageMedia | VideoMedia;
+
+export type GalleryItem =
+  | ({ kind: 'single' } & MediaAsset)
+  | { kind: 'diptych'; items: [MediaAsset, MediaAsset] };
 
 export interface ProjectItem {
   slug: string;
   format: ProjectFormat;
-  year: string;
+  year?: string;
   category: Record<Lang, string>;
+  role: Record<Lang, string>;
+  client?: Record<Lang, string>;
+  status?: Record<Lang, string>;
+  appStoreUrl?: string;
   title: Record<Lang, string>;
   subtitle: Record<Lang, string>;
   cover: ImageMetadata;
   coverAlt: Record<Lang, string>;
   coverAspect: CoverAspect;
+  coverVideo?: {
+    src: string;
+    poster?: ImageMetadata;
+  };
   intro?: Record<Lang, string>;
-  gallery?: GalleryFrame[];
+  gallery?: GalleryItem[];
 }
 
 export const GUEST_ASSETS = {
@@ -57,6 +79,14 @@ export const PROJECTS: ProjectItem[] = [
     category: {
       en: 'Mobile App · In Development',
       ru: 'Мобильное приложение · В разработке',
+    },
+    role: {
+      en: 'Concept, Art Direction, Product',
+      ru: 'Концепция, арт-дирекшн, продукт',
+    },
+    status: {
+      en: 'Coming soon · iOS',
+      ru: 'Скоро · iOS',
     },
     title: {
       en: 'Guest',
@@ -81,6 +111,14 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Editorial Photography',
       ru: 'Редакционная съёмка',
     },
+    role: {
+      en: 'Direction & Photography',
+      ru: 'Дирекшн и фотография',
+    },
+    client: {
+      en: 'Frantsuza Bistrot',
+      ru: 'Frantsuza Bistrot',
+    },
     title: {
       en: 'Frantsuza Bistrot × Ivan Frolukhin',
       ru: 'Frantsuza Bistrot × Иван Фролухин',
@@ -90,8 +128,8 @@ export const PROJECTS: ProjectItem[] = [
       ru: 'Портретная и кухонная серия',
     },
     intro: {
-      en: 'A quiet documentary portrait series capturing chef Ivan Frolukhin and the evening atmosphere of Frantsuza Bistrot.',
-      ru: 'Камерная документальная серия о шефе Иване Фролухине и вечернем ритме Frantsuza Bistrot.',
+      en: 'A quiet documentary portrait series capturing chef Ivan Frolukhin and the evening atmosphere of Frantsuza Bistrot — direct flash, clean color, and lived-in textures.',
+      ru: 'Камерная документальная серия о шефе Иване Фролухине и вечернем ритме Frantsuza Bistrot — прямой свет, чистые цвета и живая фактура зала.',
     },
     cover: frantsuzaCover,
     coverAlt: {
@@ -101,28 +139,34 @@ export const PROJECTS: ProjectItem[] = [
     coverAspect: '4/5',
     gallery: [
       {
+        kind: 'single',
+        type: 'image',
         image: frantsuzaCover,
         alt: {
           en: 'Chef Ivan Frolukhin portrait at Frantsuza Bistrot',
           ru: 'Портрет шефа Ивана Фролухина в Frantsuza Bistrot',
         },
-        orientation: 'portrait',
       },
       {
-        image: frantsuza2,
-        alt: {
-          en: 'Frantsuza Bistrot dining room detail',
-          ru: 'Деталь зала Frantsuza Bistrot',
-        },
-        orientation: 'portrait',
-      },
-      {
-        image: frantsuza3,
-        alt: {
-          en: 'Frantsuza Bistrot evening scene',
-          ru: 'Вечерняя сцена в Frantsuza Bistrot',
-        },
-        orientation: 'portrait',
+        kind: 'diptych',
+        items: [
+          {
+            type: 'image',
+            image: frantsuza2,
+            alt: {
+              en: 'Frantsuza Bistrot dining room detail',
+              ru: 'Деталь зала Frantsuza Bistrot',
+            },
+          },
+          {
+            type: 'image',
+            image: frantsuza3,
+            alt: {
+              en: 'Frantsuza Bistrot evening scene',
+              ru: 'Вечерняя сцена в Frantsuza Bistrot',
+            },
+          },
+        ],
       },
     ],
   },
@@ -134,6 +178,10 @@ export const PROJECTS: ProjectItem[] = [
       en: 'Reportage',
       ru: 'Репортаж',
     },
+    role: {
+      en: 'Editorial Photography',
+      ru: 'Редакционная съёмка',
+    },
     title: {
       en: 'Reportage',
       ru: 'Репортаж',
@@ -143,8 +191,8 @@ export const PROJECTS: ProjectItem[] = [
       ru: 'Живые уличные и событийные наблюдения',
     },
     intro: {
-      en: 'Candid horizontal and vertical moments captured without staging — light, crowd movement, and spontaneous portraits.',
-      ru: 'Непостановочные репортажные кадры — свет, движение людей и случайные портреты.',
+      en: 'Candid wide and vertical observations captured without staging — light, crowd movement, and spontaneous portraits.',
+      ru: 'Непостановочные репортажные кадры — свет, движение людей и случайные портреты в потоке событий.',
     },
     cover: reportageWide,
     coverAlt: {
@@ -154,20 +202,22 @@ export const PROJECTS: ProjectItem[] = [
     coverAspect: '3/2',
     gallery: [
       {
+        kind: 'single',
+        type: 'image',
         image: reportageWide,
         alt: {
           en: 'Reportage wide scene 01',
           ru: 'Репортажный кадр 01',
         },
-        orientation: 'landscape',
       },
       {
+        kind: 'single',
+        type: 'image',
         image: reportage2,
         alt: {
           en: 'Reportage wide scene 02',
           ru: 'Репортажный кадр 02',
         },
-        orientation: 'landscape',
       },
     ],
   },
@@ -178,6 +228,14 @@ export const PROJECTS: ProjectItem[] = [
     category: {
       en: 'Commercial Portrait',
       ru: 'Коммерческая съёмка',
+    },
+    role: {
+      en: 'Direction & Portrait',
+      ru: 'Дирекшн и портрет',
+    },
+    client: {
+      en: 'Casper',
+      ru: 'Casper',
     },
     title: {
       en: 'Casper × Roman Kiselyov',
@@ -199,12 +257,13 @@ export const PROJECTS: ProjectItem[] = [
     coverAspect: '4/5',
     gallery: [
       {
+        kind: 'single',
+        type: 'image',
         image: casperCover,
         alt: {
           en: 'Roman Kiselyov portrait',
           ru: 'Портрет Романа Киселёва',
         },
-        orientation: 'portrait',
       },
     ],
   },
@@ -215,6 +274,10 @@ export const PROJECTS: ProjectItem[] = [
     category: {
       en: 'Portrait',
       ru: 'Портрет',
+    },
+    role: {
+      en: 'Portrait & Studio',
+      ru: 'Портрет и студия',
     },
     title: {
       en: 'Artist Sasha Braulov',
@@ -236,12 +299,13 @@ export const PROJECTS: ProjectItem[] = [
     coverAspect: '4/5',
     gallery: [
       {
+        kind: 'single',
+        type: 'image',
         image: braulovCover,
         alt: {
           en: 'Portrait of Sasha Braulov',
           ru: 'Портрет Саши Браулова',
         },
-        orientation: 'portrait',
       },
     ],
   },
@@ -253,6 +317,10 @@ export const PROJECTS: ProjectItem[] = [
       en: '35mm Film',
       ru: 'Плёнка 35 мм',
     },
+    role: {
+      en: '35mm Film Series',
+      ru: 'Плёнка 35 мм',
+    },
     title: {
       en: 'Contax G1',
       ru: 'Contax G1',
@@ -262,7 +330,7 @@ export const PROJECTS: ProjectItem[] = [
       ru: 'Личный плёночный дневник',
     },
     intro: {
-      en: 'An ongoing 35mm film diary shot on Contax G1 — quiet observations, natural light, and texture.',
+      en: 'An ongoing 35mm film diary shot on Contax G1 — quiet observations, natural light, and tactile grain.',
       ru: 'Плёночные наблюдения на Contax G1 — естественный свет, паузы и фактура 35 мм.',
     },
     cover: contaxCover,
@@ -273,20 +341,22 @@ export const PROJECTS: ProjectItem[] = [
     coverAspect: '4/5',
     gallery: [
       {
+        kind: 'single',
+        type: 'image',
         image: contaxCover,
         alt: {
           en: 'Contax G1 frame 01',
           ru: 'Кадр Contax G1 01',
         },
-        orientation: 'portrait',
       },
       {
+        kind: 'single',
+        type: 'image',
         image: contax2,
         alt: {
           en: 'Contax G1 frame 02',
           ru: 'Кадр Contax G1 02',
         },
-        orientation: 'portrait',
       },
     ],
   },
@@ -300,4 +370,9 @@ export function getNextProject(slug: string): ProjectItem {
   const index = PROJECTS.findIndex((p) => p.slug === slug);
   if (index === -1) return PROJECTS[0];
   return PROJECTS[(index + 1) % PROJECTS.length];
+}
+
+export function countGalleryFrames(gallery?: GalleryItem[]): number {
+  if (!gallery || gallery.length === 0) return 1;
+  return gallery.reduce((sum, item) => sum + (item.kind === 'diptych' ? 2 : 1), 0);
 }

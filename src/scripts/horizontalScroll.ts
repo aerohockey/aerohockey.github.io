@@ -22,12 +22,17 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
     { passive: false }
   );
 
-  // Keyboard arrow navigation
+  // Keyboard arrow navigation (yield when a lightbox is open)
   window.addEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') {
+    if (document.body.dataset.lightboxOpen === 'true') return;
+    if (
+      document.activeElement?.tagName === 'INPUT' ||
+      document.activeElement?.tagName === 'TEXTAREA'
+    ) {
       return;
     }
+    if (track.scrollWidth <= track.clientWidth) return;
     e.preventDefault();
     const step = Math.round(track.clientWidth * 0.55);
     track.scrollBy({
@@ -87,4 +92,48 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
     },
     true
   );
+
+  // Sync optional mobile/shelf slide counter (e.g. "01 / 06")
+  const counterEl = document.querySelector<HTMLElement>('[data-carousel-counter]');
+  const items = Array.from(track.querySelectorAll<HTMLElement>('[data-carousel-item]'));
+
+  if (counterEl && items.length > 0) {
+    let rafPending = false;
+
+    const updateCounter = () => {
+      rafPending = false;
+      const total = items.length;
+      const trackRect = track.getBoundingClientRect();
+      const firstRect = items[0].getBoundingClientRect();
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+
+      let activeIndex = 0;
+      if (atEnd) {
+        activeIndex = total - 1;
+      } else {
+        const anchorLeft = trackRect.left + Math.max(16, firstRect.left - trackRect.left);
+        let bestDist = Infinity;
+        for (let i = 0; i < total; i++) {
+          const dist = Math.abs(items[i].getBoundingClientRect().left - anchorLeft);
+          if (dist < bestDist) {
+            bestDist = dist;
+            activeIndex = i;
+          }
+        }
+      }
+
+      counterEl.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    };
+
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (!rafPending) {
+          rafPending = true;
+          window.requestAnimationFrame(updateCounter);
+        }
+      },
+      { passive: true }
+    );
+  }
 }

@@ -1,7 +1,19 @@
 ---
-import { Image } from 'astro:assets';
-import type { ProjectItem } from '../data/projects';
-import type { Lang } from '../i18n/ui';
+import { getImage } from 'astro:assets';
+import MediaFrame from './MediaFrame.astro';
+import {
+  countGalleryFrames,
+  getNextProject,
+  type GalleryItem,
+  type MediaAsset,
+  type ProjectItem,
+} from '../data/projects';
+import {
+  UI,
+  formatFramesCount,
+  getProjectPath,
+  type Lang,
+} from '../i18n/ui';
 
 interface Props {
   project: ProjectItem;
@@ -9,109 +21,249 @@ interface Props {
 }
 
 const { project, lang } = Astro.props;
-const MIN_GALLERY_RATIO = 3 / 4; // auto-crop narrower vertical frames (e.g. 2:3) to 3:4
-const frames = project.gallery ?? [
+const t = UI[lang];
+const nextProject = getNextProject(project.slug);
+const nextHref = getProjectPath(lang, nextProject.slug);
+
+const galleryItems: GalleryItem[] = project.gallery ?? [
   {
+    kind: 'single',
+    type: 'image',
     image: project.cover,
     alt: project.coverAlt,
-    orientation: 'portrait' as const,
   },
 ];
+
+const totalFrames = countGalleryFrames(galleryItems);
+
+function getMediaRatio(asset: MediaAsset): number {
+  if (asset.type === 'video') return asset.aspectRatio;
+  return Number((asset.image.width / asset.image.height).toFixed(4));
+}
+
+// Build high-resolution lightbox data and map each image to its lightbox index
+interface LightboxEntry {
+  src: string;
+  alt: string;
+}
+
+const lightboxEntries: LightboxEntry[] = [];
+const lightboxIndexMap = new WeakMap<MediaAsset, number>();
+
+async function registerAssetForLightbox(asset: MediaAsset): Promise<void> {
+  if (asset.type !== 'image') return;
+  const idx = lightboxEntries.length;
+  const optimized = await getImage({ src: asset.image, width: 2200 });
+  lightboxEntries.push({
+    src: optimized.src,
+    alt: asset.alt[lang],
+  });
+  lightboxIndexMap.set(asset, idx);
+}
+
+for (const item of galleryItems) {
+  if (item.kind === 'single') {
+    await registerAssetForLightbox(item);
+  } else {
+    await registerAssetForLightbox(item.items[0]);
+    await registerAssetForLightbox(item.items[1]);
+  }
+}
+
+const metaParts = [project.role[lang]];
+if (project.client && !project.title[lang].includes(project.client[lang])) {
+  metaParts.push(project.client[lang]);
+}
 ---
 
-<main class="flex-1 min-h-0 relative overflow-hidden pt-[72px] md:pt-16 pb-[calc(0.875rem+env(safe-area-inset-bottom))] md:pb-10">
+<main class="flex-1 min-h-0 md:relative md:overflow-hidden pt-[68px] md:pt-16 pb-[calc(2rem+env(safe-area-inset-bottom))] md:pb-10 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal text-[#141414]">
   <div
     data-horizontal-track
-    class="no-scrollbar h-full w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-3.5 sm:scroll-pl-6 md:scroll-pl-0 flex items-end cursor-grab"
+    class="no-scrollbar md:h-full w-full md:overflow-x-auto md:overflow-y-hidden flex flex-col md:flex-row md:items-end md:cursor-grab"
   >
-    <div class="gallery-rail shrink-0 flex items-start gap-3.5 sm:gap-5 md:gap-6 lg:gap-8 px-3.5 sm:px-6 md:px-10">
-      <!-- Opening editorial info slide -->
-      <section
-        class="shrink-0 snap-start snap-always md:snap-align-none w-[calc(100vw-48px)] sm:w-[calc(100vw-72px)] md:w-[320px] lg:w-[360px] flex flex-col space-y-2.5 pr-4 md:pr-6"
-      >
-        <h1 class="text-[16px] 2xl:text-[18px] font-medium leading-[1.25] tracking-[-0.01em] text-[#141414]">
-          {project.title[lang]}
-        </h1>
+    <div class="gallery-rail w-full md:w-auto md:shrink-0 flex flex-col md:flex-row md:items-start gap-7 md:gap-6 lg:gap-8 px-4 sm:px-6 md:px-10">
+      <!-- Opening editorial info column -->
+      <section class="w-full md:w-[300px] lg:w-[340px] shrink-0 md:h-[var(--rail-h)] flex flex-col justify-between md:pr-4">
+        <div>
+          <h1 class="leading-[1.35]">
+            {project.title[lang]}
+          </h1>
 
-        {project.intro && (
-          <p class="text-[14px] 2xl:text-[15px] leading-[1.55] text-[#141414]">
-            {project.intro[lang]}
+          <p class="mt-0.5 leading-[1.35]">
+            {metaParts.join(' · ')}
           </p>
-        )}
+
+          {project.intro && (
+            <p class="mt-5">
+              {project.intro[lang]}
+            </p>
+          )}
+        </div>
+
+        <p class="hidden md:block leading-[1.35] tabular-nums">
+          {formatFramesCount(lang, totalFrames)}
+        </p>
       </section>
 
-      <!-- Horizontal gallery photographs -->
-      {frames.map((frame, index) => {
-        const naturalRatio = frame.image.width / frame.image.height;
-        const clampedRatio = Math.max(MIN_GALLERY_RATIO, naturalRatio);
-        const ratio = Number(clampedRatio.toFixed(4));
-        const aspectRatio =
-          naturalRatio < MIN_GALLERY_RATIO
-            ? '3 / 4'
-            : `${frame.image.width} / ${frame.image.height}`;
+      <!-- Gallery media items (vertical stack on mobile, equal-height horizontal exhibition on desktop) -->
+      {galleryItems.map((item, itemIndex) => {
+        if (item.kind === 'single') {
+          const ratio = getMediaRatio(item);
+          const lbIndex = lightboxIndexMap.get(item);
+          return (
+            <figure class="shrink-0 w-full md:w-auto flex flex-col items-start">
+              <div
+                style={`--r: ${ratio}; aspect-ratio: ${ratio};`}
+                class="gallery-frame w-full overflow-hidden bg-[#f5f5f3]"
+              >
+                <MediaFrame
+                  media={item}
+                  lang={lang}
+                  width={1600}
+                  loading={itemIndex < 2 ? 'eager' : 'lazy'}
+                  lightboxIndex={lbIndex}
+                />
+              </div>
+            </figure>
+          );
+        }
+
+        const r1 = getMediaRatio(item.items[0]);
+        const r2 = getMediaRatio(item.items[1]);
+        const bothLandscape = r1 > 1.15 && r2 > 1.15;
+        const lb1 = lightboxIndexMap.get(item.items[0]);
+        const lb2 = lightboxIndexMap.get(item.items[1]);
+
         return (
-          <figure class="shrink-0 snap-start snap-always md:snap-align-none flex flex-col items-start">
-            <div
-              style={`--r: ${ratio}; aspect-ratio: ${aspectRatio};`}
-              class="gallery-frame overflow-hidden bg-[#f5f5f3]"
-            >
-              <Image
-                src={frame.image}
-                alt={frame.alt[lang]}
-                width={1400}
-                class="w-full h-full object-cover pointer-events-none select-none"
-                loading={index < 2 ? 'eager' : 'lazy'}
-                draggable={false}
-              />
-            </div>
-          </figure>
+          <div
+            class:list={[
+              'shrink-0 w-full md:w-auto grid gap-2.5 md:flex md:items-start lg:gap-3',
+              bothLandscape ? 'grid-cols-1' : 'grid-cols-2',
+            ]}
+          >
+            <figure class="w-full md:w-auto flex flex-col items-start">
+              <div
+                style={`--r: ${r1}; aspect-ratio: ${r1};`}
+                class="gallery-frame w-full overflow-hidden bg-[#f5f5f3]"
+              >
+                <MediaFrame
+                  media={item.items[0]}
+                  lang={lang}
+                  width={1400}
+                  loading={itemIndex < 2 ? 'eager' : 'lazy'}
+                  lightboxIndex={lb1}
+                />
+              </div>
+            </figure>
+            <figure class="w-full md:w-auto flex flex-col items-start">
+              <div
+                style={`--r: ${r2}; aspect-ratio: ${r2};`}
+                class="gallery-frame w-full overflow-hidden bg-[#f5f5f3]"
+              >
+                <MediaFrame
+                  media={item.items[1]}
+                  lang={lang}
+                  width={1400}
+                  loading={itemIndex < 2 ? 'eager' : 'lazy'}
+                  lightboxIndex={lb2}
+                />
+              </div>
+            </figure>
+          </div>
         );
       })}
+
+      <!-- End-of-rail Next Project link -->
+      <div class="w-full md:w-[220px] lg:w-[240px] shrink-0 md:h-[var(--rail-h)] pt-6 mt-2 md:mt-0 md:pt-0 md:pl-8 flex flex-col justify-start">
+        <a
+          href={nextHref}
+          class="inline-flex flex-col min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
+        >
+          <span class="leading-[1.35]">{t.nextProject}</span>
+          <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
+        </a>
+      </div>
     </div>
   </div>
 </main>
 
+<!-- White-cube Lightbox -->
+<div
+  data-lightbox
+  hidden
+  class="fixed inset-0 z-50 bg-white/98 backdrop-blur-[2px] flex flex-col justify-between p-4 sm:p-6 md:px-10 md:py-6 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]"
+  role="dialog"
+  aria-modal="true"
+  aria-label={project.title[lang]}
+>
+  <div class="flex items-center justify-between shrink-0">
+    <span data-lightbox-counter class="tabular-nums">
+      01 / 01
+    </span>
+    <button
+      type="button"
+      data-lightbox-close
+      class="inline-flex items-center justify-center min-h-[40px] px-3 -mr-3 hover:opacity-55 transition-opacity cursor-pointer"
+    >
+      {t.close}
+    </button>
+  </div>
+
+  <div data-lightbox-stage class="flex-1 min-h-0 flex items-center justify-center py-4 select-none">
+    <img
+      data-lightbox-img
+      src=""
+      alt=""
+      class="max-h-full max-w-full object-contain"
+    />
+  </div>
+
+  <div class="flex items-center justify-between gap-4 shrink-0 min-h-[40px]">
+    <p data-lightbox-caption class="truncate"></p>
+    {lightboxEntries.length > 1 && (
+      <div class="flex items-center gap-3 shrink-0">
+        <button
+          type="button"
+          data-lightbox-prev
+          class="inline-flex items-center min-h-[40px] px-2 hover:opacity-55 transition-opacity cursor-pointer"
+        >
+          {t.prevFrame}
+        </button>
+        <button
+          type="button"
+          data-lightbox-next
+          class="inline-flex items-center min-h-[40px] px-2 -mr-2 hover:opacity-55 transition-opacity cursor-pointer"
+        >
+          {t.nextFrame}
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
+<script type="application/json" data-lightbox-data set:html={JSON.stringify(lightboxEntries)} />
+
 <style>
-  .gallery-rail {
-    --rail-h: min(calc((100vw - 48px) * 4 / 3), var(--rail-vh));
-    min-height: var(--rail-h);
-  }
-
-  .gallery-frame {
-    width: calc(100vw - 48px);
-    width: min(calc(100vw - 48px), calc(var(--rail-h) * var(--r)));
-  }
-
-  @media (min-width: 640px) {
-    .gallery-rail {
-      --rail-h: min(calc((100vw - 72px) * 4 / 3), var(--rail-vh));
-    }
-
-    .gallery-frame {
-      width: calc(100vw - 72px);
-      width: min(calc(100vw - 72px), calc(var(--rail-h) * var(--r)));
-    }
+  [data-lightbox][hidden] {
+    display: none !important;
   }
 
   @media (min-width: 768px) {
     .gallery-rail {
-      --rail-h: min(calc(40vw * 5 / 4), var(--rail-svh));
+      --rail-h: clamp(280px, min(58vh, 46vw), 560px);
     }
 
     .gallery-frame {
-      width: 40vw;
-      width: min(40vw, calc(var(--rail-h) * var(--r)));
+      height: var(--rail-h);
+      width: calc(var(--rail-h) * var(--r));
     }
   }
 
-  @media (min-width: 1024px) {
-    .gallery-rail {
-      --rail-h: min(calc(33vw * 5 / 4), 625px, var(--rail-svh));
-    }
-
-    .gallery-frame {
-      width: min(33vw, 500px);
-      width: min(33vw, 500px, calc(var(--rail-h) * var(--r)));
+  @supports (height: 1svh) {
+    @media (min-width: 768px) {
+      .gallery-rail {
+        --rail-h: clamp(280px, min(58svh, 46vw), 560px);
+      }
     }
   }
 </style>
@@ -119,4 +271,96 @@ const frames = project.gallery ?? [
 <script>
   import { initHorizontalTrack } from '../scripts/horizontalScroll';
   initHorizontalTrack();
+
+  // Lightbox controller
+  const dataEl = document.querySelector<HTMLScriptElement>('script[data-lightbox-data]');
+  const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+  const imgEl = lightbox?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+  const counterEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-counter]');
+  const captionEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-caption]');
+  const closeBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+  const prevBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+  const nextBtn = lightbox?.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+  const stageEl = lightbox?.querySelector<HTMLElement>('[data-lightbox-stage]');
+
+  if (dataEl && lightbox && imgEl && counterEl && captionEl) {
+    const entries: Array<{ src: string; alt: string }> = JSON.parse(dataEl.textContent || '[]');
+    let currentIndex = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    const renderFrame = (index: number) => {
+      if (entries.length === 0) return;
+      currentIndex = (index + entries.length) % entries.length;
+      const entry = entries[currentIndex];
+      imgEl.src = entry.src;
+      imgEl.alt = entry.alt;
+      counterEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
+      captionEl.textContent = entry.alt;
+    };
+
+    const openLightbox = (index: number) => {
+      lastFocused = document.activeElement as HTMLElement | null;
+      renderFrame(index);
+      lightbox.hidden = false;
+      document.body.dataset.lightboxOpen = 'true';
+      closeBtn?.focus();
+    };
+
+    const closeLightbox = () => {
+      lightbox.hidden = true;
+      delete document.body.dataset.lightboxOpen;
+      lastFocused?.focus();
+    };
+
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.lightboxTrigger ?? '0');
+        openLightbox(idx);
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    prevBtn?.addEventListener('click', () => renderFrame(currentIndex - 1));
+    nextBtn?.addEventListener('click', () => renderFrame(currentIndex + 1));
+
+    stageEl?.addEventListener('click', (e) => {
+      if (e.target === stageEl) closeLightbox();
+    });
+
+    // Touch swipe in lightbox
+    let touchStartX = 0;
+    stageEl?.addEventListener(
+      'touchstart',
+      (e) => {
+        touchStartX = e.touches[0]?.clientX ?? 0;
+      },
+      { passive: true }
+    );
+    stageEl?.addEventListener(
+      'touchend',
+      (e) => {
+        if (entries.length <= 1) return;
+        const endX = e.changedTouches[0]?.clientX ?? 0;
+        const diff = endX - touchStartX;
+        if (Math.abs(diff) > 48) {
+          renderFrame(diff < 0 ? currentIndex + 1 : currentIndex - 1);
+        }
+      },
+      { passive: true }
+    );
+
+    window.addEventListener('keydown', (e) => {
+      if (lightbox.hidden) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLightbox();
+      } else if (e.key === 'ArrowRight' && entries.length > 1) {
+        e.preventDefault();
+        renderFrame(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft' && entries.length > 1) {
+        e.preventDefault();
+        renderFrame(currentIndex - 1);
+      }
+    });
+  }
 </script>

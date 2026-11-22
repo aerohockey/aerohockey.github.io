@@ -1,0 +1,138 @@
+---
+import { Image } from 'astro:assets';
+import aboutPortrait from '../assets/draft/about-portrait.jpg';
+import { UI, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = UI[lang];
+
+const content = {
+  en: {
+    headline: 'Art director with a camera, based in Saint Petersburg',
+    bio: 'I build visual strategies, direct and shoot photography and video for brands, helping businesses look cohesive and confident',
+    focusLabel: 'Focus',
+    focus: 'Visual direction & concepts, brand photography, short-form motion, digital products',
+    clientsLabel: 'Selected clients',
+    clients: 'Apple, Adidas, Samokat, KFC, Lensa, FIFA, etc.',
+    contactLabel: 'Contact',
+    emailLabel: 'Email',
+    telegramLabel: 'Telegram',
+    phoneLabel: 'Phone',
+  },
+  ru: {
+    headline: 'Арт-директор с камерой, Санкт-Петербург',
+    bio: 'Создаю визуальные стратегии, снимаю фото и видео для брендов, помогаю бизнесу выглядеть уверенно и цельно',
+    focusLabel: 'Направления',
+    focus: 'Визуальный дирекшн и концепции, съёмка для брендов, короткий моушн, цифровые продукты',
+    clientsLabel: 'Среди клиентов',
+    clients: 'Apple, Adidas, Самокат, KFC, Lensa, FIFA и др.',
+    contactLabel: 'Контакты',
+    emailLabel: 'Почта',
+    telegramLabel: 'Telegram',
+    phoneLabel: 'Телефон',
+  },
+}[lang];
+---
+
+<main class="flex-1 flex flex-col justify-between pt-[68px] md:pt-28 lg:pt-32 pb-[calc(2rem+env(safe-area-inset-bottom))] md:pb-10 px-4 sm:px-6 md:px-10 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal text-[#141414]">
+  <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-10 lg:gap-14">
+    <!-- Left column: positioning, bio, focus, clients, contacts -->
+    <section class="w-full md:w-[360px] lg:w-[400px] shrink-0 space-y-6">
+      <div class="space-y-3">
+        <h1>{content.headline}</h1>
+        <p>{content.bio}</p>
+      </div>
+
+      <div class="space-y-1">
+        <h2>{content.focusLabel}</h2>
+        <p>{content.focus}</p>
+      </div>
+
+      <div class="space-y-1">
+        <h2>{content.clientsLabel}</h2>
+        <p>{content.clients}</p>
+      </div>
+
+      <div>
+        <h2 class="sr-only">{content.contactLabel}</h2>
+
+        <dl class="space-y-0.5 md:space-y-1">
+          <div class="flex items-center gap-3 md:gap-4 min-h-[40px] md:min-h-0">
+            <dt class="shrink-0 w-[76px]">
+              {content.emailLabel}
+            </dt>
+            <dd class="min-w-0">
+              <a
+                href="mailto:hello@evgeny.studio"
+                class="inline-flex items-center min-h-[40px] md:min-h-0 hover:opacity-55 transition-opacity"
+              >
+                hello@evgeny.studio
+              </a>
+            </dd>
+          </div>
+
+          <div class="flex items-center gap-3 md:gap-4 min-h-[40px] md:min-h-0">
+            <dt class="shrink-0 w-[76px]">
+              {content.telegramLabel}
+            </dt>
+            <dd class="min-w-0">
+              <a
+                href="https://t.me/aerohockey"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center min-h-[40px] md:min-h-0 hover:opacity-55 transition-opacity"
+              >
+                @aerohockey
+              </a>
+            </dd>
+          </div>
+
+          <div class="flex items-center gap-3 md:gap-4 min-h-[40px] md:min-h-0">
+            <dt class="shrink-0 w-[76px]">
+              {content.phoneLabel}
+            </dt>
+            <dd class="min-w-0">
+              <a
+                href="tel:+79992152027"
+                class="inline-flex items-center min-h-[40px] md:min-h-0 hover:opacity-55 transition-opacity tabular-nums"
+              >
+                +7 999 215 2027
+              </a>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Right column: portrait -->
+    <figure class="flex-1 min-w-0 flex flex-col items-start">
+      <div class="w-full max-w-[540px] aspect-[3/2] overflow-hidden bg-[#f5f5f3]">
+        <Image
+          src={aboutPortrait}
+          alt={lang === 'ru' ? 'Евгений Иванов' : 'Evgeny Ivanov'}
+          width={1400}
+          class="w-full h-full object-cover pointer-events-none select-none"
+          loading="eager"
+          draggable={false}
+        />
+      </div>
+    </figure>
+  </div>
+
+  <!-- Quiet colophon -->
+  <footer class="mt-12 md:mt-auto pt-8 md:pt-12">
+    <span>{t.colophon} </span>
+    <a
+      href="https://abcdinamo.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="underline underline-offset-2 hover:opacity-55 transition-opacity"
+    >
+      Dinamo
+    </a>
+  </footer>
+</main>

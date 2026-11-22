@@ -1,0 +1,27 @@
+---
+interface Props {
+  to: string;
+  title: string;
+}
+
+const { to, title } = Astro.props;
+const siteBase = Astro.site ?? new URL('https://aerohockey.github.io');
+const canonicalUrl = new URL(to, siteBase).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${to}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{title}</title>
+    <script is:inline define:vars={{ to }}>
+      window.location.replace(to);
+    </script>
+  </head>
+  <body style="font-family: system-ui, sans-serif; padding: 2rem; color: #141414;">
+    <p>Redirecting to <a href={to} style="color: #141414;">{to}</a>…</p>
+  </body>
+</html>
