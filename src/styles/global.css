@@ -20,11 +20,13 @@
 
 :root {
   --rail-h-desktop: clamp(280px, min(58vh, 46vw), 560px);
+  --page-top-desktop: clamp(68px, calc(22vh - 64px), 128px);
 }
 
 @supports (height: 1svh) {
   :root {
     --rail-h-desktop: clamp(280px, min(58svh, 46vw), 560px);
+    --page-top-desktop: clamp(68px, calc(22svh - 64px), 128px);
   }
 }
 
