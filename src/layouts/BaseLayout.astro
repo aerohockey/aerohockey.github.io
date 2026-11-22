@@ -88,10 +88,12 @@ const fontFaceCss = WEIGHT_TARGETS.map(({ weight, token }) => {
 <html
   lang={lang}
   class:list={[desktopLockViewport && 'md:h-full md:overflow-hidden', isDark && 'bg-black']}
+  style={isDark ? 'color-scheme: dark; background-color: #000000;' : 'color-scheme: light; background-color: #ffffff;'}
 >
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content={isDark ? 'dark' : 'light'} />
     <meta name="theme-color" content={isDark ? '#000000' : '#ffffff'} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
