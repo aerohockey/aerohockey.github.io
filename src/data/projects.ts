@@ -2,6 +2,7 @@ import type { ImageMetadata } from 'astro';
 import type { Lang } from '../i18n/ui';
 
 import guestCover from '../assets/draft/guest-cover.png';
+import guestHero from '../assets/draft/guest-hero.png';
 import guestScreen from '../assets/draft/guest-screen.png';
 import guestLockscreen from '../assets/draft/guest-lockscreen.png';
 import guestLockscreenFull from '../assets/draft/guest-lockscreen-full.png';
@@ -74,6 +75,7 @@ export interface ProjectItem {
 }
 
 export const GUEST_ASSETS = {
+  hero: guestHero,
   screen: guestScreen,
   lockscreen: guestLockscreen,
   lockscreenFull: guestLockscreenFull,
