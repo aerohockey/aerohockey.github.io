@@ -34,7 +34,7 @@ const COVER_ASPECT_RATIOS: Record<CoverAspect, number> = {
     data-horizontal-track
     class="no-scrollbar md:flex-1 md:min-h-0 w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-4 sm:scroll-pl-6 md:scroll-pl-0 flex items-start md:items-end cursor-grab"
   >
-    <div class="showcase-rail shrink-0 flex items-start gap-5 sm:gap-7 md:gap-6 lg:gap-8 px-4 sm:px-6 md:px-10">
+    <div class="showcase-rail shrink-0 flex items-start gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 md:px-10">
       {PROJECTS.map((project, index) => {
         const href = getProjectPath(lang, project.slug);
         const ratio = COVER_ASPECT_RATIOS[project.coverAspect];
