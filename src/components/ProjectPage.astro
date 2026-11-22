@@ -22,6 +22,7 @@ const isGallery = project.format === 'gallery';
   activeNav="work"
   desktopLockViewport={isGallery}
   autoHideHeader={true}
+  theme={isGallery ? 'light' : 'dark'}
   ogImage={project.cover}
 >
   {isGallery ? (

@@ -53,15 +53,17 @@ const copy = {
     s5Text: 'Никакой регистрации, трекеров, профилирования и скрытой аналитики. Приложение не собирает лишние данные и решает одну простую задачу.',
   },
 }[lang];
+
+const COL = 'w-full max-w-[640px] 2xl:max-w-[700px] mx-auto';
+const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 ---
 
-<main class="flex-1 bg-white text-[#141414] text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal">
-  <!-- Band 1: White — Hero spread + Idea & Philosophy spread -->
-  <div class="bg-white text-[#141414]">
-    <!-- Spread 1: Opening title + metadata + white-canvas iPhone screen -->
-    <section class="px-4 pt-[96px] md:pt-40 pb-12 md:pb-24">
-      <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div class="w-full md:w-[320px] lg:w-[360px] shrink-0 md:pr-4 md:sticky md:top-24">
+<main class="flex-1 bg-black text-white text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal">
+  <!-- Act 1: Pure Black — Hero + Full iPhone Lock Screen -->
+  <div class="bg-black text-white">
+    <section class="px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-20 md:pb-32">
+      <div class={COL}>
+        <div>
           <h1 class="leading-[1.35]">
             {copy.headline}
           </h1>
@@ -91,36 +93,36 @@ const copy = {
           </div>
         </div>
 
-        <div class="flex-1 min-w-0">
-          <div class="w-full max-w-[560px] 2xl:max-w-[620px]">
-            <Image
-              src={GUEST_ASSETS.screen}
-              alt={project.coverAlt[lang]}
-              width={1400}
-              class="w-full h-auto block pointer-events-none select-none"
-              loading="eager"
-              draggable={false}
-            />
-          </div>
+        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
+          <Image
+            src={GUEST_ASSETS.lockscreenFull}
+            alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
+            width={1400}
+            class="w-full h-auto block pointer-events-none select-none"
+            loading="eager"
+            draggable={false}
+          />
         </div>
       </div>
     </section>
+  </div>
 
-    <!-- Spread 2: Idea and Philosophy + cropped lockscreen notification -->
-    <section class="px-4 pt-8 pb-20 md:pt-12 md:pb-32">
-      <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div class="w-full md:w-[320px] lg:w-[360px] shrink-0 md:pr-4 md:sticky md:top-24">
-          <h2 class="leading-[1.35]">
-            {copy.s1Title}
-          </h2>
-          <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s1Text}</p>
-            <p>{copy.s2Text}</p>
+  <!-- Act 2: Pure White — Idea & Philosophy (Crop), Form (Pure White Canvas), Home Screen (Crop) -->
+  <div class="bg-white text-[#141414]">
+    <section class="px-4 py-20 md:py-32">
+      <div class={`${COL} space-y-20 md:space-y-28`}>
+        <div>
+          <div>
+            <h2 class="leading-[1.35]">
+              {copy.s1Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s1Text}</p>
+              <p>{copy.s2Text}</p>
+            </div>
           </div>
-        </div>
 
-        <div class="flex-1 min-w-0">
-          <div class="w-full max-w-[560px] 2xl:max-w-[620px]">
+          <div class="w-full mt-10 md:mt-12">
             <Image
               src={GUEST_ASSETS.lockscreen}
               alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
@@ -130,43 +132,29 @@ const copy = {
             />
           </div>
         </div>
-      </div>
-    </section>
-  </div>
 
-  <!-- Band 2: Pure Black — Form + Settings sheet -->
-  <div class="bg-black text-white">
-    <section class="px-4 py-20 md:py-32">
-      <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div class="w-full md:w-[320px] lg:w-[360px] shrink-0 md:pr-4 md:sticky md:top-24">
-          <h2 class="leading-[1.35]">
-            {copy.s3Title}
-          </h2>
-          <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s3Text}</p>
+        <div>
+          <div>
+            <h2 class="leading-[1.35]">
+              {copy.s3Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s3Text}</p>
+            </div>
           </div>
-        </div>
 
-        <div class="flex-1 min-w-0">
-          <div class="w-full max-w-[560px] 2xl:max-w-[620px]">
+          <div class={`${FULL_PHONE} mt-10 md:mt-12`}>
             <Image
-              src={GUEST_ASSETS.settings}
-              alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+              src={GUEST_ASSETS.screen}
+              alt={lang === 'ru' ? 'Экран приложения Guest с именем фотографа Greg Swales на чистом белом фоне' : 'Guest iPhone app showing photographer Greg Swales on a pure white canvas'}
               width={1400}
               class="w-full h-auto block pointer-events-none select-none"
               draggable={false}
             />
           </div>
         </div>
-      </div>
-    </section>
-  </div>
 
-  <!-- Band 3: White — Home Screen widget + Who is the guest? -->
-  <div class="bg-white text-[#141414]">
-    <section class="px-4 py-20 md:py-32">
-      <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div class="w-full md:w-[320px] lg:w-[360px] shrink-0 md:pr-4 md:sticky md:top-24 space-y-10 md:space-y-12">
+        <div>
           <div>
             <h2 class="leading-[1.35]">
               {copy.s6Title}
@@ -176,18 +164,7 @@ const copy = {
             </div>
           </div>
 
-          <div>
-            <h2 class="leading-[1.35]">
-              {copy.s4Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s4Text}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex-1 min-w-0">
-          <div class="w-full max-w-[560px] 2xl:max-w-[620px]">
+          <div class="w-full mt-10 md:mt-12">
             <Image
               src={GUEST_ASSETS.widget}
               alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
@@ -201,48 +178,57 @@ const copy = {
     </section>
   </div>
 
-  <!-- Band 4: Pure Black — Privacy + Full iOS Lock Screen + Closing Portfolio Bridge -->
+  <!-- Act 3: Pure Black Finale — Who is the guest?, Privacy, Settings, Next Project -->
   <div class="bg-black text-white">
     <section class="px-4 pt-20 pb-16 md:pt-32 md:pb-24">
-      <div class="w-full flex flex-col md:flex-row md:items-start gap-8 md:gap-8 lg:gap-12">
-        <div class="w-full md:w-[320px] lg:w-[360px] shrink-0 md:pr-4 md:sticky md:top-24">
-          <h2 class="leading-[1.35]">
-            {copy.s5Title}
-          </h2>
-          <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s5Text}</p>
-            <p>
-              <a
-                href={privacyHref}
-                class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-              >
-                {t.privacyPolicy}
-              </a>
-            </p>
+      <div class={COL}>
+        <div class="space-y-10 md:space-y-12">
+          <div>
+            <h2 class="leading-[1.35]">
+              {copy.s4Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s4Text}</p>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="leading-[1.35]">
+              {copy.s5Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s5Text}</p>
+              <p>
+                <a
+                  href={privacyHref}
+                  class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+                >
+                  {t.privacyPolicy}
+                </a>
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="flex-1 min-w-0">
-          <div class="w-full max-w-[560px] 2xl:max-w-[620px]">
-            <Image
-              src={GUEST_ASSETS.lockscreenFull}
-              alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
-              width={1400}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-
-            <footer class="mt-8 md:mt-12 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end">
-              <a
-                href={nextHref}
-                class="inline-flex flex-col items-end text-right min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
-              >
-                <span class="leading-[1.35]">{t.nextProject}</span>
-                <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
-              </a>
-            </footer>
-          </div>
+        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
+          <Image
+            src={GUEST_ASSETS.settings}
+            alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+            width={1400}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
         </div>
+
+        <footer class="mt-12 md:mt-20 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end">
+          <a
+            href={nextHref}
+            class="inline-flex flex-col items-end text-right min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
+          >
+            <span class="leading-[1.35]">{t.nextProject}</span>
+            <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
+          </a>
+        </footer>
       </div>
     </section>
   </div>

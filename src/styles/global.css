@@ -16,6 +16,11 @@
     background-color: #141414;
     color: #ffffff;
   }
+
+  .bg-black ::selection {
+    background-color: #ffffff;
+    color: #141414;
+  }
 }
 
 :root {
