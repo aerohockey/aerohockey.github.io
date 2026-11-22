@@ -1,5 +1,15 @@
 ---
-import RedirectPage from '../../components/RedirectPage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InfoView from '../../components/InfoView.astro';
 ---
 
-<RedirectPage to="/ru/info/" title="Инфо — Евгений Иванов" />
+<BaseLayout
+  title="Инфо — Евгений Иванов"
+  description="Арт-директор с камерой, Санкт-Петербург — направления работы, клиенты и контакты."
+  lang="ru"
+  activeNav="info"
+  desktopLockViewport={false}
+  autoHideHeader={true}
+>
+  <InfoView lang="ru" />
+</BaseLayout>

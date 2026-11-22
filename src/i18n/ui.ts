@@ -28,7 +28,7 @@ export const UI: Record<Lang, NavLabels> = {
   en: {
     brand: 'Evgeny Ivanov',
     work: 'Work',
-    info: 'Info',
+    info: 'About',
     role: 'Art director with a camera',
     homeStatement: 'Art director with a camera — building visual strategies, shooting photography and video for brands',
     scrollHint: 'Scroll →',
@@ -90,7 +90,7 @@ export function getHomePath(lang: Lang): string {
 }
 
 export function getInfoPath(lang: Lang): string {
-  return lang === 'ru' ? '/ru/info/' : '/info/';
+  return lang === 'ru' ? '/ru/about/' : '/about/';
 }
 
 export function getProjectPath(lang: Lang, slug: string): string {

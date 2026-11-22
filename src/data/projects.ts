@@ -21,6 +21,16 @@ import contax2 from '../assets/draft/contax-2.jpg';
 export type ProjectFormat = 'landing' | 'gallery';
 export type CoverAspect = '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2' | '16/9';
 
+export const COVER_ASPECT_RATIOS: Record<CoverAspect, number> = {
+  '3/4': 0.75,
+  '4/5': 0.8,
+  '1/1': 1,
+  '5/4': 1.25,
+  '4/3': 1.3333,
+  '3/2': 1.5,
+  '16/9': 1.7778,
+};
+
 export interface ImageMedia {
   type: 'image';
   image: ImageMetadata;

@@ -1,5 +1,6 @@
 ---
 import LangSwitch from './LangSwitch.astro';
+import { COVER_ASPECT_RATIOS, PROJECTS } from '../data/projects';
 import {
   UI,
   getHomePath,
@@ -13,10 +14,15 @@ interface Props {
   autoHide?: boolean;
 }
 
-const { lang, activeNav, autoHide = false } = Astro.props;
+const {
+  lang,
+  activeNav,
+  autoHide = false,
+} = Astro.props;
 const t = UI[lang];
 const homeHref = getHomePath(lang);
 const infoHref = getInfoPath(lang);
+const firstCardRatio = COVER_ASPECT_RATIOS[PROJECTS[0].coverAspect];
 ---
 
 <header
@@ -28,7 +34,10 @@ const infoHref = getInfoPath(lang);
 >
   <div class="flex items-center justify-between md:justify-start gap-x-2 md:gap-0 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.25] tracking-normal">
     <!-- Brand -->
-    <div class="shrink-0 md:w-[24%]">
+    <div
+      style={`--first-r: ${firstCardRatio};`}
+      class="shrink-0 header-brand-desktop"
+    >
       <a
         href={homeHref}
         class="inline-flex items-center min-h-[40px] px-1.5 -mx-1.5 md:min-h-0 md:px-0 md:mx-0 md:py-0.5 text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
@@ -37,7 +46,7 @@ const infoHref = getInfoPath(lang);
       </a>
     </div>
 
-    <!-- Navigation: same row centered between brand & lang on mobile; offset column on desktop -->
+    <!-- Navigation: same row centered between brand & lang on mobile; aligned on desktop -->
     <nav
       aria-label="Main navigation"
       class="flex items-center shrink-0 gap-x-3.5 md:gap-x-5 md:flex-1 md:justify-start min-w-0"
@@ -65,13 +74,25 @@ const infoHref = getInfoPath(lang);
     </nav>
 
     <!-- Language switcher -->
-    <div class="shrink-0 md:w-[24%] md:flex md:justify-end">
+    <div class="shrink-0 md:flex md:justify-end md:w-auto">
       <LangSwitch lang={lang} />
     </div>
   </div>
 </header>
 
 <style>
+  @media (min-width: 768px) {
+    .header-brand-desktop {
+      width: calc(var(--rail-h-desktop) * var(--first-r) + 1.5rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .header-brand-desktop {
+      width: calc(var(--rail-h-desktop) * var(--first-r) + 2rem);
+    }
+  }
+
   header[data-auto-hide='true'] {
     transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
