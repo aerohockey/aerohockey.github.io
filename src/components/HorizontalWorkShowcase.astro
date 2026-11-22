@@ -11,9 +11,9 @@ const { lang } = Astro.props;
 const t = UI[lang];
 ---
 
-<main class="flex-1 min-h-0 flex flex-col pt-[96px] md:pt-28 lg:pt-32 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:pb-10 md:overflow-hidden text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]">
+<main class="flex-1 min-h-0 flex flex-col pt-[96px] md:pt-28 lg:pt-32 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:pb-4 md:overflow-hidden text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]">
   <!-- Quiet positioning statement -->
-  <div class="px-4 sm:px-6 md:px-10 shrink-0 mb-14 md:mb-4">
+  <div class="px-4 shrink-0 mb-14 md:mb-4">
     <h1 class="max-w-[340px] sm:max-w-[400px] md:max-w-[420px] leading-[1.5]">
       {t.homeStatement}
     </h1>
@@ -22,9 +22,9 @@ const t = UI[lang];
   <!-- Horizontal shelf: top-aligned right under statement on mobile, bottom-anchored on desktop -->
   <div
     data-horizontal-track
-    class="no-scrollbar md:flex-1 md:min-h-0 w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-4 sm:scroll-pl-6 md:scroll-pl-0 flex items-start md:items-end cursor-grab"
+    class="no-scrollbar md:flex-1 md:min-h-0 w-full overflow-x-auto overflow-y-hidden snap-x snap-mandatory md:snap-none scroll-pl-4 md:scroll-pl-0 flex items-start md:items-end cursor-grab"
   >
-    <div class="showcase-rail shrink-0 flex items-start gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 md:px-10">
+    <div class="showcase-rail shrink-0 flex items-start gap-4 md:gap-6 lg:gap-8 px-4">
       {PROJECTS.map((project, index) => {
         const href = getProjectPath(lang, project.slug);
         const ratio = COVER_ASPECT_RATIOS[project.coverAspect];
