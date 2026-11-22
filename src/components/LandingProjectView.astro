@@ -360,12 +360,12 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let currentSurface = html.dataset.guestSurface ?? '';
   let chromeMetaTimer: number | undefined;
+  let bodyBgTimer: number | undefined;
 
   const syncChromeMeta = (surface: string) => {
     const bg = surface === 'light' ? '#ffffff' : '#141414';
     html.style.colorScheme = surface;
     html.style.backgroundColor = bg;
-    document.body.style.backgroundColor = bg;
     if (themeMeta) {
       themeMeta.content = bg;
     }
@@ -382,6 +382,10 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
       window.clearTimeout(chromeMetaTimer);
       chromeMetaTimer = undefined;
     }
+    if (bodyBgTimer !== undefined) {
+      window.clearTimeout(bodyBgTimer);
+      bodyBgTimer = undefined;
+    }
 
     if (surface !== 'light' && !immediate && !prefersReducedMotion) {
       // Restore dark body underneath the still-opaque white overlay before fading out
@@ -392,11 +396,19 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 
     if (immediate || prefersReducedMotion) {
       syncChromeMeta(surface);
+      document.body.style.backgroundColor = surface === 'light' ? '#ffffff' : '#141414';
     } else {
       chromeMetaTimer = window.setTimeout(() => {
         chromeMetaTimer = undefined;
         syncChromeMeta(surface);
-      }, surface === 'light' ? 680 : 320);
+      }, 220);
+
+      if (surface === 'light') {
+        bodyBgTimer = window.setTimeout(() => {
+          bodyBgTimer = undefined;
+          document.body.style.backgroundColor = '#ffffff';
+        }, 680);
+      }
     }
   };
 
