@@ -231,19 +231,19 @@ const copy = {
               class="w-full h-auto block pointer-events-none select-none"
               draggable={false}
             />
+
+            <footer class="mt-8 md:mt-12 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end">
+              <a
+                href={nextHref}
+                class="inline-flex flex-col items-end text-right min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
+              >
+                <span class="leading-[1.35]">{t.nextProject}</span>
+                <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
+              </a>
+            </footer>
           </div>
         </div>
       </div>
-
-      <footer class="mt-8 md:mt-28 pb-[calc(1rem+env(safe-area-inset-bottom))] flex justify-end md:justify-start">
-        <a
-          href={nextHref}
-          class="inline-flex flex-col items-end text-right md:items-start md:text-left min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
-        >
-          <span class="leading-[1.35]">{t.nextProject}</span>
-          <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
-        </a>
-      </footer>
     </section>
   </div>
 </main>
