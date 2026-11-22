@@ -64,12 +64,8 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 >
   <div
     aria-hidden="true"
-    data-guest-backdrop
-    data-backdrop-hidden="true"
-    class="guest-light-backdrop fixed inset-0 pointer-events-none z-0 bg-transparent"
-  >
-    <div class="guest-light-backdrop-fill absolute inset-0 bg-white"></div>
-  </div>
+    class="guest-light-backdrop absolute inset-0 pointer-events-none z-0 bg-white"
+  ></div>
   <div
     aria-hidden="true"
     class="guest-top-chrome fixed top-0 left-0 right-0 h-[4px] pointer-events-none z-30 md:hidden"
@@ -255,18 +251,14 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 </main>
 
 <style>
-  .guest-light-backdrop[data-backdrop-hidden='true'] {
-    display: none;
-  }
-
-  .guest-light-backdrop-fill {
+  .guest-light-backdrop {
     opacity: 0;
     transform: translateZ(0);
     will-change: opacity;
     transition: opacity 650ms cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  :global(html[data-guest-surface='light']) .guest-light-backdrop-fill {
+  :global(html[data-guest-surface='light']) .guest-light-backdrop {
     opacity: 1;
   }
 
@@ -360,7 +352,7 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .guest-light-backdrop-fill,
+    .guest-light-backdrop,
     .guest-top-chrome,
     [data-guest-canvas],
     :global(html[data-guest-surface] header),
@@ -381,13 +373,11 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
   const canvas = document.querySelector<HTMLElement>('[data-guest-canvas]');
-  const backdrop = document.querySelector<HTMLElement>('[data-guest-backdrop]');
   const acts = Array.from(document.querySelectorAll<HTMLElement>('[data-act-surface]'));
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let currentSurface = html.dataset.guestSurface ?? '';
   let chromeMetaTimer: number | undefined;
-  let backdropHideTimer: number | undefined;
 
   const syncChromeMeta = (surface: string) => {
     const bg = surface === 'light' ? '#ffffff' : '#141414';
@@ -410,42 +400,21 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
       window.clearTimeout(chromeMetaTimer);
       chromeMetaTimer = undefined;
     }
-    if (backdropHideTimer !== undefined) {
-      window.clearTimeout(backdropHideTimer);
-      backdropHideTimer = undefined;
-    }
 
-    if (backdrop) {
-      if (immediate || prefersReducedMotion) {
-        backdrop.dataset.backdropHidden = 'true';
-      } else {
-        if (backdrop.dataset.backdropHidden === 'true') {
-          delete backdrop.dataset.backdropHidden;
-          void backdrop.offsetWidth;
-        }
-        if (surface !== 'light') {
-          // Restore dark body underneath the still-opaque white overlay before fading out
-          document.body.style.backgroundColor = '#141414';
-        }
-        backdropHideTimer = window.setTimeout(() => {
-          backdropHideTimer = undefined;
-          if (currentSurface === 'light') {
-            syncChromeMeta('light');
-          }
-          backdrop.dataset.backdropHidden = 'true';
-        }, 680);
-      }
+    if (surface !== 'light' && !immediate && !prefersReducedMotion) {
+      // Restore dark body underneath the still-opaque white overlay before fading out
+      document.body.style.backgroundColor = '#141414';
     }
 
     html.dataset.guestSurface = surface;
 
     if (immediate || prefersReducedMotion) {
       syncChromeMeta(surface);
-    } else if (surface !== 'light') {
+    } else {
       chromeMetaTimer = window.setTimeout(() => {
         chromeMetaTimer = undefined;
         syncChromeMeta(surface);
-      }, 320);
+      }, surface === 'light' ? 680 : 320);
     }
   };
 
