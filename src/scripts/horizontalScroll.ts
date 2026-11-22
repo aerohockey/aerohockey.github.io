@@ -49,6 +49,7 @@ export function initHorizontalTrack(options: HorizontalTrackOptions = {}): void 
 
   track.addEventListener('pointerdown', (e: PointerEvent) => {
     if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    if (e.target instanceof Element && e.target.closest('[data-no-drag]')) return;
     isPointerDown = true;
     hasDragged = false;
     startX = e.clientX;

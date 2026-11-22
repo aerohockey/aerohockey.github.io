@@ -84,7 +84,7 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
     <div class="gallery-rail w-full md:w-auto md:shrink-0 flex flex-col md:flex-row md:items-start gap-4 px-4">
       <!-- Opening editorial info column -->
       <section class="w-full md:w-[300px] lg:w-[340px] shrink-0 md:h-[var(--rail-h)] mb-3 md:mb-0 flex flex-col justify-between md:pr-4">
-        <div>
+        <div data-no-drag class="md:cursor-auto">
           <h1 class="leading-[1.35]">
             {project.title[lang]}
           </h1>
