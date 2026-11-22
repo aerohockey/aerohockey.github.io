@@ -247,21 +247,21 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   :global(html[data-guest-surface]),
   :global(html[data-guest-surface] body) {
     transition:
-      background-color 650ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+      background-color 1050ms cubic-bezier(0.45, 0, 0.55, 1),
+      color 1050ms cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   :global(html[data-guest-surface] header) {
     transition:
       transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      background-color 650ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+      background-color 1050ms cubic-bezier(0.45, 0, 0.55, 1),
+      color 1050ms cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   :global(html[data-guest-surface] header a) {
     transition:
       opacity 180ms ease,
-      color 650ms cubic-bezier(0.22, 1, 0.36, 1);
+      color 1050ms cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   :global(html[data-guest-surface='light'] body) {
@@ -347,14 +347,12 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   const canvas = document.querySelector<HTMLElement>('[data-guest-canvas]');
   const acts = Array.from(document.querySelectorAll<HTMLElement>('[data-act-surface]'));
 
-  let currentSurface = html.dataset.guestSurface ?? 'dark';
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let currentSurface = html.dataset.guestSurface ?? '';
+  let chromeMetaTimer: number | undefined;
 
-  const applySurface = (surface: string) => {
-    if (surface === currentSurface && html.dataset.guestSurface === surface) return;
-    currentSurface = surface;
-    html.dataset.guestSurface = surface;
+  const syncChromeMeta = (surface: string) => {
     html.style.colorScheme = surface;
-    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#000000';
     if (themeMeta) {
       themeMeta.content = surface === 'light' ? '#ffffff' : '#000000';
     }
@@ -363,14 +361,35 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
     }
   };
 
-  const syncSurface = () => {
+  const applySurface = (surface: string, immediate = false) => {
+    if (surface === currentSurface) return;
+    currentSurface = surface;
+    html.dataset.guestSurface = surface;
+    html.style.backgroundColor = surface === 'light' ? '#ffffff' : '#000000';
+
+    if (chromeMetaTimer !== undefined) {
+      window.clearTimeout(chromeMetaTimer);
+      chromeMetaTimer = undefined;
+    }
+
+    if (immediate || prefersReducedMotion) {
+      syncChromeMeta(surface);
+    } else {
+      chromeMetaTimer = window.setTimeout(() => {
+        chromeMetaTimer = undefined;
+        syncChromeMeta(surface);
+      }, 450);
+    }
+  };
+
+  const syncSurface = (immediate = false) => {
     if (acts.length === 0) return;
     const atBottom =
       window.scrollY > 0 &&
       window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 40;
 
     if (atBottom) {
-      applySurface(acts[acts.length - 1].dataset.actSurface ?? 'dark');
+      applySurface(acts[acts.length - 1].dataset.actSurface ?? 'dark', immediate);
       return;
     }
 
@@ -381,7 +400,7 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
         nextSurface = act.dataset.actSurface ?? nextSurface;
       }
     }
-    applySurface(nextSurface);
+    applySurface(nextSurface, immediate);
   };
 
   if (acts.length > 0) {
@@ -391,16 +410,15 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
       ticking = true;
       window.requestAnimationFrame(() => {
         ticking = false;
-        syncSurface();
+        syncSurface(false);
       });
     };
 
-    syncSurface();
+    syncSurface(true);
     window.addEventListener('scroll', scheduleSync, { passive: true });
     window.addEventListener('resize', scheduleSync, { passive: true });
   }
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (canvas && !prefersReducedMotion) {
     const revealTargets = Array.from(canvas.querySelectorAll<HTMLElement>('[data-reveal]'));
     const initialTriggerY = window.innerHeight * 0.94;
