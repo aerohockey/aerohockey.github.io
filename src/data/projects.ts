@@ -148,25 +148,22 @@ export const PROJECTS: ProjectItem[] = [
         },
       },
       {
-        kind: 'diptych',
-        items: [
-          {
-            type: 'image',
-            image: frantsuza2,
-            alt: {
-              en: 'Frantsuza Bistrot dining room detail',
-              ru: 'Деталь зала Frantsuza Bistrot',
-            },
-          },
-          {
-            type: 'image',
-            image: frantsuza3,
-            alt: {
-              en: 'Frantsuza Bistrot evening scene',
-              ru: 'Вечерняя сцена в Frantsuza Bistrot',
-            },
-          },
-        ],
+        kind: 'single',
+        type: 'image',
+        image: frantsuza2,
+        alt: {
+          en: 'Frantsuza Bistrot dining room detail',
+          ru: 'Деталь зала Frantsuza Bistrot',
+        },
+      },
+      {
+        kind: 'single',
+        type: 'image',
+        image: frantsuza3,
+        alt: {
+          en: 'Frantsuza Bistrot evening scene',
+          ru: 'Вечерняя сцена в Frantsuza Bistrot',
+        },
       },
     ],
   },
