@@ -3,10 +3,10 @@ import MediaFrame from './MediaFrame.astro';
 import {
   countGalleryFrames,
   getNextProject,
-  type GalleryItem,
-  type MediaAsset,
-  type ProjectItem,
-} from '../data/projects';
+  type CmsGalleryItem,
+  type CmsMediaAsset,
+  type CmsProject,
+} from '../lib/content';
 import {
   UI,
   formatFramesCount,
@@ -15,16 +15,16 @@ import {
 } from '../i18n/ui';
 
 interface Props {
-  project: ProjectItem;
+  project: CmsProject;
   lang: Lang;
 }
 
 const { project, lang } = Astro.props;
 const t = UI[lang];
-const nextProject = getNextProject(project.slug);
+const nextProject = await getNextProject(project.slug);
 const nextHref = getProjectPath(lang, nextProject.slug);
 
-const galleryItems: GalleryItem[] = project.gallery ?? [
+const galleryItems: CmsGalleryItem[] = project.gallery ?? [
   {
     kind: 'single',
     type: 'image',
@@ -35,9 +35,12 @@ const galleryItems: GalleryItem[] = project.gallery ?? [
 
 const totalFrames = countGalleryFrames(galleryItems);
 
-function getMediaRatio(asset: MediaAsset): number {
+function getMediaRatio(asset: CmsMediaAsset): number {
   if (asset.type === 'video') return asset.aspectRatio;
-  return Number((asset.image.width / asset.image.height).toFixed(4));
+  if (asset.image.kind === 'local') {
+    return Number((asset.image.asset.width / asset.image.asset.height).toFixed(4));
+  }
+  return asset.image.aspectRatio;
 }
 
 const metaParts = [project.role[lang]];

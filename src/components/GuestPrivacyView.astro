@@ -1,71 +1,14 @@
 ---
 import { getProjectPath, type Lang } from '../i18n/ui';
+import { getGuestPrivacy } from '../lib/content';
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
+const privacy = await getGuestPrivacy();
 const guestHref = getProjectPath(lang, 'guest');
-
-const copy = {
-  en: {
-    back: 'Guest',
-    title: 'Guest — Privacy Policy',
-    updated: 'Last updated: November 2026',
-    intro: 'Guest is designed to deliver one photographer every week with zero behavioral tracking or personal profiling.',
-    sections: [
-      {
-        heading: 'No accounts & no personal data',
-        text: 'Guest does not require registration, login credentials, phone numbers, or email addresses. We do not collect, store, or sell personal information.',
-      },
-      {
-        heading: 'No analytics or tracking SDKs',
-        text: 'The app contains no third-party advertising networks, behavioral analytics SDKs, or cross-app tracking identifiers.',
-      },
-      {
-        heading: 'Local notification schedule',
-        text: 'Your weekly reminder preference (enabled state, day of week, and time) is stored locally on your iPhone using standard Apple system frameworks and is never transmitted to external servers.',
-      },
-      {
-        heading: 'Content delivery',
-        text: 'Weekly photographer updates are fetched silently using standard HTTPS requests containing only technical headers required to deliver the current edition.',
-      },
-      {
-        heading: 'Contact',
-        text: 'If you have any questions about privacy in Guest, write to ',
-      },
-    ],
-  },
-  ru: {
-    back: 'Guest',
-    title: 'Guest — Политика приватности',
-    updated: 'Обновлено: ноябрь 2026',
-    intro: 'Приложение Guest создано, чтобы знакомить с одним фотографом каждую неделю без трекинга и сбора личных данных.',
-    sections: [
-      {
-        heading: 'Без аккаунтов и личных данных',
-        text: 'Guest не требует регистрации, логина, номера телефона или электронной почты. Мы не собираем, не храним и не передаём персональные данные.',
-      },
-      {
-        heading: 'Без аналитики и трекеров',
-        text: 'В приложении отсутствуют сторонние рекламные сети, SDK поведенческой аналитики и кросс-апп идентификаторы отслеживания.',
-      },
-      {
-        heading: 'Локальное расписание уведомлений',
-        text: 'Настройки еженедельного напоминания (включение, день недели и время) хранятся исключительно локально на вашем iPhone с помощью стандартных системных механизмов Apple.',
-      },
-      {
-        heading: 'Доставка контента',
-        text: 'Имя фотографа недели загружается по защищённому протоколу HTTPS с использованием только стандартных технических заголовков, необходимых для работы сети.',
-      },
-      {
-        heading: 'Контакты',
-        text: 'По любым вопросам о приватности в Guest можно написать на ',
-      },
-    ],
-  },
-}[lang];
 ---
 
 <main class="flex-1 bg-white text-[#141414] pt-[96px] md:pt-36 pb-[calc(3rem+env(safe-area-inset-bottom))] px-4 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal">
@@ -74,32 +17,32 @@ const copy = {
       href={guestHref}
       class="inline-flex items-center min-h-[40px] md:min-h-0 hover:opacity-55 transition-opacity"
     >
-      ← {copy.back}
+      ← {privacy.backLabel[lang]}
     </a>
 
     <h1 class="mt-4 leading-[1.35]">
-      {copy.title}
+      {privacy.title[lang]}
     </h1>
-    <p class="mt-0.5 leading-[1.35]">{copy.updated}</p>
+    <p class="mt-0.5 leading-[1.35]">{privacy.updated[lang]}</p>
 
     <p class="mt-6">
-      {copy.intro}
+      {privacy.intro[lang]}
     </p>
 
     <div class="mt-8 space-y-6">
-      {copy.sections.map((section, idx) => (
+      {privacy.sections.map((section) => (
         <section>
           <h2 class="leading-[1.35]">
-            {section.heading}
+            {section.heading[lang]}
           </h2>
           <p class="mt-1.5">
-            {section.text}
-            {idx === copy.sections.length - 1 && (
+            {section.text[lang]}
+            {section.appendContactEmail && (
               <a
-                href="mailto:hello@evgeny.studio"
+                href={`mailto:${privacy.contactEmail}`}
                 class="underline underline-offset-4 hover:opacity-55 transition-opacity"
               >
-                hello@evgeny.studio
+                {privacy.contactEmail}
               </a>
             )}
           </p>

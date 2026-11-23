@@ -1,16 +1,17 @@
 ---
 import ProjectPage from '../../../components/ProjectPage.astro';
-import { PROJECTS, type ProjectItem } from '../../../data/projects';
+import { getProjects, type CmsProject } from '../../../lib/content';
 
-export function getStaticPaths() {
-  return PROJECTS.map((project) => ({
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({
     params: { slug: project.slug },
     props: { project },
   }));
 }
 
 interface Props {
-  project: ProjectItem;
+  project: CmsProject;
 }
 
 const { project } = Astro.props;

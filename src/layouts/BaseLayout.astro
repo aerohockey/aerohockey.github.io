@@ -4,8 +4,13 @@ import { getImage } from 'astro:assets';
 import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import aboutPortrait from '../assets/draft/about-portrait.jpg';
-import { UI, getAlternateLangPath, type Lang } from '../i18n/ui';
+import { getAlternateLangPath, type Lang } from '../i18n/ui';
+import { getSiteSettings } from '../lib/content';
+import {
+  getSanityImageUrl,
+  localImage,
+  type ResolvedImage,
+} from '../lib/sanity';
 
 interface Props {
   title: string;
@@ -14,7 +19,7 @@ interface Props {
   activeNav?: 'work' | 'info';
   desktopLockViewport?: boolean;
   autoHideHeader?: boolean;
-  ogImage?: ImageMetadata;
+  ogImage?: ResolvedImage | ImageMetadata;
 }
 
 const {
@@ -24,9 +29,10 @@ const {
   activeNav,
   desktopLockViewport = false,
   autoHideHeader = false,
-  ogImage = aboutPortrait,
+  ogImage,
 } = Astro.props;
 
+const settings = await getSiteSettings();
 const pathname = Astro.url.pathname;
 const siteBase = Astro.site ?? new URL('https://aerohockey.github.io');
 const canonicalUrl = new URL(pathname, siteBase).toString();
@@ -35,12 +41,23 @@ const ruPath = getAlternateLangPath(pathname, 'ru');
 const enUrl = new URL(enPath, siteBase).toString();
 const ruUrl = new URL(ruPath, siteBase).toString();
 
-const optimizedOg = await getImage({
-  src: ogImage,
-  width: 1200,
-  format: 'jpeg',
-});
-const ogImageUrl = new URL(optimizedOg.src, siteBase).toString();
+const resolvedOg: ResolvedImage = ogImage
+  ? 'kind' in ogImage
+    ? ogImage
+    : localImage(ogImage)
+  : settings.defaultOgImage;
+
+let ogImageUrl: string;
+if (resolvedOg.kind === 'sanity') {
+  ogImageUrl = getSanityImageUrl(resolvedOg, 1200, 'jpg');
+} else {
+  const optimizedOg = await getImage({
+    src: resolvedOg.asset,
+    width: 1200,
+    format: 'jpeg',
+  });
+  ogImageUrl = new URL(optimizedOg.src, siteBase).toString();
+}
 
 // Dynamically wire local ABC Areal fonts when present (gitignored in public repos)
 const arealFontFiles = import.meta.glob<string>(
@@ -96,7 +113,7 @@ const fontFaceCss = WEIGHT_TARGETS.map(({ weight, token }) => {
 
     <!-- OpenGraph & Social Preview -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={UI[lang].brand} />
+    <meta property="og:site_name" content={settings.brand[lang]} />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonicalUrl} />

@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HorizontalWorkShowcase from '../components/HorizontalWorkShowcase.astro';
+import { getSiteSettings } from '../lib/content';
+
+const settings = await getSiteSettings();
 ---
 
 <BaseLayout
-  title="Evgeny Ivanov — Art Director with a Camera"
-  description="Art director with a camera — visual direction, photography, motion & digital products."
+  title={settings.homeTitle.en}
+  description={settings.homeDescription.en}
   lang="en"
   activeNav="work"
   desktopLockViewport={true}

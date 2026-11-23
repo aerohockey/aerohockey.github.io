@@ -2,21 +2,22 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LandingProjectView from './LandingProjectView.astro';
 import GalleryProjectView from './GalleryProjectView.astro';
-import type { ProjectItem } from '../data/projects';
-import { UI, type Lang } from '../i18n/ui';
+import type { CmsProject } from '../lib/content';
+import { getSiteSettings } from '../lib/content';
+import type { Lang } from '../i18n/ui';
 
 interface Props {
-  project: ProjectItem;
+  project: CmsProject;
   lang: Lang;
 }
 
 const { project, lang } = Astro.props;
-const t = UI[lang];
+const settings = await getSiteSettings();
 const isGallery = project.format === 'gallery';
 ---
 
 <BaseLayout
-  title={`${project.title[lang]} — ${t.brand}`}
+  title={`${project.title[lang]} — ${settings.brand[lang]}`}
   description={project.intro?.[lang] ?? project.subtitle[lang]}
   lang={lang}
   activeNav="work"

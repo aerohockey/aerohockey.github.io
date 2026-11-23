@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import InfoView from '../components/InfoView.astro';
+import { getSiteSettings } from '../lib/content';
+
+const settings = await getSiteSettings();
 ---
 
 <BaseLayout
-  title="About — Evgeny Ivanov"
-  description="Art director with a camera, Saint Petersburg — focus, selected clients, and contact details."
+  title={settings.aboutTitle.en}
+  description={settings.aboutDescription.en}
   lang="en"
   activeNav="info"
   desktopLockViewport={false}

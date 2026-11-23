@@ -1,12 +1,13 @@
 ---
 import LangSwitch from './LangSwitch.astro';
-import { COVER_ASPECT_RATIOS, PROJECTS } from '../data/projects';
+import { COVER_ASPECT_RATIOS } from '../data/projects';
 import {
   UI,
   getHomePath,
   getInfoPath,
   type Lang,
 } from '../i18n/ui';
+import { getProjects, getSiteSettings } from '../lib/content';
 
 interface Props {
   lang: Lang;
@@ -20,9 +21,10 @@ const {
   autoHide = false,
 } = Astro.props;
 const t = UI[lang];
+const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()]);
 const homeHref = getHomePath(lang);
 const infoHref = getInfoPath(lang);
-const firstCardRatio = COVER_ASPECT_RATIOS[PROJECTS[0].coverAspect];
+const firstCardRatio = COVER_ASPECT_RATIOS[projects[0]?.coverAspect ?? '1/1'];
 ---
 
 <header
@@ -42,7 +44,7 @@ const firstCardRatio = COVER_ASPECT_RATIOS[PROJECTS[0].coverAspect];
         href={homeHref}
         class="inline-flex items-center min-h-[40px] px-1.5 -mx-1.5 md:min-h-0 md:px-0 md:mx-0 md:py-0.5 text-[#141414] hover:opacity-55 transition-opacity duration-200 whitespace-nowrap"
       >
-        {t.brand}
+        {settings.brand[lang]}
       </a>
     </div>
 

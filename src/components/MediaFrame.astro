@@ -1,10 +1,11 @@
 ---
-import { Image } from 'astro:assets';
-import type { MediaAsset } from '../data/projects';
+import ResponsiveImage from './ResponsiveImage.astro';
 import type { Lang } from '../i18n/ui';
+import type { CmsMediaAsset } from '../lib/content';
+import { getPosterUrl } from '../lib/sanity';
 
 interface Props {
-  media: MediaAsset;
+  media: CmsMediaAsset;
   lang: Lang;
   width?: number;
   loading?: 'eager' | 'lazy';
@@ -24,7 +25,7 @@ const {
   media.type === 'video' ? (
     <video
       src={media.src}
-      poster={media.poster?.src}
+      poster={getPosterUrl(media.poster)}
       aria-label={media.alt[lang]}
       autoplay
       muted
@@ -34,11 +35,11 @@ const {
       class:list={['w-full h-full object-cover block select-none', className]}
     />
   ) : (
-    <Image
-      src={media.image}
+    <ResponsiveImage
+      image={media.image}
       alt={media.alt[lang]}
       width={width}
-      class:list={['w-full h-full object-cover pointer-events-none select-none', className]}
+      class={['w-full h-full object-cover pointer-events-none select-none', className].filter(Boolean).join(' ')}
       loading={loading}
       draggable={false}
     />
