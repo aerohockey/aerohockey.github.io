@@ -5,5 +5,5 @@ export default defineCliConfig({
     projectId: 'wqzxe1sd',
     dataset: 'production',
   },
-  studioHost: 'evgeny-ivanov-portfolio',
+  studioHost: 'aerohockey',
 });
