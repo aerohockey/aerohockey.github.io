@@ -12,7 +12,7 @@ export const sanityClient = createClient({
   projectId: SANITY_PROJECT_ID,
   dataset: SANITY_DATASET,
   apiVersion: SANITY_API_VERSION,
-  useCdn: true,
+  useCdn: false,
   perspective: 'published',
 });
 
