@@ -125,6 +125,7 @@ export const project = defineType({
       initialValue: '4/5',
       options: {
         list: [
+          { title: '2:3 (Portrait)', value: '2/3' },
           { title: '3:4 (Portrait)', value: '3/4' },
           { title: '4:5 (Portrait)', value: '4/5' },
           { title: '1:1 (Square)', value: '1/1' },

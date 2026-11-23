@@ -20,9 +20,10 @@ import contaxCover from '../assets/draft/contax-cover.jpg';
 import contax2 from '../assets/draft/contax-2.jpg';
 
 export type ProjectFormat = 'landing' | 'gallery';
-export type CoverAspect = '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2' | '16/9';
+export type CoverAspect = '2/3' | '3/4' | '4/5' | '1/1' | '5/4' | '4/3' | '3/2' | '16/9';
 
 export const COVER_ASPECT_RATIOS: Record<CoverAspect, number> = {
+  '2/3': 0.6667,
   '3/4': 0.75,
   '4/5': 0.8,
   '1/1': 1,
