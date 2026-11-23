@@ -22,7 +22,7 @@ interface Props {
 const { project, lang } = Astro.props;
 const t = UI[lang];
 const nextProject = await getNextProject(project.slug);
-const nextHref = getProjectPath(lang, nextProject.slug);
+const nextHref = nextProject ? getProjectPath(lang, nextProject.slug) : undefined;
 
 const galleryItems: CmsGalleryItem[] = project.gallery ?? [
   {
@@ -141,15 +141,17 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
       })}
 
       <!-- End-of-rail Next Project link -->
-      <div class="w-full md:w-[220px] lg:w-[240px] shrink-0 md:h-[var(--rail-h)] mt-3 md:mt-0 md:pl-4 flex flex-col items-end md:items-start justify-start">
-        <a
-          href={nextHref}
-          class="inline-flex flex-col items-end text-right md:items-start md:text-left min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
-        >
-          <span class="leading-[1.35]">{t.nextProject}</span>
-          <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
-        </a>
-      </div>
+      {nextProject && nextHref && (
+        <div class="w-full md:w-[220px] lg:w-[240px] shrink-0 md:h-[var(--rail-h)] mt-3 md:mt-0 md:pl-4 flex flex-col items-end md:items-start justify-start">
+          <a
+            href={nextHref}
+            class="inline-flex flex-col items-end text-right md:items-start md:text-left min-h-[44px] md:min-h-0 hover:opacity-55 transition-opacity focus:outline-none w-fit"
+          >
+            <span class="leading-[1.35]">{t.nextProject}</span>
+            <span class="mt-0.5 leading-[1.35]">{nextProject.title[lang]}</span>
+          </a>
+        </div>
+      )}
     </div>
   </div>
 </main>

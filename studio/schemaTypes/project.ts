@@ -14,6 +14,15 @@ export const project = defineType({
   fields: [
     orderRankField({ type: 'project' }),
     defineField({
+      name: 'hidden',
+      title: 'Hide from site',
+      description:
+        'When enabled, this project stays in Studio and will not appear on the live site or its URL.',
+      type: 'boolean',
+      group: 'general',
+      initialValue: false,
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug (URL)',
       type: 'slug',
@@ -207,12 +216,14 @@ export const project = defineType({
       title: 'title.en',
       format: 'format',
       aspect: 'coverAspect',
+      hidden: 'hidden',
       media: 'cover',
     },
-    prepare({ title, format, aspect, media }) {
+    prepare({ title, format, aspect, hidden, media }) {
+      const prefix = hidden ? 'Hidden · ' : '';
       return {
         title: title || 'Untitled project',
-        subtitle: `${format || 'gallery'} · ${aspect || '4/5'}`,
+        subtitle: `${prefix}${format || 'gallery'} · ${aspect || '4/5'}`,
         media,
       };
     },

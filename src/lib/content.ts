@@ -526,6 +526,7 @@ const MEDIA_ITEM_PROJECTION = `{
 
 const PROJECTS_QUERY = `*[_type == "project"] | order(orderRank asc, _createdAt asc) {
   "slug": slug.current,
+  hidden,
   format,
   year,
   category,
@@ -983,10 +984,13 @@ export function getProjects(): Promise<CmsProject[]> {
       try {
         const raw = await sanityClient.fetch<any[]>(PROJECTS_QUERY);
         if (Array.isArray(raw) && raw.length > 0) {
-          const normalized = raw
+          const visibleRaw = raw.filter((doc) => doc?.hidden !== true);
+          const normalized = visibleRaw
             .map(normalizeProject)
             .filter((p): p is CmsProject => p !== null);
-          if (normalized.length > 0) return normalized;
+          if (visibleRaw.length === 0 || normalized.length > 0) {
+            return normalized;
+          }
         }
       } catch (err) {
         console.warn('[sanity] Failed to fetch projects, using local fallback:', err);
@@ -1004,8 +1008,11 @@ export async function getProjectBySlug(
   return projects.find((p) => p.slug === slug);
 }
 
-export async function getNextProject(slug: string): Promise<CmsProject> {
+export async function getNextProject(
+  slug: string
+): Promise<CmsProject | undefined> {
   const projects = await getProjects();
+  if (projects.length <= 1) return undefined;
   const index = projects.findIndex((p) => p.slug === slug);
   if (index === -1) return projects[0];
   return projects[(index + 1) % projects.length];
