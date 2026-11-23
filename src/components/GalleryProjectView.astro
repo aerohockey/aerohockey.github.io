@@ -1,7 +1,6 @@
 ---
 import MediaFrame from './MediaFrame.astro';
 import {
-  countGalleryFrames,
   getNextProject,
   type CmsGalleryItem,
   type CmsMediaAsset,
@@ -9,7 +8,6 @@ import {
 } from '../lib/content';
 import {
   UI,
-  formatFramesCount,
   getProjectPath,
   type Lang,
 } from '../i18n/ui';
@@ -32,8 +30,6 @@ const galleryItems: CmsGalleryItem[] = project.gallery ?? [
     alt: project.coverAlt,
   },
 ];
-
-const totalFrames = countGalleryFrames(galleryItems);
 
 function getMediaRatio(asset: CmsMediaAsset): number {
   if (asset.type === 'video') return asset.aspectRatio;
@@ -72,10 +68,6 @@ if (project.client && !project.title[lang].includes(project.client[lang])) {
             </p>
           )}
         </div>
-
-        <p class="hidden md:block leading-[1.35] tabular-nums">
-          {formatFramesCount(lang, totalFrames)}
-        </p>
       </section>
 
       <!-- Gallery media items (vertical stack on mobile, equal-height horizontal exhibition on desktop) -->
