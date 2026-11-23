@@ -62,160 +62,158 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   data-guest-canvas
   class="relative flex-1 bg-white text-[#141414] text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal"
 >
-  <section class="relative z-10 px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-16 md:pb-24">
+  <section class="relative z-10 px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-[calc(2.5rem+env(safe-area-inset-bottom))] md:pb-24">
     <div class={COL}>
-      <div class="space-y-24 md:space-y-32">
+      <div>
         <div>
-          <div>
-            <h1 class="leading-[1.35]">
-              {copy.headline}
-            </h1>
-            <p class="mt-0.5 leading-[1.35]">
-              <span>{project.role[lang]}</span>
-              {project.status && (
-                <span class="block">{project.status[lang]}</span>
-              )}
-            </p>
-
-            {project.appStoreUrl && (
-              <div class="mt-4">
-                <a
-                  href={project.appStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-                >
-                  {t.downloadAppStore}
-                </a>
-              </div>
+          <h1 class="leading-[1.35]">
+            {copy.headline}
+          </h1>
+          <p class="mt-0.5 leading-[1.35]">
+            <span>{project.role[lang]}</span>
+            {project.status && (
+              <span class="block">{project.status[lang]}</span>
             )}
+          </p>
 
-            <div class="mt-5 md:mt-6 space-y-4">
-              <p>{copy.lead}</p>
-              <p>{copy.leadSub}</p>
+          {project.appStoreUrl && (
+            <div class="mt-4">
+              <a
+                href={project.appStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block py-2 -my-2 md:py-0 md:my-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+              >
+                {t.downloadAppStore}
+              </a>
             </div>
-          </div>
+          )}
 
-          <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
-            <Image
-              src={GUEST_ASSETS.hero}
-              alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
-              width={1080}
-              class="w-full h-auto block pointer-events-none select-none"
-              loading="eager"
-              draggable={false}
-            />
+          <div class="mt-5 md:mt-6 space-y-3.5">
+            <p>{copy.lead}</p>
+            <p>{copy.leadSub}</p>
           </div>
         </div>
 
-        <div>
-          <div data-reveal="text">
+        <div class={`${FULL_PHONE} mt-3 md:mt-4`}>
+          <Image
+            src={GUEST_ASSETS.hero}
+            alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
+            width={1080}
+            class="w-full h-auto block pointer-events-none select-none"
+            loading="eager"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div class="mt-14 md:mt-20">
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s3Title}
+          </h2>
+          <div class="mt-2 space-y-3.5">
+            <p>{copy.s3Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class={`${FULL_PHONE} mt-2.5 md:mt-3.5`}>
+          <Image
+            src={GUEST_ASSETS.settings}
+            alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+            width={1080}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div class="mt-14 md:mt-20">
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s1Title}
+          </h2>
+          <div class="mt-2 space-y-3.5">
+            <p>{copy.s1Text}</p>
+            <p>{copy.s2Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class="w-full mt-9 md:mt-12">
+          <Image
+            src={GUEST_ASSETS.lockscreen}
+            alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
+            width={1600}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div class="mt-20 md:mt-28">
+        <div data-reveal="text">
+          <h2 class="leading-[1.35]">
+            {copy.s6Title}
+          </h2>
+          <div class="mt-2 space-y-3.5">
+            <p>{copy.s6Text}</p>
+          </div>
+        </div>
+
+        <div data-reveal="media" class="w-full mt-9 md:mt-12">
+          <Image
+            src={GUEST_ASSETS.widget}
+            alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
+            width={1600}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
+        </div>
+      </div>
+
+      <div class="mt-20 md:mt-28">
+        <div data-reveal="text" class="space-y-8 md:space-y-9">
+          <div>
             <h2 class="leading-[1.35]">
-              {copy.s3Title}
+              {copy.s4Title}
             </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s3Text}</p>
+            <div class="mt-2 space-y-3.5">
+              <p>{copy.s4Text}</p>
             </div>
           </div>
 
-          <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
-            <Image
-              src={GUEST_ASSETS.settings}
-              alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
-              width={1080}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div data-reveal="text">
+          <div>
             <h2 class="leading-[1.35]">
-              {copy.s1Title}
+              {copy.s5Title}
             </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s1Text}</p>
-              <p>{copy.s2Text}</p>
+            <div class="mt-2 space-y-3.5">
+              <p>{copy.s5Text}</p>
+              <p>
+                <a
+                  href={privacyHref}
+                  class="inline-block py-2 -my-2 md:py-0 md:my-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+                >
+                  {t.privacyPolicy}
+                </a>
+              </p>
             </div>
-          </div>
-
-          <div data-reveal="media" class="w-full mt-10 md:mt-12">
-            <Image
-              src={GUEST_ASSETS.lockscreen}
-              alt={lang === 'ru' ? 'Уведомление Guest на экране блокировки iPhone' : 'Guest notification on iPhone Lock Screen'}
-              width={1600}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
           </div>
         </div>
 
-        <div>
-          <div data-reveal="text">
-            <h2 class="leading-[1.35]">
-              {copy.s6Title}
-            </h2>
-            <div class="mt-4 md:mt-5 space-y-4">
-              <p>{copy.s6Text}</p>
-            </div>
-          </div>
-
-          <div data-reveal="media" class="w-full mt-10 md:mt-12">
-            <Image
-              src={GUEST_ASSETS.widget}
-              alt={lang === 'ru' ? 'Виджет Guest на домашнем экране iPhone' : 'Guest widget on iPhone Home Screen'}
-              width={1600}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div data-reveal="text" class="space-y-10 md:space-y-12">
-            <div>
-              <h2 class="leading-[1.35]">
-                {copy.s4Title}
-              </h2>
-              <div class="mt-4 md:mt-5 space-y-4">
-                <p>{copy.s4Text}</p>
-              </div>
-            </div>
-
-            <div>
-              <h2 class="leading-[1.35]">
-                {copy.s5Title}
-              </h2>
-              <div class="mt-4 md:mt-5 space-y-4">
-                <p>{copy.s5Text}</p>
-                <p>
-                  <a
-                    href={privacyHref}
-                    class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-                  >
-                    {t.privacyPolicy}
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
-            <Image
-              src={GUEST_ASSETS.lockscreenFull}
-              alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
-              width={1080}
-              class="w-full h-auto block pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
+        <div data-reveal="media" class={`${FULL_PHONE} mt-2.5 md:mt-3.5`}>
+          <Image
+            src={GUEST_ASSETS.lockscreenFull}
+            alt={lang === 'ru' ? 'Экран блокировки iPhone с уведомлением Guest' : 'Full iPhone Lock Screen with Guest notification'}
+            width={1080}
+            class="w-full h-auto block pointer-events-none select-none"
+            draggable={false}
+          />
         </div>
       </div>
 
       <footer
         data-reveal="text"
-        class="mt-12 md:mt-20 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-0 flex justify-end"
+        class="mt-10 md:mt-14 flex justify-end"
       >
         <a
           href={nextHref}
