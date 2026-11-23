@@ -1,6 +1,6 @@
 ---
 import LangSwitch from './LangSwitch.astro';
-import { COVER_ASPECT_RATIOS } from '../data/projects';
+import { getCoverDesktopScales } from '../data/projects';
 import {
   UI,
   getHomePath,
@@ -24,7 +24,9 @@ const t = UI[lang];
 const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()]);
 const homeHref = getHomePath(lang);
 const infoHref = getInfoPath(lang);
-const firstCardRatio = COVER_ASPECT_RATIOS[projects[0]?.coverAspect ?? '1/1'];
+const firstCardWidthScale = getCoverDesktopScales(
+  projects[0]?.coverAspect ?? '1/1'
+).widthScale;
 ---
 
 <header
@@ -37,7 +39,7 @@ const firstCardRatio = COVER_ASPECT_RATIOS[projects[0]?.coverAspect ?? '1/1'];
   <div class="flex items-center justify-between md:justify-start gap-x-2 md:gap-0 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.25] tracking-normal">
     <!-- Brand -->
     <div
-      style={`--first-r: ${firstCardRatio};`}
+      style={`--first-w: ${firstCardWidthScale};`}
       class="shrink-0 header-brand-desktop"
     >
       <a
@@ -85,7 +87,7 @@ const firstCardRatio = COVER_ASPECT_RATIOS[projects[0]?.coverAspect ?? '1/1'];
 <style>
   @media (min-width: 768px) {
     .header-brand-desktop {
-      width: calc(var(--rail-h-desktop) * var(--first-r) + 1.5rem);
+      width: calc(var(--rail-h-desktop) * var(--first-w) + 1.5rem);
     }
   }
 

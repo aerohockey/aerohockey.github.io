@@ -33,6 +33,18 @@ export const COVER_ASPECT_RATIOS: Record<CoverAspect, number> = {
   '16/9': 1.7778,
 };
 
+export const COVER_AREA_REFERENCE = 2 / 3;
+
+export function getCoverDesktopScales(aspect: CoverAspect): {
+  widthScale: number;
+  heightScale: number;
+} {
+  const ratio = COVER_ASPECT_RATIOS[aspect];
+  const heightScale = Number(Math.sqrt(COVER_AREA_REFERENCE / ratio).toFixed(4));
+  const widthScale = Number((heightScale * ratio).toFixed(4));
+  return { widthScale, heightScale };
+}
+
 export interface ImageMedia {
   type: 'image';
   image: ImageMetadata;

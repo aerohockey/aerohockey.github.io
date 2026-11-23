@@ -1,6 +1,9 @@
 ---
 import ResponsiveImage from './ResponsiveImage.astro';
-import { COVER_ASPECT_RATIOS } from '../data/projects';
+import {
+  COVER_ASPECT_RATIOS,
+  getCoverDesktopScales,
+} from '../data/projects';
 import { getProjectPath, type Lang } from '../i18n/ui';
 import { getProjects, getSiteSettings } from '../lib/content';
 import { getPosterUrl } from '../lib/sanity';
@@ -30,9 +33,10 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
       {projects.map((project, index) => {
         const href = getProjectPath(lang, project.slug);
         const ratio = COVER_ASPECT_RATIOS[project.coverAspect];
+        const { widthScale, heightScale } = getCoverDesktopScales(project.coverAspect);
         return (
           <article
-            style={`--r: ${ratio};`}
+            style={`--w-scale: ${widthScale}; --h-scale: ${heightScale};`}
             class="showcase-card shrink-0 snap-start snap-always md:snap-align-none flex flex-col"
           >
             <a
@@ -103,11 +107,11 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
 
   @media (min-width: 768px) {
     .showcase-card {
-      width: calc(var(--rail-h-desktop) * var(--r));
+      width: calc(var(--rail-h-desktop) * var(--w-scale));
     }
 
     .showcase-media {
-      height: var(--rail-h-desktop);
+      height: calc(var(--rail-h-desktop) * var(--h-scale));
       width: 100%;
     }
   }
