@@ -60,87 +60,75 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 
 <main
   data-guest-canvas
-  class="relative flex-1 text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal"
+  class="relative flex-1 bg-white text-[#141414] text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.5] font-normal"
 >
-  <!-- Act 1: Dark Surface — Hero + Transparent Hero iPhone + Form + Settings -->
-  <section
-    data-act-surface="dark"
-    class="relative z-10 px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-24 md:pb-40"
-  >
-    <div class={`${COL} space-y-24 md:space-y-32`}>
-      <div>
-        <div>
-          <h1 class="leading-[1.35]">
-            {copy.headline}
-          </h1>
-          <p class="mt-0.5 leading-[1.35]">
-            <span>{project.role[lang]}</span>
-            {project.status && (
-              <span class="block">{project.status[lang]}</span>
-            )}
-          </p>
-
-          {project.appStoreUrl && (
-            <div class="mt-4">
-              <a
-                href={project.appStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
-              >
-                {t.downloadAppStore}
-              </a>
-            </div>
-          )}
-
-          <div class="mt-5 md:mt-6 space-y-4">
-            <p>{copy.lead}</p>
-            <p>{copy.leadSub}</p>
-          </div>
-        </div>
-
-        <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
-          <Image
-            src={GUEST_ASSETS.hero}
-            alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
-            width={1080}
-            class="w-full h-auto block pointer-events-none select-none"
-            loading="eager"
-            draggable={false}
-          />
-        </div>
-      </div>
-
-      <div>
-        <div data-reveal="text">
-          <h2 class="leading-[1.35]">
-            {copy.s3Title}
-          </h2>
-          <div class="mt-4 md:mt-5 space-y-4">
-            <p>{copy.s3Text}</p>
-          </div>
-        </div>
-
-        <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
-          <Image
-            src={GUEST_ASSETS.settings}
-            alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
-            width={1080}
-            class="w-full h-auto block pointer-events-none select-none"
-            draggable={false}
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Act 2: Light Finale — Idea & Philosophy, Home Screen Widget, Who is the guest?, Privacy, Next Project -->
-  <section
-    data-act-surface="light"
-    class="relative z-10 px-4 pt-24 pb-16 md:pt-40 md:pb-24"
-  >
+  <section class="relative z-10 px-4 pt-[96px] md:pt-[var(--page-top-desktop)] pb-16 md:pb-24">
     <div class={COL}>
       <div class="space-y-24 md:space-y-32">
+        <div>
+          <div>
+            <h1 class="leading-[1.35]">
+              {copy.headline}
+            </h1>
+            <p class="mt-0.5 leading-[1.35]">
+              <span>{project.role[lang]}</span>
+              {project.status && (
+                <span class="block">{project.status[lang]}</span>
+              )}
+            </p>
+
+            {project.appStoreUrl && (
+              <div class="mt-4">
+                <a
+                  href={project.appStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center min-h-[40px] md:min-h-0 underline underline-offset-4 hover:opacity-55 transition-opacity"
+                >
+                  {t.downloadAppStore}
+                </a>
+              </div>
+            )}
+
+            <div class="mt-5 md:mt-6 space-y-4">
+              <p>{copy.lead}</p>
+              <p>{copy.leadSub}</p>
+            </div>
+          </div>
+
+          <div class={`${FULL_PHONE} mt-12 md:mt-16`}>
+            <Image
+              src={GUEST_ASSETS.hero}
+              alt={lang === 'ru' ? 'Экран приложения Guest на iPhone с именем фотографа Greg Swales' : 'Guest iPhone app showing photographer Greg Swales'}
+              width={1080}
+              class="w-full h-auto block pointer-events-none select-none"
+              loading="eager"
+              draggable={false}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div data-reveal="text">
+            <h2 class="leading-[1.35]">
+              {copy.s3Title}
+            </h2>
+            <div class="mt-4 md:mt-5 space-y-4">
+              <p>{copy.s3Text}</p>
+            </div>
+          </div>
+
+          <div data-reveal="media" class={`${FULL_PHONE} mt-10 md:mt-12`}>
+            <Image
+              src={GUEST_ASSETS.settings}
+              alt={lang === 'ru' ? 'Настройки еженедельного уведомления Guest' : 'Guest weekly notification settings'}
+              width={1080}
+              class="w-full h-auto block pointer-events-none select-none"
+              draggable={false}
+            />
+          </div>
+        </div>
+
         <div>
           <div data-reveal="text">
             <h2 class="leading-[1.35]">
@@ -242,102 +230,6 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 </main>
 
 <style>
-  /*
-   * iOS Safari 26+ tints the top status bar by sampling the fixed <header>'s
-   * own background-color in WebKit and sending it to UIKit over IPC, which
-   * paints the status bar exactly one 60Hz frame (~17ms) behind the page.
-   * Meanwhile, Safari ignores pseudo-elements (header::before) when sampling.
-   *
-   * To eliminate the two-tone "staircase" while keeping a smooth 650ms fade:
-   * - <header>'s own background-color transitions immediately (0ms delay),
-   *   acting as a 1-frame lead sampler for Safari's status bar.
-   * - <header>::before (covering the header box behind its links) and the
-   *   page canvas ([data-guest-canvas]) transition on the same main-thread
-   *   background-color property with a 17ms delay, landing in the exact same
-   *   frame as the status bar.
-   */
-  :global(html[data-guest-surface]) {
-    --guest-fade-duration: 650ms;
-    --guest-fade-ease: cubic-bezier(0.45, 0, 0.55, 1);
-    --guest-chrome-lag: 17ms;
-  }
-
-  [data-guest-canvas] {
-    color: #ffffff;
-    background-color: #141414;
-  }
-
-  :global(html[data-guest-surface] header) {
-    isolation: isolate;
-  }
-
-  :global(html[data-guest-surface] header::before) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background-color: #141414;
-  }
-
-  :global(html[data-guest-surface-ready='true']) [data-guest-canvas] {
-    transition:
-      color var(--guest-fade-duration) var(--guest-fade-ease) var(--guest-chrome-lag),
-      background-color var(--guest-fade-duration) var(--guest-fade-ease) var(--guest-chrome-lag);
-  }
-
-  :global(html[data-guest-surface-ready='true'] header) {
-    transition: background-color var(--guest-fade-duration) var(--guest-fade-ease) 0ms;
-  }
-
-  :global(html[data-guest-surface-ready='true'] header::before) {
-    transition: background-color var(--guest-fade-duration) var(--guest-fade-ease) var(--guest-chrome-lag);
-  }
-
-  :global(html[data-guest-surface-ready='true'] header a) {
-    transition:
-      opacity 180ms ease,
-      color var(--guest-fade-duration) var(--guest-fade-ease) var(--guest-chrome-lag);
-  }
-
-  :global(html[data-guest-surface='light']) [data-guest-canvas] {
-    color: #141414;
-    background-color: #ffffff;
-  }
-
-  :global(html[data-guest-surface='light'] header),
-  :global(html[data-guest-surface='light'] header::before) {
-    background-color: #ffffff;
-  }
-
-  :global(html[data-guest-surface='light'] header a) {
-    color: #141414;
-  }
-
-  :global(html[data-guest-surface='light']) ::selection {
-    background-color: #141414;
-    color: #ffffff;
-  }
-
-  :global(html[data-guest-surface='dark']) [data-guest-canvas] {
-    color: #ffffff;
-    background-color: #141414;
-  }
-
-  :global(html[data-guest-surface='dark'] header),
-  :global(html[data-guest-surface='dark'] header::before) {
-    background-color: #141414;
-  }
-
-  :global(html[data-guest-surface='dark'] header a) {
-    color: #ffffff;
-  }
-
-  :global(html[data-guest-surface='dark']) ::selection {
-    background-color: #ffffff;
-    color: #141414;
-  }
-
   [data-guest-canvas][data-reveal-ready='true'] [data-reveal='text'] {
     opacity: 0;
     transform: translateY(18px);
@@ -363,13 +255,6 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    [data-guest-canvas],
-    :global(html[data-guest-surface] header),
-    :global(html[data-guest-surface] header::before),
-    :global(html[data-guest-surface] header a) {
-      transition: none !important;
-    }
-
     [data-guest-canvas][data-reveal-ready='true'] [data-reveal] {
       opacity: 1 !important;
       transform: none !important;
@@ -379,75 +264,8 @@ const FULL_PHONE = 'w-full max-w-[480px] 2xl:max-w-[540px] mx-auto';
 </style>
 
 <script>
-  const html = document.documentElement;
-  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-  const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
   const canvas = document.querySelector<HTMLElement>('[data-guest-canvas]');
-  const acts = Array.from(document.querySelectorAll<HTMLElement>('[data-act-surface]'));
-
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let currentSurface = html.dataset.guestSurface ?? '';
-
-  const applySurface = (surface: string) => {
-    if (surface === currentSurface) return;
-    currentSurface = surface;
-
-    const bg = surface === 'light' ? '#ffffff' : '#141414';
-    html.dataset.guestSurface = surface;
-    html.style.colorScheme = surface;
-    html.style.backgroundColor = bg;
-    document.body.style.backgroundColor = bg;
-    if (themeMeta) {
-      themeMeta.content = bg;
-    }
-    if (colorSchemeMeta) {
-      colorSchemeMeta.content = surface;
-    }
-  };
-
-  const syncSurface = () => {
-    if (acts.length === 0) return;
-    const atBottom =
-      window.scrollY > 0 &&
-      window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 40;
-
-    if (atBottom) {
-      applySurface(acts[acts.length - 1].dataset.actSurface ?? 'dark');
-      return;
-    }
-
-    const triggerY = window.innerHeight * 0.45;
-    let nextSurface = acts[0].dataset.actSurface ?? 'dark';
-    for (const act of acts) {
-      if (act.getBoundingClientRect().top <= triggerY) {
-        nextSurface = act.dataset.actSurface ?? nextSurface;
-      }
-    }
-    applySurface(nextSurface);
-  };
-
-  if (acts.length > 0) {
-    let ticking = false;
-    const scheduleSync = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        ticking = false;
-        syncSurface();
-      });
-    };
-
-    syncSurface();
-    if (!prefersReducedMotion) {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          html.dataset.guestSurfaceReady = 'true';
-        });
-      });
-    }
-    window.addEventListener('scroll', scheduleSync, { passive: true });
-    window.addEventListener('resize', scheduleSync, { passive: true });
-  }
 
   if (canvas && !prefersReducedMotion) {
     const revealTargets = Array.from(canvas.querySelectorAll<HTMLElement>('[data-reveal]'));

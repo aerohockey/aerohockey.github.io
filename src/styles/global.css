@@ -16,11 +16,6 @@
     background-color: #141414;
     color: #ffffff;
   }
-
-  [data-theme='dark'] ::selection {
-    background-color: #ffffff;
-    color: #141414;
-  }
 }
 
 :root {
