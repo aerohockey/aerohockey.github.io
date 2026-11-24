@@ -17,9 +17,9 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
 const allAspects = projects.map((p) => p.coverAspect);
 ---
 
-<main class="flex-1 min-h-0 flex flex-col pt-[96px] md:pt-[var(--page-top-desktop)] pb-[calc(3rem+env(safe-area-inset-bottom))] md:pb-4 md:overflow-hidden text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]">
+<main class="flex-1 min-h-0 flex flex-col pt-[96px] md:pt-0 pb-[calc(3rem+env(safe-area-inset-bottom))] md:pb-4 md:overflow-hidden text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]">
   <!-- Quiet positioning statement -->
-  <div class="px-4 shrink-0 mb-16 md:mb-[var(--statement-gap-desktop)]">
+  <div class="px-4 shrink-0 mb-16 md:mb-0 md:pt-[var(--page-top-desktop)] md:h-[var(--hero-zone-desktop)]">
     <h1 class="max-w-[340px] sm:max-w-[400px] md:max-w-[420px] leading-[1.5]">
       {settings.homeStatement[lang]}
     </h1>
@@ -48,10 +48,7 @@ const allAspects = projects.map((p) => p.coverAspect);
               draggable={false}
               class="group flex flex-col w-full focus:outline-none select-none"
             >
-              <div
-                data-card-header
-                class="mb-2.5 md:mb-3 md:min-h-[38px] 2xl:min-h-[42px] flex flex-col justify-end"
-              >
+              <div class="mb-2.5 md:mb-3 md:h-[38px] 2xl:h-[44px] flex flex-col justify-end">
                 <h2 class="md:truncate">
                   {project.title[lang]}
                 </h2>
@@ -99,50 +96,6 @@ const allAspects = projects.map((p) => p.coverAspect);
 <script>
   import { initHorizontalTrack } from '../scripts/horizontalScroll';
   initHorizontalTrack();
-
-  function initDesktopRailFit() {
-    const track = document.querySelector<HTMLElement>('[data-horizontal-track]');
-    const firstHeader = document.querySelector<HTMLElement>('[data-card-header]');
-    if (!track || !firstHeader) return;
-
-    let lastPx: number | null = null;
-
-    const sync = () => {
-      if (window.innerWidth < 768) {
-        if (lastPx !== null) {
-          document.documentElement.style.removeProperty('--rail-h-desktop');
-          lastPx = null;
-        }
-        return;
-      }
-
-      const headerHeight = firstHeader.getBoundingClientRect().height;
-      const headerMarginBottom =
-        parseFloat(getComputedStyle(firstHeader).marginBottom) || 0;
-      const available = Math.floor(
-        track.clientHeight - headerHeight - headerMarginBottom
-      );
-      const maxRail = Math.min(Math.floor(window.innerWidth * 0.46), 620);
-      const next = Math.max(260, Math.min(available, maxRail));
-
-      if (next !== lastPx) {
-        lastPx = next;
-        document.documentElement.style.setProperty(
-          '--rail-h-desktop',
-          `${next}px`
-        );
-      }
-    };
-
-    sync();
-    document.fonts?.ready.then(sync);
-    if ('ResizeObserver' in window) {
-      new ResizeObserver(sync).observe(track);
-    }
-    window.addEventListener('resize', sync, { passive: true });
-  }
-
-  initDesktopRailFit();
 </script>
 
 <style>

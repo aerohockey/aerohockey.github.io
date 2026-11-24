@@ -20,15 +20,30 @@
 
 :root {
   --page-top-desktop: clamp(64px, 10vh, 152px);
-  --statement-gap-desktop: clamp(24px, calc(17vh - 56px), 160px);
-  --rail-h-desktop: clamp(260px, min(calc(73vh - 82px), 46vw), 620px);
+  --hero-zone-desktop: clamp(168px, 27vh, 368px);
+  --card-header-desktop: 50px;
+  --rail-h-desktop: clamp(
+    260px,
+    min(calc(100vh - var(--hero-zone-desktop) - var(--card-header-desktop) - 16px), 46vw),
+    620px
+  );
 }
 
 @supports (height: 1svh) {
   :root {
     --page-top-desktop: clamp(64px, 10svh, 152px);
-    --statement-gap-desktop: clamp(24px, calc(17svh - 56px), 160px);
-    --rail-h-desktop: clamp(260px, min(calc(73svh - 82px), 46vw), 620px);
+    --hero-zone-desktop: clamp(168px, 27svh, 368px);
+    --rail-h-desktop: clamp(
+      260px,
+      min(calc(100svh - var(--hero-zone-desktop) - var(--card-header-desktop) - 16px), 46vw),
+      620px
+    );
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --card-header-desktop: 56px;
   }
 }
 
