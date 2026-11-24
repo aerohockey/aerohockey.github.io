@@ -2,7 +2,7 @@
 import ResponsiveImage from './ResponsiveImage.astro';
 import {
   COVER_ASPECT_RATIOS,
-  getCoverDesktopScales,
+  getNormalizedCoverScales,
 } from '../data/projects';
 import { getProjectPath, type Lang } from '../i18n/ui';
 import { getProjects, getSiteSettings } from '../lib/content';
@@ -14,6 +14,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()]);
+const allAspects = projects.map((p) => p.coverAspect);
 ---
 
 <main class="flex-1 min-h-0 flex flex-col pt-[96px] md:pt-[var(--page-top-desktop)] pb-[calc(3rem+env(safe-area-inset-bottom))] md:pb-4 md:overflow-hidden text-[14px] md:text-[13px] 2xl:text-[15px] leading-[1.35] font-normal text-[#141414]">
@@ -33,7 +34,10 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
       {projects.map((project, index) => {
         const href = getProjectPath(lang, project.slug);
         const ratio = COVER_ASPECT_RATIOS[project.coverAspect];
-        const { widthScale, heightScale } = getCoverDesktopScales(project.coverAspect);
+        const { widthScale, heightScale } = getNormalizedCoverScales(
+          project.coverAspect,
+          allAspects
+        );
         return (
           <article
             style={`--w-scale: ${widthScale}; --h-scale: ${heightScale};`}
@@ -44,7 +48,10 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
               draggable={false}
               class="group flex flex-col w-full focus:outline-none select-none"
             >
-              <div class="mb-2.5 md:mb-3 md:min-h-[38px] 2xl:min-h-[42px] flex flex-col justify-end">
+              <div
+                data-card-header
+                class="mb-2.5 md:mb-3 md:min-h-[38px] 2xl:min-h-[42px] flex flex-col justify-end"
+              >
                 <h2 class="md:truncate">
                   {project.title[lang]}
                 </h2>
@@ -92,6 +99,50 @@ const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()
 <script>
   import { initHorizontalTrack } from '../scripts/horizontalScroll';
   initHorizontalTrack();
+
+  function initDesktopRailFit() {
+    const track = document.querySelector<HTMLElement>('[data-horizontal-track]');
+    const firstHeader = document.querySelector<HTMLElement>('[data-card-header]');
+    if (!track || !firstHeader) return;
+
+    let lastPx: number | null = null;
+
+    const sync = () => {
+      if (window.innerWidth < 768) {
+        if (lastPx !== null) {
+          document.documentElement.style.removeProperty('--rail-h-desktop');
+          lastPx = null;
+        }
+        return;
+      }
+
+      const headerHeight = firstHeader.getBoundingClientRect().height;
+      const headerMarginBottom =
+        parseFloat(getComputedStyle(firstHeader).marginBottom) || 0;
+      const available = Math.floor(
+        track.clientHeight - headerHeight - headerMarginBottom
+      );
+      const maxRail = Math.min(Math.floor(window.innerWidth * 0.46), 620);
+      const next = Math.max(260, Math.min(available, maxRail));
+
+      if (next !== lastPx) {
+        lastPx = next;
+        document.documentElement.style.setProperty(
+          '--rail-h-desktop',
+          `${next}px`
+        );
+      }
+    };
+
+    sync();
+    document.fonts?.ready.then(sync);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(sync).observe(track);
+    }
+    window.addEventListener('resize', sync, { passive: true });
+  }
+
+  initDesktopRailFit();
 </script>
 
 <style>

@@ -21,14 +21,14 @@
 :root {
   --page-top-desktop: clamp(64px, 10vh, 152px);
   --statement-gap-desktop: clamp(24px, calc(17vh - 56px), 160px);
-  --rail-h-desktop: clamp(260px, min(calc(73vh - 82px), 46vw), 660px);
+  --rail-h-desktop: clamp(260px, min(calc(73vh - 82px), 46vw), 620px);
 }
 
 @supports (height: 1svh) {
   :root {
     --page-top-desktop: clamp(64px, 10svh, 152px);
     --statement-gap-desktop: clamp(24px, calc(17svh - 56px), 160px);
-    --rail-h-desktop: clamp(260px, min(calc(73svh - 82px), 46vw), 660px);
+    --rail-h-desktop: clamp(260px, min(calc(73svh - 82px), 46vw), 620px);
   }
 }
 

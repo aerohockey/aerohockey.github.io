@@ -1,6 +1,6 @@
 ---
 import LangSwitch from './LangSwitch.astro';
-import { getCoverDesktopScales } from '../data/projects';
+import { getNormalizedCoverScales } from '../data/projects';
 import {
   UI,
   getHomePath,
@@ -24,8 +24,10 @@ const t = UI[lang];
 const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()]);
 const homeHref = getHomePath(lang);
 const infoHref = getInfoPath(lang);
-const firstCardWidthScale = getCoverDesktopScales(
-  projects[0]?.coverAspect ?? '1/1'
+const allAspects = projects.map((p) => p.coverAspect);
+const firstCardWidthScale = getNormalizedCoverScales(
+  projects[0]?.coverAspect ?? '1/1',
+  allAspects
 ).widthScale;
 ---
 

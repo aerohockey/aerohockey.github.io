@@ -48,6 +48,25 @@ export function getCoverDesktopScales(aspect: CoverAspect): {
   return { widthScale, heightScale };
 }
 
+export function getNormalizedCoverScales(
+  aspect: CoverAspect,
+  allAspects: CoverAspect[]
+): {
+  widthScale: number;
+  heightScale: number;
+} {
+  const maxHeightScale =
+    allAspects.length > 0
+      ? Math.max(...allAspects.map((a) => getCoverDesktopScales(a).heightScale))
+      : 1;
+  const raw = getCoverDesktopScales(aspect);
+  const heightScale = Number((raw.heightScale / maxHeightScale).toFixed(4));
+  const widthScale = Number(
+    (heightScale * COVER_ASPECT_RATIOS[aspect]).toFixed(4)
+  );
+  return { widthScale, heightScale };
+}
+
 export interface ImageMedia {
   type: 'image';
   image: ImageMetadata;
