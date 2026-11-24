@@ -19,14 +19,16 @@
 }
 
 :root {
-  --rail-h-desktop: clamp(280px, min(58vh, 46vw), 560px);
-  --page-top-desktop: clamp(68px, calc(22vh - 64px), 128px);
+  --page-top-desktop: clamp(64px, 10vh, 152px);
+  --statement-gap-desktop: clamp(24px, calc(17vh - 56px), 160px);
+  --rail-h-desktop: clamp(260px, min(calc(73vh - 82px), 46vw), 660px);
 }
 
 @supports (height: 1svh) {
   :root {
-    --rail-h-desktop: clamp(280px, min(58svh, 46vw), 560px);
-    --page-top-desktop: clamp(68px, calc(22svh - 64px), 128px);
+    --page-top-desktop: clamp(64px, 10svh, 152px);
+    --statement-gap-desktop: clamp(24px, calc(17svh - 56px), 160px);
+    --rail-h-desktop: clamp(260px, min(calc(73svh - 82px), 46vw), 660px);
   }
 }
 
